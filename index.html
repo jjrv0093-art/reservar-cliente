@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Reservar Turno</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<style>body{font-family:'Inter',sans-serif} input,button{font-size:16px!important}</style>
+</head>
+<body class="bg-[#f6f6f7] min-h-screen">
+<div class="max-w-[420px] mx-auto bg-white min-h-screen shadow-sm">
+  <!-- Header -->
+  <div class="bg-black text-white p-6 text-center">
+    <h1 class="text-[22px] font-bold">Reservar Turno</h1>
+    <p class="text-sm opacity-70 mt-1">Elegí día y horario disponible</p>
+  </div>
+
+  <div class="p-5 space-y-5">
+    <div>
+      <label class="text-sm font-semibold">Tu nombre</label>
+      <input id="nombre" placeholder="Ej: Jona" class="mt-2 w-full p-4 border border-gray-200 rounded-xl outline-none focus:border-black">
+    </div>
+
+    <div>
+      <label class="text-sm font-semibold">WhatsApp</label>
+      <input id="whatsapp" placeholder="Ej: 11 2345 6789" class="mt-2 w-full p-4 border border-gray-200 rounded-xl outline-none focus:border-black">
+    </div>
+
+    <div>
+      <label class="text-sm font-semibold">Fecha</label>
+      <input id="fecha" type="date" class="mt-2 w-full p-4 border border-gray-200 rounded-xl outline-none focus:border-black">
+    </div>
+
+    <div>
+      <label class="text-sm font-semibold">Horario disponible</label>
+      <div class="grid grid-cols-3 gap-2 mt-2">
+        <button onclick="elegirHora(this)" class="hora p-3.5 border border-gray-200 rounded-xl font-semibold">09:00</button>
+        <button onclick="elegirHora(this)" class="hora p-3.5 border border-gray-200 rounded-xl font-semibold">10:00</button>
+        <button onclick="elegirHora(this)" class="hora p-3.5 border border-gray-200 rounded-xl font-semibold">11:00</button>
+        <button onclick="elegirHora(this)" class="hora p-3.5 border border-gray-200 rounded-xl font-semibold">14:00</button>
+        <button onclick="elegirHora(this)" class="hora p-3.5 border border-gray-200 rounded-xl font-semibold">15:00</button>
+        <button onclick="elegirHora(this)" class="hora p-3.5 border border-gray-200 rounded-xl font-semibold">16:00</button>
+        <button onclick="elegirHora(this)" class="hora p-3.5 border border-gray-200 rounded-xl font-semibold">17:00</button>
+        <button onclick="elegirHora(this)" class="hora p-3.5 border border-gray-200 rounded-xl font-semibold">18:00</button>
+      </div>
+    </div>
+
+    <button onclick="confirmar()" class="w-full bg-black text-white py-4 rounded-xl font-bold text-[16px] active:scale-[0.98] transition">Confirmar Reserva</button>
+    <p class="text-center text-xs text-gray-400">Te llega confirmación por WhatsApp</p>
+  </div>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyB-7d4b2u5m9v8w0x1y2z3",
+  authDomain: "reservar-app.firebaseapp.com",
+  projectId: "reservar-app",
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+let horaElegida = "";
+window.elegirHora = (btn) => {
+  document.querySelectorAll('.hora').forEach(b => b.className = 'hora p-3.5 border border-gray-200 rounded-xl font-semibold');
+  btn.className = 'hora p-3.5 border rounded-xl font-semibold bg-black text-white border-black';
+  horaElegida = btn.innerText;
+}
+
+window.confirmar = async () => {
+  const nombre = document.getElementById('nombre').value.trim();
+  const whatsapp = document.getElementById('whatsapp').value.trim();
+  const fecha = document.getElementById('fecha').value;
+  if(!nombre ||!whatsapp ||!fecha ||!horaElegida){ alert('Completa nombre, WhatsApp, fecha y hora'); return; }
+
+  try{
+    await addDoc(collection(db, "reservas"), { nombre, whatsapp, fecha, hora: horaElegida, estado: "pendiente", creado: new Date() });
+    alert('✅ Reserva confirmada: ' + fecha + ' ' + horaElegida + '\nTe contactamos por WhatsApp');
+    location.reload();
+  }catch(e){ alert('Error: ' + e.message); }
+}
+</script>
+</body>
+</html>
