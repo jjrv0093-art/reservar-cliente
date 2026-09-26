@@ -9,24 +9,24 @@
 <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
 <style>
-:root{ --violeta:#6a11cb; --rosa:#ff5ab3; --card:#1f0736; --text:#ffffff; --mute:#cfc9e6; --stroke:#ffffff26; }
+:root{ --violeta:#6a11cb; --rosa:#a78bfa; --card:#1f0736; --text:#ffffff; --mute:#cfc9e6; --stroke:#ffffff26; }
 *{box-sizing:border-box; font-family:'Inter',sans-serif} 
 html,body{height:100%}
-body{margin:0; color:var(--text); background: radial-gradient(50% 40% at 10% 10%, #00000033, transparent 60%), radial-gradient(50% 40% at 90% 10%, #00000033, transparent 60%), linear-gradient(160deg, var(--violeta), #7b1fa2 40%, #3a0f6e 70%, #0a0933); background-attachment:fixed;}
+body{margin:0; color:var(--text); background: linear-gradient(160deg, var(--violeta), #7b1fa2 40%, #3a0f6e 70%, #0a0933); min-height:100vh; background-attachment:fixed;}
 .hidden{display:none!important}
 .header-reservar{position:absolute; top:14px; left:16px; z-index:5}
 .header-reservar h1{margin:0; font-size:18px; font-weight:800; color:white}
 .header-reservar span{font-weight:300; font-size:14px; margin-left:5px; color:var(--mute)}
 
-/* ESTE ES TU LOGIN DE LA CAPTURA */
 .auth{max-width:460px; margin:72px auto 0; background:#ffffff12; border:1px solid var(--stroke); border-radius:14px; padding:16px; backdrop-filter: blur(10px)}
 .auth h2{color:white; font-size:22px; font-weight:700; margin:0 0 12px 0}
 .auth input{width:100%; margin-top:12px; background:#ffffff08; border:1px solid #ffffff22; border-radius:10px; padding:.7rem; color:#fff; font:inherit; outline:none}
-.btn{background:var(--rosa); border:none; color:#fff; padding:.7rem .9rem; border-radius:10px; cursor:pointer; font:inherit; font-weight:700}
+.btn{background:#b794f6; border:none; color:#fff; padding:.7rem .9rem; border-radius:10px; cursor:pointer; font:inherit; font-weight:700}
 .btn.full{width:100%; margin-top:18px}
 .btn.ghost{width:100%; background:transparent; border:1px solid var(--stroke); font-weight:600; font-size:13px; margin-top:8px}
-.btn.link{background:transparent; color:var(--mute); text-decoration:underline; font-size:13px; width:100%; margin-top:10px}
+.btn.link{background:transparent; border:none; color:var(--mute); text-decoration:underline; font-size:13px; width:100%; margin-top:10px}
 .note{color:#ffdddd; font-size:14px; min-height:1.2em; margin-top:12px}
+</style>
 </style>
 </head>
 <body class="min-h-screen">
