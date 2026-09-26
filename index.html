@@ -1,31 +1,133 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>reservAR - Bienvenido a tu momento</title>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>reservAR</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
-<style>body{font-family:'Inter', sans-serif;}</style>
+<style>
+*{font-family:'Inter',sans-serif}
+.bg-sagrado{background:linear-gradient(135deg,#6a11cb 0%,#3a0f6e 100%)}
+.bg-fondo{background:#13052a}
+.scroll-hide::-webkit-scrollbar{display:none}
+</style>
 </head>
-<body class="bg-black text-white min-h-screen">
-  <div class="p-6 max-w-5xl mx-auto">
-    <h1 class="text-4xl font-extrabold">Bienvenido a tu momento</h1>
-    <p class="text-gray-400 mt-2">Reservá en tu barbería, gym o centro de estética favorito en segundos.</p>
-    
-    <div class="mt-6 bg-zinc-900 rounded-2xl p-4 flex gap-2">
-      <input id="buscador" placeholder="Buscar barbería, local..." class="flex-1 bg-zinc-800 rounded-xl px-4 py-3 outline-none">
-      <button onclick="buscar()" class="bg-white text-black px-6 rounded-xl font-bold">Buscar</button>
+<body class="bg-fondo min-h-screen text-white">
+<!-- LOGIN - PANTALLA 1 LA VIOLETA BUENA -->
+<div id="pantalla-login" class="min-h-screen bg-sagrado flex items-center justify-center p-4">
+  <div class="w-full max-w-sm bg-[#1e0a3e]/90 backdrop-blur border border-white/10 rounded-[28px] p-7 shadow-2xl">
+    <h1 class="text-3xl font-extrabold text-center">reserv<span class="text-violet-300">AR</span></h1>
+    <p class="text-center text-white/70 text-sm mt-1">tu lugar, tu momento</p>
+    <p class="text-center text-white/50 text-xs mt-1 mb-6">Ingresá</p>
+    <input id="lEmail" type="email" placeholder="jona@cliente.com" class="w-full bg-white/10 border border-white/10 rounded-xl p-3.5 text-sm outline-none focus:border-violet-400">
+    <input id="lPass" type="password" placeholder="Contraseña" class="w-full mt-3 bg-white/10 border border-white/10 rounded-xl p-3.5 text-sm outline-none focus:border-violet-400">
+    <button onclick="login()" class="w-full mt-5 bg-white text-[#3a0f6e] font-bold py-3.5 rounded-xl">Entrar</button>
+    <div class="flex justify-between mt-4 text-xs text-white/60">
+      <button onclick="show('registro')" class="hover:text-white">Crear cuenta</button>
+      <button onclick="recuperar()" class="hover:text-white">¿Olvidaste tu contraseña?</button>
+    </div>
+    <p id="lError" class="text-xs text-red-300 mt-3 hidden"></p>
+  </div>
+</div>
+
+<!-- REGISTRO - PANTALLA 2 -->
+<div id="pantalla-registro" class="hidden min-h-screen bg-sagrado flex items-center justify-center p-4">
+  <div class="w-full max-w-sm bg-[#1e0a3e]/90 border border-white/10 rounded-[28px] p-7">
+    <h2 class="text-2xl font-bold">Crear cuenta</h2>
+    <input id="rNombre" placeholder="Nombre" class="w-full mt-4 bg-white/10 border border-white/10 rounded-xl p-3 text-sm">
+    <input id="rApellido" placeholder="Apellido" class="w-full mt-2 bg-white/10 border border-white/10 rounded-xl p-3 text-sm">
+    <input id="rEmail" placeholder="Email" class="w-full mt-2 bg-white/10 border border-white/10 rounded-xl p-3 text-sm">
+    <input id="rPass" type="password" placeholder="Contraseña" class="w-full mt-2 bg-white/10 border border-white/10 rounded-xl p-3 text-sm">
+    <input id="rPass2" type="password" placeholder="Repetir contraseña" class="w-full mt-2 bg-white/10 border border-white/10 rounded-xl p-3 text-sm">
+    <label class="flex gap-2 mt-3 text-[11px] text-white/60"><input type="checkbox" id="rTerm"> Acepto términos y condiciones</label>
+    <button onclick="registro()" class="w-full mt-4 bg-white text-[#3a0f6e] font-bold py-3 rounded-xl">Crear cuenta</button>
+    <button onclick="show('login')" class="w-full mt-2 text-xs text-white/60">Ya tengo cuenta</button>
+    <p id="rError" class="text-xs text-red-300 mt-2 hidden"></p>
+  </div>
+</div>
+
+<!-- APP - PANTALLA 3 HOME + TABS -->
+<div id="pantalla-app" class="hidden min-h-screen bg-fondo">
+  <header class="sticky top-0 z-10 bg-[#1a0a35]/90 backdrop-blur border-b border-white/5">
+    <div class="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
+      <h1 class="font-extrabold text-xl tracking-wide">reserv<span class="text-violet-400">AR</span></h1>
+      <button onclick="logout()" class="text-xs bg-white/10 px-3 py-1.5 rounded-full">Cerrar sesión</button>
+    </div>
+    <div class="max-w-5xl mx-auto px-2">
+      <div class="flex gap-2 overflow-x-auto scroll-hide py-2 text-[13px]">
+        <button onclick="tab('inicio')" id="t-inicio" class="tab px-4 py-2 rounded-full bg-white text-[#13052a] font-bold whitespace-nowrap">Inicio</button>
+        <button onclick="tab('reservas')" id="t-reservas" class="tab px-4 py-2 rounded-full bg-white/10 whitespace-nowrap">Reservas</button>
+        <button onclick="tab('calendario')" id="t-calendario" class="tab px-4 py-2 rounded-full bg-white/10 whitespace-nowrap">Calendario</button>
+        <button onclick="tab('clientes')" id="t-clientes" class="tab px-4 py-2 rounded-full bg-white/10 whitespace-nowrap">Clientes</button>
+        <button onclick="tab('servicios')" id="t-servicios" class="tab px-4 py-2 rounded-full bg-white/10 whitespace-nowrap">Servicios</button>
+        <button onclick="tab('ajustes')" id="t-ajustes" class="tab px-4 py-2 rounded-full bg-white/10 whitespace-nowrap">Ajustes</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-5xl mx-auto p-4">
+    <!-- INICIO -->
+    <div id="sec-inicio">
+      <div class="flex items-center gap-3 mt-2">
+        <div class="w-10 h-10 rounded-full bg-emerald-500 flex items-center justify-center font-bold">✓</div>
+        <div><p class="font-semibold" id="holaNombre">Hola Jona</p><p class="text-xs text-white/50" id="holaId">• 18229...</p></div>
+        <div class="ml-auto flex items-center gap-2">
+          <span id="pillEstado" class="text-[11px] px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">Reservas online: activas</span>
+          <button id="btnToggle" onclick="toggleOnline()" class="text-xs bg-white text-black px-3 py-1 rounded-full font-bold">Pausar</button>
+        </div>
+      </div>
+      <div class="mt-5 bg-[#1e1040] border border-white/10 rounded-2xl p-5">
+        <h3 class="font-bold">Panel</h3>
+        <p class="text-xs text-white/50 mt-1">Gestioná tus turnos de hoy</p>
+        <div class="grid grid-cols-2 gap-3 mt-4">
+          <button onclick="tab('reservas')" class="bg-violet-600 hover:bg-violet-500 py-3 rounded-xl font-bold text-sm">+ Nueva reserva</button>
+          <button onclick="tab('reservas')" class="bg-white/10 py-3 rounded-xl font-bold text-sm">Ver Reservas</button>
+        </div>
+      </div>
+      <div class="mt-4 bg-[#1e1040] border border-white/10 rounded-2xl p-5">
+        <h3 class="font-bold text-sm">Turnos de hoy</h3>
+        <div id="listaHoy" class="mt-3 text-sm text-white/60">No hay turnos hoy</div>
+      </div>
     </div>
 
-    <div id="locales" class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8">
-      <p class="text-gray-500">Cargando locales...</p>
+    <!-- RESERVAS -->
+    <div id="sec-reservas" class="hidden">
+      <h2 class="font-bold text-lg">Nueva Reserva</h2>
+      <div class="mt-3 bg-[#1e1040] border border-white/10 rounded-2xl p-5">
+        <input id="resCliente" placeholder="Nombre del cliente" class="w-full bg-white/5 border border-white/10 rounded-xl p-3 text-sm">
+        <input id="resWhatsapp" placeholder="WhatsApp" class="w-full mt-2 bg-white/5 border border-white/10 rounded-xl p-3 text-sm">
+        <input id="resFecha" type="datetime-local" class="w-full mt-2 bg-white/5 border border-white/10 rounded-xl p-3 text-sm">
+        <select id="resServicio" class="w-full mt-2 bg-[#1e1040] border border-white/10 rounded-xl p-3 text-sm"><option>Corte + Barba</option><option>Color</option><option>Manicura</option><option>Servicio personalizado</option></select>
+        <button onclick="guardarReserva()" class="w-full mt-4 bg-violet-600 py-3 rounded-xl font-bold">Guardar Reserva</button>
+      </div>
+      <div class="mt-5"><h3 class="font-bold text-sm">Reservas guardadas en reservar-cb70d</h3><div id="listaReservas" class="mt-3 space-y-2"></div></div>
     </div>
-  </div>
+
+    <!-- OTROS TABS -->
+    <div id="sec-calendario" class="hidden"><h2 class="font-bold">Calendario</h2><p class="text-sm text-white/50 mt-2">Vista de calendario conectada a tus reservas reales, no horarios fijos de prueba 09:00, 10:30. Acá vas a ver el día real del local.</p></div>
+    <div id="sec-clientes" class="hidden"><h2 class="font-bold">Clientes</h2><p class="text-sm text-white/50 mt-2">Lista de clientes con WhatsApp, última visita y seña pendiente (mejora que hablamos).</p><div id="listaClientes" class="mt-3"></div></div>
+    <div id="sec-servicios" class="hidden">
+      <h2 class="font-bold">Servicios</h2>
+      <div class="mt-3 space-y-3">
+        <div class="bg-[#1e1040] border border-white/10 rounded-xl p-4"><p class="font-semibold text-sm">Corte profesional</p><p class="text-xs text-white/50 mt-1">Descripción profesional: Corte con lavado incluido, asesoría de estilo y terminación a navaja. Duración 40min.</p></div>
+        <div class="bg-[#1e1040] border border-white/10 rounded-xl p-4"><p class="font-semibold text-sm">Color + Tratamiento</p><p class="text-xs text-white/50 mt-1">Descripción profesional: Diagnóstico, coloración y cierre técnico para brillo. Duración 90min.</p></div>
+      </div>
+    </div>
+    <div id="sec-ajustes" class="hidden">
+      <h2 class="font-bold">Ajustes</h2>
+      <div class="mt-3 bg-[#1e1040] border border-white/10 rounded-2xl p-5 space-y-3">
+        <div><label class="text-xs text-white/60">Recordatorio WhatsApp</label><textarea id="txtRecordatorio" class="w-full mt-1 bg-white/5 border border-white/10 rounded-xl p-3 text-sm">Hola {nombre}! Te esperamos {fecha} a las {hora} en {local}. Confirma porfa 🙏</textarea></div>
+        <div class="flex justify-between items-center"><span class="text-sm">Seña para reservar</span><input id="txtSena" type="checkbox" class="accent-violet-600"></div>
+        <div class="flex justify-between items-center"><span class="text-sm">Backup automático</span><input type="checkbox" checked class="accent-violet-600"></div>
+      </div>
+    </div>
+  </main>
+</div>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail, onAuthStateChanged, signOut, updateProfile } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore, collection, addDoc, getDocs, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyC57wshaJ2EuIBoBdXv18opL4u_Vuw2bAQ",
@@ -33,35 +135,96 @@ const firebaseConfig = {
   projectId: "reservar-cb70d",
   storageBucket: "reservar-cb70d.firebasestorage.app",
   messagingSenderId: "630908928696",
-  appId: "1:630908928696:web:5e89f5f2b1cc2b240e6a4d",
-  measurementId: "G-2HMNZ69E4G"
+  appId: "1:630908928696:web:5e89f5f2b1cc2b240e6a4d"
 };
-
 const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
 const db = getFirestore(app);
 
-async function cargarLocales(filtro=""){
-  const cont = document.getElementById("locales");
-  const querySnapshot = await getDocs(collection(db, "locales"));
-  cont.innerHTML = "";
-  querySnapshot.forEach((doc) => {
-    const data = doc.data();
-    if(filtro && !data.nombre?.toLowerCase().includes(filtro.toLowerCase())) return;
-    cont.innerHTML += `
-      <div class="bg-zinc-900 rounded-2xl p-5 border border-zinc-800">
-        <h3 class="font-bold text-lg">${data.nombre || 'Local'}</h3>
-        <p class="text-sm text-gray-400 mt-1">${data.direccion || 'Dirección no disponible'}</p>
-        <button class="mt-4 w-full bg-white text-black py-2.5 rounded-xl font-bold">Reservar</button>
-      </div>
-    `;
+window.show = (p)=>{
+  document.getElementById('pantalla-login').classList.add('hidden');
+  document.getElementById('pantalla-registro').classList.add('hidden');
+  document.getElementById('pantalla-app').classList.add('hidden');
+  if(p==='login') document.getElementById('pantalla-login').classList.remove('hidden');
+  if(p==='registro') document.getElementById('pantalla-registro').classList.remove('hidden');
+  if(p==='app') document.getElementById('pantalla-app').classList.remove('hidden');
+}
+window.tab = (t)=>{
+  ['inicio','reservas','calendario','clientes','servicios','ajustes'].forEach(x=>{
+    document.getElementById('sec-'+x).classList.add('hidden');
+    document.getElementById('t-'+x).classList.remove('bg-white','text-[#13052a]');
+    document.getElementById('t-'+x).classList.add('bg-white/10');
   });
-  if(cont.innerHTML === "") cont.innerHTML = "<p class='text-gray-500'>No se encontraron locales. Cargalos desde el Panel Local o Admi.</p>";
+  document.getElementById('sec-'+t).classList.remove('hidden');
+  document.getElementById('t-'+t).classList.add('bg-white','text-[#13052a]');
+  if(t==='reservas') cargarReservas();
 }
-window.buscar = () => {
-  const val = document.getElementById("buscador").value;
-  cargarLocales(val);
+let online=true;
+window.toggleOnline=()=>{
+  online=!online;
+  document.getElementById('pillEstado').innerText= online? 'Reservas online: activas' : 'Reservas online: pausadas';
+  document.getElementById('pillEstado').className = online? 'text-[11px] px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30' : 'text-[11px] px-3 py-1 rounded-full bg-red-500/20 text-red-300 border border-red-500/30';
+  document.getElementById('btnToggle').innerText= online? 'Pausar' : 'Activar';
 }
-cargarLocales();
+
+window.login=async()=>{
+  try{
+    const e=document.getElementById('lEmail').value.trim();
+    const p=document.getElementById('lPass').value;
+    await signInWithEmailAndPassword(auth,e,p);
+  }catch(err){document.getElementById('lError').innerText=err.message;document.getElementById('lError').classList.remove('hidden')}
+}
+window.registro=async()=>{
+  try{
+    if(!document.getElementById('rTerm').checked){alert('Aceptá términos');return;}
+    if(document.getElementById('rPass').value!==document.getElementById('rPass2').value){alert('Contraseñas no coinciden');return;}
+    const e=document.getElementById('rEmail').value.trim();
+    const p=document.getElementById('rPass').value;
+    const cred=await createUserWithEmailAndPassword(auth,e,p);
+    await updateProfile(cred.user,{displayName: document.getElementById('rNombre').value+' '+document.getElementById('rApellido').value});
+  }catch(err){document.getElementById('rError').innerText=err.message;document.getElementById('rError').classList.remove('hidden')}
+}
+window.recuperar=async()=>{
+  const e=document.getElementById('lEmail').value.trim();
+  if(!e){alert('Poné tu email arriba primero');return;}
+  await sendPasswordResetEmail(auth,e); alert('Te enviamos email para recuperar');
+}
+window.logout=async()=>{await signOut(auth); show('login');}
+window.guardarReserva=async()=>{
+  const cliente=document.getElementById('resCliente').value.trim();
+  const whatsapp=document.getElementById('resWhatsapp').value.trim();
+  const fecha=document.getElementById('resFecha').value;
+  const servicio=document.getElementById('resServicio').value;
+  if(!cliente||!fecha){alert('Falta nombre y fecha');return;}
+  await addDoc(collection(db,'reservas'),{cliente,whatsapp,fecha,servicio,estado:'pendiente',creada:serverTimestamp(),uid:auth.currentUser?.uid||null});
+  document.getElementById('resCliente').value='';document.getElementById('resWhatsapp').value='';
+  alert('Reserva guardada en reservar-cb70d');
+  cargarReservas();
+}
+async function cargarReservas(){
+  const q=query(collection(db,'reservas'),orderBy('creada','desc'));
+  const snap=await getDocs(q);
+  let htmlHoy='',html='';
+  const hoy=new Date().toISOString().slice(0,10);
+  snap.forEach(d=>{
+    const r=d.data();
+    html+=`<div class="bg-[#1e1040] border border-white/10 rounded-xl p-3 text-sm flex justify-between"><span>${r.cliente} • ${r.servicio||''}<br><span class="text-xs text-white/50">${r.fecha}</span></span><span class="text-xs text-emerald-300">${r.estado||'pendiente'}</span></div>`;
+    if(r.fecha && r.fecha.startsWith(hoy)) htmlHoy+=`<div class="text-sm mt-2">• ${r.cliente} - ${r.fecha.slice(11,16)} - ${r.servicio||''}</div>`;
+  });
+  document.getElementById('listaReservas').innerHTML= html || 'Sin reservas aún';
+  document.getElementById('listaHoy').innerHTML= htmlHoy || 'No hay turnos hoy';
+}
+onAuthStateChanged(auth,(user)=>{
+  if(user){
+    show('app');
+    document.getElementById('holaNombre').innerText='Hola '+(user.displayName||user.email.split('@')[0]);
+    document.getElementById('holaId').innerText='• '+(user.uid.slice(0,5))+'...';
+    tab('inicio');
+    cargarReservas();
+  }else{
+    show('login');
+  }
+});
 </script>
 </body>
 </html>
