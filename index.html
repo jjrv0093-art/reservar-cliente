@@ -5,50 +5,52 @@
 <title>reservAR - tu lugar, tu momento</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
 <style>
 *{font-family:'Inter',sans-serif}
-.bg-sagrado{background:linear-gradient(135deg,#6a11cb 0%,#3a0f6e 100%)}
 .bg-fondo{background:#13052a}
-.scroll-hide::-webkit-scrollbar{display:none}
 </style>
 </head>
-<body class="bg-fondo min-h-screen text-white">
-<div id="pantalla-login" class="min-h-screen bg-sagrado flex flex-col p-4 relative">
-  <div class="absolute top-6 left-6">
-    <h2 class="font-extrabold text-lg leading-none">reserv<span class="text-violet-300">AR</span></h2>
-    <p class="text-[11px] text-white/70">tu lugar, tu momento</p>
+<body class="bg-[#5e28d4] min-h-screen">
+<!-- INICIO = PANEL CLIENTE COMO LA FOTO ROJA -->
+<div id="pantalla-login" class="min-h-screen flex flex-col p-0">
+  <div class="px-6 pt-5 pb-10">
+    <h2 class="font-extrabold text-white text-[20px] leading-none">reserv<span class="text-[#c5b3ff]">AR</span></h2>
+    <p class="text-white/80 text-[13px] mt-1">tu lugar, tu momento</p>
   </div>
-  <div class="flex-1 flex items-center justify-center">
-    <div class="w-full max-w-sm bg-[#1e0a3e] border border-white/10 rounded-[28px] p-7 shadow-2xl">
-      <h1 class="text-3xl font-extrabold text-center">reserv<span class="text-violet-300">AR</span></h1>
-      <p class="text-center text-white/70 text-sm mt-1">tu lugar, tu momento</p>
-      <input id="lEmail" type="email" placeholder="Email" class="w-full mt-6 bg-white/10 border border-white/10 rounded-xl p-3.5 text-sm outline-none">
-      <input id="lPass" type="password" placeholder="Contraseña" class="w-full mt-3 bg-white/10 border border-white/10 rounded-xl p-3.5 text-sm outline-none">
-      <button onclick="login()" class="w-full mt-5 bg-white text-[#3a0f6e] font-bold py-3.5 rounded-xl">Entrar</button>
-      <div class="flex justify-between mt-4 text-xs text-white/60">
-        <button onclick="show('registro')">Crear cuenta</button>
-        <button onclick="recuperar()">¿Olvidaste tu contraseña?</button>
+  <div class="flex-1 flex justify-center px-5 pb-10">
+    <div class="w-full max-w-[360px] bg-[#1a1033] rounded-[24px] p-7 pt-10 shadow-[0_20px_60px_rgba(0,0,0,0.4)]">
+      <h1 class="text-center text-[34px] font-extrabold text-white leading-none">reserv<span class="text-[#c5b3ff]">AR</span></h1>
+      <p class="text-center text-white/60 text-[14px] mt-2">tu lugar, tu momento</p>
+
+      <input id="lEmail" type="email" value="jona@cliente.com" placeholder="Email" class="w-full mt-8 bg-[#2a1d4d] border-0 rounded-[12px] p-4 text-[14px] text-white outline-none">
+      <input id="lPass" type="password" placeholder="Contraseña" class="w-full mt-3 bg-[#2a1d4d] border-0 rounded-[12px] p-4 text-[14px] text-white outline-none">
+      <button onclick="login()" class="w-full mt-5 bg-white text-[#3a1d8a] font-bold py-3.5 rounded-[12px] text-[16px]">Entrar</button>
+
+      <div class="flex justify-between mt-4">
+        <button onclick="show('registro')" class="text-[13px] text-white/50">Crear cuenta</button>
+        <button onclick="recuperar()" class="text-[13px] text-white/50">¿Olvidaste tu contraseña?</button>
       </div>
-      <p id="lError" class="text-xs text-red-300 mt-3 hidden"></p>
+      <p id="lError" class="text-[12px] text-red-300 mt-3 hidden"></p>
     </div>
   </div>
 </div>
-<div id="pantalla-registro" class="hidden min-h-screen bg-sagrado flex items-center justify-center p-4">
-  <div class="w-full max-w-sm bg-[#1e0a3e] border border-white/10 rounded-[28px] p-7">
-    <h2 class="text-2xl font-bold">Crear cuenta</h2>
-    <input id="rNombre" placeholder="Nombre" class="w-full mt-4 bg-white/10 border border-white/10 rounded-xl p-3 text-sm">
-    <input id="rEmail" placeholder="Email" class="w-full mt-2 bg-white/10 border border-white/10 rounded-xl p-3 text-sm">
-    <input id="rPass" type="password" placeholder="Contraseña" class="w-full mt-2 bg-white/10 border border-white/10 rounded-xl p-3 text-sm">
-    <input id="rPass2" type="password" placeholder="Repetir" class="w-full mt-2 bg-white/10 border border-white/10 rounded-xl p-3 text-sm">
-    <button onclick="registro()" class="w-full mt-4 bg-white text-[#3a0f6e] font-bold py-3 rounded-xl">Crear cuenta</button>
-    <button onclick="show('login')" class="w-full mt-2 text-xs text-white/60">Ya tengo cuenta</button>
-    <p id="rError" class="text-xs text-red-300 mt-2 hidden"></p>
+<div id="pantalla-registro" class="hidden min-h-screen bg-[#5e28d4] flex items-center justify-center p-5">
+  <div class="w-full max-w-[360px] bg-[#1a1033] rounded-[24px] p-7">
+    <h2 class="text-2xl font-bold text-white">Crear cuenta</h2>
+    <input id="rNombre" placeholder="Nombre" class="w-full mt-4 bg-[#2a1d4d] border-0 rounded-xl p-3.5 text-sm text-white">
+    <input id="rEmail" placeholder="Email" class="w-full mt-2 bg-[#2a1d4d] border-0 rounded-xl p-3.5 text-sm text-white">
+    <input id="rPass" type="password" placeholder="Contraseña" class="w-full mt-2 bg-[#2a1d4d] border-0 rounded-xl p-3.5 text-sm text-white">
+    <input id="rPass2" type="password" placeholder="Repetir" class="w-full mt-2 bg-[#2a1d4d] border-0 rounded-xl p-3.5 text-sm text-white">
+    <button onclick="registro()" class="w-full mt-4 bg-white text-[#3a1d8a] font-bold py-3 rounded-xl">Crear cuenta</button>
+    <button onclick="show('login')" class="w-full mt-3 text-[13px] text-white/50">Ya tengo cuenta</button>
+    <p id="rError" class="text-[12px] text-red-300 mt-2 hidden"></p>
   </div>
 </div>
-<div id="pantalla-app" class="hidden min-h-screen bg-fondo">
+
+<div id="pantalla-app" class="hidden min-h-screen bg-[#13052a] text-white">
   <header class="sticky top-0 z-20 bg-[#1a0a35] border-b border-white/5">
     <div class="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
       <h1 class="font-extrabold text-xl">reserv<span class="text-violet-400">AR</span></h1>
@@ -57,20 +59,50 @@
         <button onclick="logout()" class="text-xs bg-white text-[#13052a] font-bold px-3 py-1.5 rounded-full">Cerrar sesión</button>
       </div>
     </div>
-    <div class="max-w-5xl mx-auto px-2 flex gap-2 overflow-x-auto scroll-hide py-2 text-[13px]">
+    <div class="max-w-5xl mx-auto px-2 flex gap-2 overflow-x-auto py-2 text-[13px]" style="scrollbar-width:none">
       <button onclick="tab('inicio')" id="t-inicio" class="tab px-4 py-2 rounded-full bg-white text-[#13052a] font-bold">Inicio</button>
       <button onclick="tab('reservas')" id="t-reservas" class="tab px-4 py-2 rounded-full bg-white/10">Reservas</button>
       <button onclick="tab('calendario')" id="t-calendario" class="tab px-4 py-2 rounded-full bg-white/10">Calendario</button>
       <button onclick="tab('clientes')" id="t-clientes" class="tab px-4 py-2 rounded-full bg-white/10">Clientes</button>
-      <button
-    <div id="sec-calendario" class="hidden"><h2 class="font-bold">Calendario</h2><div id="calGrid" class="mt-4"></div></div>
-    <div id="sec-clientes" class="hidden"><h2 class="font-bold">Clientes</h2><div id="listaClientes" class="mt-3 text-sm text-white/50"></div></div>
+      <button onclick="tab('servicios')" id="t-servicios" class="tab px-4 py-2 rounded-full bg-white/10">Servicios</button>
+      <button onclick="tab('ajustes')" id="t-ajustes" class="tab px-4 py-2 rounded-full bg-white/10">Ajustes</button>
+    </div>
+  </header>
+  <main class="max-w-5xl mx-auto p-4">
+    <div id="sec-inicio">
+      <div class="mt-3 bg-[#1e1040] border border-white/10 rounded-2xl p-4">
+        <p class="text-[11px] text-violet-300 font-bold">RESERVAR TU LUGAR, TU MOMENTO</p>
+        <div class="flex items-center gap-3 mt-3">
+          <div class="w-10 h-10 rounded-full bg-emerald-500 flex items-center justify-center font-bold">✓</div>
+          <div><p class="font-semibold" id="holaNombre">Hola Jona</p><p class="text-xs text-white/50">Bienvenido</p></div>
+          <div class="ml-auto"><span id="pillEstado" class="text-[11px] px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">Online</span></div>
+        </div>
+      </div>
+      <div id="listaHoy" class="mt-4 text-sm text-white/60">No hay turnos hoy</div>
+    </div>
+    <div id="sec-reservas" class="hidden">
+      <h2 class="font-bold text-lg">Nueva Reserva</h2>
+      <div class="mt-3 bg-[#1e1040] border border-white/10 rounded-2xl p-5">
+        <input id="resCliente" placeholder="Nombre cliente" class="w-full bg-white/5 border border-white/10 rounded-xl p-3 text-sm">
+        <input id="resWhatsapp" placeholder="WhatsApp" class="w-full mt-2 bg-white/5 border border-white/10 rounded-xl p-3 text-sm">
+        <input id="resFecha" type="datetime-local" class="w-full mt-2 bg-white/5 border border-white/10 rounded-xl p-3 text-sm">
+        <p id="avisoHorario" class="text-[11px] text-amber-300 mt-2 hidden"></p>
+        <div id="boxDNI" class="hidden mt-3 bg-amber-500/10 border border-amber-500/20 rounded-xl p-3">
+          <p class="text-xs font-bold text-amber-200">Este local pide DNI</p>
+          <input id="resDNI" placeholder="Número DNI" class="w-full mt-2 bg-white/5 border rounded-xl p-3 text-sm">
+        </div>
+        <button onclick="guardarReserva()" class="w-full mt-4 bg-violet-600 py-3 rounded-xl font-bold">Guardar Reserva</button>
+      </div>
+      <div id="listaReservas" class="mt-4 space-y-2"></div>
+    </div>
+    <div id="sec-calendario" class="hidden"><h2 class="font-bold">Calendario</h2><div id="calGrid" class="mt-4 text-sm text-white/50">Calendario acá</div></div>
+    <div id="sec-clientes" class="hidden"><h2 class="font-bold">Clientes</h2><div id="listaClientes" class="mt-3 text-sm text-white/50">Lista clientes</div></div>
     <div id="sec-servicios" class="hidden"><h2 class="font-bold">Servicios</h2><p class="text-sm text-white/50 mt-2">Corte, Color, etc.</p></div>
     <div id="sec-ajustes" class="hidden">
       <h2 class="font-bold">Ajustes</h2>
       <div class="mt-3 bg-[#1e1040] border border-white/10 rounded-2xl p-5 space-y-3">
-        <div><label class="text-xs text-white/60">Apertura</label><input id="cfgApertura" type="time" value="09:00" class="w-full bg-white/5 border rounded-xl p-3 text-sm"></div>
-        <div><label class="text-xs text-white/60">Cierre</label><input id="cfgCierre" type="time" value="19:00" class="w-full bg-white/5 border rounded-xl p-3 text-sm"></div>
+        <div><label class="text-xs text-white/60">Apertura</label><input id="cfgApertura" type="time" value="09:00" class="w-full bg-white/5 border border-white/10 rounded-xl p-3 text-sm"></div>
+        <div><label class="text-xs text-white/60">Cierre</label><input id="cfgCierre" type="time" value="19:00" class="w-full bg-white/5 border border-white/10 rounded-xl p-3 text-sm"></div>
         <div class="flex justify-between bg-white/5 p-3 rounded-xl"><span class="text-sm">¿Pedir DNI?</span><input id="cfgPideDNI" type="checkbox" onchange="toggleDNICheck()"></div>
         <button onclick="guardarCfg()" class="w-full bg-white text-black font-bold py-2 rounded-xl">Guardar Ajustes</button>
       </div>
@@ -78,21 +110,85 @@
   </main>
 </div>
 <script>
-const firebaseConfig={apiKey:"AIzaSyA-real-key",authDomain:"reservar-cb70d.firebaseapp.com",projectId:"reservar-cb70d"};
+// REEMPLAZA ESTO CON TU CONFIG REAL DE FIREBASE
+const firebaseConfig={
+  apiKey: "AIzaSyA-PEGÁ-TU-CLAVE-REAL-ACÁ",
+  authDomain: "reservar-cb70d.firebaseapp.com",
+  projectId: "reservar-cb70d",
+  storageBucket: "reservar-cb70d.appspot.com",
+  messagingSenderId: "123456789",
+  appId: "1:123456789:web:abcdef"
+};
 firebase.initializeApp(firebaseConfig);
 const auth=firebase.auth(), db=firebase.firestore();
 let cfg={apertura:"09:00",cierre:"19:00",pideDNI:false};
-function show(p){document.getElementById('pantalla-login').classList.add('hidden');document.getElementById('pantalla-registro').classList.add('hidden');document.getElementById('pantalla-app').classList.add('hidden');document.getElementById('pantalla-'+p).classList.remove('hidden')}
-function tab(t){document.querySelectorAll('[id^=sec-]').forEach(e=>e.classList.add('hidden'));document.getElementById('sec-'+t).classList.remove('hidden');document.querySelectorAll('.tab').forEach(e=>{e.className='tab px-4 py-2 rounded-full bg-white/10'});document.getElementById('t-'+t).className='tab px-4 py-2 rounded-full bg-white text-[#13052a] font-bold';}
-function toggleDNICheck(){const box=document.getElementById('boxDNI'); if(box) box.classList.toggle('hidden',!document.getElementById('cfgPideDNI').checked)}
-function guardarCfg(){cfg.apertura=document.getElementById('cfgApertura').value;cfg.cierre=document.getElementById('cfgCierre').value;cfg.pideDNI=document.getElementById('cfgPideDNI').checked;localStorage.setItem('cfg',JSON.stringify(cfg));alert('Guardado');}
-function login(){const e=document.getElementById('lEmail').value,p=document.getElementById('lPass').value;auth.signInWithEmailAndPassword(e,p).then(()=>{show('app');tab('inicio')}).catch(er=>{let m=document.getElementById('lError');m.textContent=er.message;m.classList.remove('hidden')})}
-function registro(){const e=document.getElementById('rEmail').value,p=document.getElementById('rPass').value;auth.createUserWithEmailAndPassword(e,p).then(()=>{show('app')}).catch(er=>{let m=document.getElementById('rError');m.textContent=er.message;m.classList.remove('hidden')})}
+
+function show(p){
+  document.getElementById('pantalla-login').classList.add('hidden');
+  document.getElementById('pantalla-registro').classList.add('hidden');
+  document.getElementById('pantalla-app').classList.add('hidden');
+  document.getElementById('pantalla-'+p).classList.remove('hidden');
+}
+function tab(t){
+  document.querySelectorAll('[id^=sec-]').forEach(e=>e.classList.add('hidden'));
+  document.getElementById('sec-'+t).classList.remove('hidden');
+  document.querySelectorAll('.tab').forEach(e=>{e.className='tab px-4 py-2 rounded-full bg-white/10'});
+  document.getElementById('t-'+t).className='tab px-4 py-2 rounded-full bg-white text-[#13052a] font-bold';
+}
+function toggleDNICheck(){
+  const box=document.getElementById('boxDNI');
+  if(box) box.classList.toggle('hidden',!document.getElementById('cfgPideDNI').checked)
+}
+function guardarCfg(){
+  cfg.apertura=document.getElementById('cfgApertura').value;
+  cfg.cierre=document.getElementById('cfgCierre').value;
+  cfg.pideDNI=document.getElementById('cfgPideDNI').checked;
+  localStorage.setItem('cfg',JSON.stringify(cfg));
+  alert('Guardado');
+}
+function login(){
+  const e=document.getElementById('lEmail').value,p=document.getElementById('lPass').value;
+  auth.signInWithEmailAndPassword(e,p).then(()=>{show('app');tab('inicio')}).catch(er=>{
+    let m=document.getElementById('lError');m.textContent=er.message;m.classList.remove('hidden')
+  })
+}
+function registro(){
+  const e=document.getElementById('rEmail').value,p=document.getElementById('rPass').value;
+  auth.createUserWithEmailAndPassword(e,p).then(()=>{show('app')}).catch(er=>{
+    let m=document.getElementById('rError');m.textContent=er.message;m.classList.remove('hidden')
+  })
+}
 function logout(){auth.signOut().then(()=>show('login'))}
-function recuperar(){const e=document.getElementById('lEmail').value;if(!e)return alert('Poné tu email');auth.sendPasswordResetEmail(e).then(()=>alert('Te enviamos el mail'))}
-function guardarReserva(){const cli=document.getElementById('resCliente').value,fecha=document.getElementById('resFecha').value;if(!cli||!fecha)return alert('Faltan datos');const hora=fecha.split('T')[1];if(hora<cfg.apertura||hora>cfg.cierre){document.getElementById('avisoHorario').textContent='Fuera de horario ('+cfg.apertura+' - '+cfg.cierre+')';document.getElementById('avisoHorario').classList.remove('hidden');return}db.collection('reservas').add({cliente:cli,whatsapp:document.getElementById('resWhatsapp').value,fecha,hora,dni:document.getElementById('resDNI')?.value||'',created:firebase.firestore.FieldValue.serverTimestamp()}).then(()=>{alert('Reserva guardada');document.getElementById('resCliente').value='';})}
-auth.onAuthStateChanged(u=>{if(u){show('app');tab('inicio');document.getElementById('holaNombre').textContent='Hola '+(u.displayName||u.email.split('@')[0]);}else show('login')});
-const saved=localStorage.getItem('cfg');if(saved){try{cfg=JSON.parse(saved);document.getElementById('cfgApertura').value=cfg.apertura;document.getElementById('cfgCierre').value=cfg.cierre;document.getElementById('cfgPideDNI').checked=cfg.pideDNI;}catch(e){}}
+function recuperar(){
+  const e=document.getElementById('lEmail').value;
+  if(!e)return alert('Poné tu email');
+  auth.sendPasswordResetEmail(e).then(()=>alert('Te enviamos el mail'))
+}
+function guardarReserva(){
+  const cli=document.getElementById('resCliente').value,fecha=document.getElementById('resFecha').value;
+  if(!cli||!fecha)return alert('Faltan datos');
+  const hora=fecha.split('T')[1];
+  if(hora<cfg.apertura||hora>cfg.cierre){
+    document.getElementById('avisoHorario').textContent='Fuera de horario ('+cfg.apertura+' - '+cfg.cierre+')';
+    document.getElementById('avisoHorario').classList.remove('hidden');return
+  }
+  db.collection('reservas').add({
+    cliente:cli,whatsapp:document.getElementById('resWhatsapp').value,
+    fecha,hora,dni:document.getElementById('resDNI')?.value||'',
+    created:firebase.firestore.FieldValue.serverTimestamp()
+  }).then(()=>{alert('Reserva guardada');document.getElementById('resCliente').value='';})
+}
+auth.onAuthStateChanged(u=>{
+  if(u){show('app');tab('inicio');document.getElementById('holaNombre').textContent='Hola '+(u.displayName||u.email.split('@')[0]);}
+  else show('login')
+});
+const saved=localStorage.getItem('cfg');
+if(saved){try{
+  cfg=JSON.parse(saved);
+  document.getElementById('cfgApertura').value=cfg.apertura;
+  document.getElementById('cfgCierre').value=cfg.cierre;
+  document.getElementById('cfgPideDNI').checked=cfg.pideDNI;
+}catch(e){}}
 </script>
 </body>
 </html>
