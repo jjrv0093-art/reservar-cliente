@@ -8,7 +8,6 @@
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-storage-compat.js"></script>
 <style>
 *{font-family:'Inter',sans-serif}
 .bg-sagrado{background:linear-gradient(135deg,#6a11cb 0%,#3a0f6e 100%)}
@@ -17,8 +16,6 @@
 </style>
 </head>
 <body class="bg-fondo min-h-screen text-white">
-
-<!-- LOGIN -->
 <div id="pantalla-login" class="min-h-screen bg-sagrado flex flex-col p-4 relative">
   <div class="absolute top-6 left-6">
     <h2 class="font-extrabold text-lg leading-none">reserv<span class="text-violet-300">AR</span></h2>
@@ -39,13 +36,63 @@
     </div>
   </div>
 </div>
-
-<!-- REGISTRO -->
 <div id="pantalla-registro" class="hidden min-h-screen bg-sagrado flex items-center justify-center p-4">
   <div class="w-full max-w-sm bg-[#1e0a3e] border border-white/10 rounded-[28px] p-7">
     <h2 class="text-2xl font-bold">Crear cuenta</h2>
-    <input id="rNombre" placeholder="Nombre" class="w-full mt-4 bg-white/10 border rounded-xl p-3 text-sm">
-    <input id="rEmail" placeholder="Email" class="w-full mt-2 bg-white/10 border rounded-xl p-3 text-sm">
-    <input id="rPass" type="password" placeholder="Contraseña" class="w-full mt-2 bg-white/10 border rounded-xl p-3 text-sm">
-    <input id="rPass2" type="password" placeholder="Repetir" class="w-full mt-2 bg-white/10 border rounded-xl p-3 text-sm">
-    <button onclick="registro()" class="w-full mt-4 bg-white text-[#3a0f6e] font-bold py-
+    <input id="rNombre" placeholder="Nombre" class="w-full mt-4 bg-white/10 border border-white/10 rounded-xl p-3 text-sm">
+    <input id="rEmail" placeholder="Email" class="w-full mt-2 bg-white/10 border border-white/10 rounded-xl p-3 text-sm">
+    <input id="rPass" type="password" placeholder="Contraseña" class="w-full mt-2 bg-white/10 border border-white/10 rounded-xl p-3 text-sm">
+    <input id="rPass2" type="password" placeholder="Repetir" class="w-full mt-2 bg-white/10 border border-white/10 rounded-xl p-3 text-sm">
+    <button onclick="registro()" class="w-full mt-4 bg-white text-[#3a0f6e] font-bold py-3 rounded-xl">Crear cuenta</button>
+    <button onclick="show('login')" class="w-full mt-2 text-xs text-white/60">Ya tengo cuenta</button>
+    <p id="rError" class="text-xs text-red-300 mt-2 hidden"></p>
+  </div>
+</div>
+<div id="pantalla-app" class="hidden min-h-screen bg-fondo">
+  <header class="sticky top-0 z-20 bg-[#1a0a35] border-b border-white/5">
+    <div class="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
+      <h1 class="font-extrabold text-xl">reserv<span class="text-violet-400">AR</span></h1>
+      <div class="flex gap-2">
+        <button onclick="tab('ajustes')" class="text-xs bg-white/10 px-3 py-1.5 rounded-full">Perfil</button>
+        <button onclick="logout()" class="text-xs bg-white text-[#13052a] font-bold px-3 py-1.5 rounded-full">Cerrar sesión</button>
+      </div>
+    </div>
+    <div class="max-w-5xl mx-auto px-2 flex gap-2 overflow-x-auto scroll-hide py-2 text-[13px]">
+      <button onclick="tab('inicio')" id="t-inicio" class="tab px-4 py-2 rounded-full bg-white text-[#13052a] font-bold">Inicio</button>
+      <button onclick="tab('reservas')" id="t-reservas" class="tab px-4 py-2 rounded-full bg-white/10">Reservas</button>
+      <button onclick="tab('calendario')" id="t-calendario" class="tab px-4 py-2 rounded-full bg-white/10">Calendario</button>
+      <button onclick="tab('clientes')" id="t-clientes" class="tab px-4 py-2 rounded-full bg-white/10">Clientes</button>
+      <button
+    <div id="sec-calendario" class="hidden"><h2 class="font-bold">Calendario</h2><div id="calGrid" class="mt-4"></div></div>
+    <div id="sec-clientes" class="hidden"><h2 class="font-bold">Clientes</h2><div id="listaClientes" class="mt-3 text-sm text-white/50"></div></div>
+    <div id="sec-servicios" class="hidden"><h2 class="font-bold">Servicios</h2><p class="text-sm text-white/50 mt-2">Corte, Color, etc.</p></div>
+    <div id="sec-ajustes" class="hidden">
+      <h2 class="font-bold">Ajustes</h2>
+      <div class="mt-3 bg-[#1e1040] border border-white/10 rounded-2xl p-5 space-y-3">
+        <div><label class="text-xs text-white/60">Apertura</label><input id="cfgApertura" type="time" value="09:00" class="w-full bg-white/5 border rounded-xl p-3 text-sm"></div>
+        <div><label class="text-xs text-white/60">Cierre</label><input id="cfgCierre" type="time" value="19:00" class="w-full bg-white/5 border rounded-xl p-3 text-sm"></div>
+        <div class="flex justify-between bg-white/5 p-3 rounded-xl"><span class="text-sm">¿Pedir DNI?</span><input id="cfgPideDNI" type="checkbox" onchange="toggleDNICheck()"></div>
+        <button onclick="guardarCfg()" class="w-full bg-white text-black font-bold py-2 rounded-xl">Guardar Ajustes</button>
+      </div>
+    </div>
+  </main>
+</div>
+<script>
+const firebaseConfig={apiKey:"AIzaSyA-real-key",authDomain:"reservar-cb70d.firebaseapp.com",projectId:"reservar-cb70d"};
+firebase.initializeApp(firebaseConfig);
+const auth=firebase.auth(), db=firebase.firestore();
+let cfg={apertura:"09:00",cierre:"19:00",pideDNI:false};
+function show(p){document.getElementById('pantalla-login').classList.add('hidden');document.getElementById('pantalla-registro').classList.add('hidden');document.getElementById('pantalla-app').classList.add('hidden');document.getElementById('pantalla-'+p).classList.remove('hidden')}
+function tab(t){document.querySelectorAll('[id^=sec-]').forEach(e=>e.classList.add('hidden'));document.getElementById('sec-'+t).classList.remove('hidden');document.querySelectorAll('.tab').forEach(e=>{e.className='tab px-4 py-2 rounded-full bg-white/10'});document.getElementById('t-'+t).className='tab px-4 py-2 rounded-full bg-white text-[#13052a] font-bold';}
+function toggleDNICheck(){const box=document.getElementById('boxDNI'); if(box) box.classList.toggle('hidden',!document.getElementById('cfgPideDNI').checked)}
+function guardarCfg(){cfg.apertura=document.getElementById('cfgApertura').value;cfg.cierre=document.getElementById('cfgCierre').value;cfg.pideDNI=document.getElementById('cfgPideDNI').checked;localStorage.setItem('cfg',JSON.stringify(cfg));alert('Guardado');}
+function login(){const e=document.getElementById('lEmail').value,p=document.getElementById('lPass').value;auth.signInWithEmailAndPassword(e,p).then(()=>{show('app');tab('inicio')}).catch(er=>{let m=document.getElementById('lError');m.textContent=er.message;m.classList.remove('hidden')})}
+function registro(){const e=document.getElementById('rEmail').value,p=document.getElementById('rPass').value;auth.createUserWithEmailAndPassword(e,p).then(()=>{show('app')}).catch(er=>{let m=document.getElementById('rError');m.textContent=er.message;m.classList.remove('hidden')})}
+function logout(){auth.signOut().then(()=>show('login'))}
+function recuperar(){const e=document.getElementById('lEmail').value;if(!e)return alert('Poné tu email');auth.sendPasswordResetEmail(e).then(()=>alert('Te enviamos el mail'))}
+function guardarReserva(){const cli=document.getElementById('resCliente').value,fecha=document.getElementById('resFecha').value;if(!cli||!fecha)return alert('Faltan datos');const hora=fecha.split('T')[1];if(hora<cfg.apertura||hora>cfg.cierre){document.getElementById('avisoHorario').textContent='Fuera de horario ('+cfg.apertura+' - '+cfg.cierre+')';document.getElementById('avisoHorario').classList.remove('hidden');return}db.collection('reservas').add({cliente:cli,whatsapp:document.getElementById('resWhatsapp').value,fecha,hora,dni:document.getElementById('resDNI')?.value||'',created:firebase.firestore.FieldValue.serverTimestamp()}).then(()=>{alert('Reserva guardada');document.getElementById('resCliente').value='';})}
+auth.onAuthStateChanged(u=>{if(u){show('app');tab('inicio');document.getElementById('holaNombre').textContent='Hola '+(u.displayName||u.email.split('@')[0]);}else show('login')});
+const saved=localStorage.getItem('cfg');if(saved){try{cfg=JSON.parse(saved);document.getElementById('cfgApertura').value=cfg.apertura;document.getElementById('cfgCierre').value=cfg.cierre;document.getElementById('cfgPideDNI').checked=cfg.pideDNI;}catch(e){}}
+</script>
+</body>
+</html>
