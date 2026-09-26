@@ -9,49 +9,56 @@
 <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
 <style>
-*{font-family:'Inter',sans-serif}
-.header-reservar{padding:20px 24px 40px 24px}
-.header-reservar h1{font-weight:800;color:white;font-size:20px;line-height:1}
-.header-reservar h1 span{color:#c5b3ff;font-weight:400;font-size:13px;display:block;margin-top:4px;opacity:.8}
-.auth{width:100%;max-width:360px;background:#1a1033;border-radius:24px;padding:28px 28px 24px 28px;box-shadow:0 20px 60px rgba(0,0,0,0.4)}
-.auth h2{color:white;font-size:22px;font-weight:700}
-.auth input{width:100%;margin-top:12px;background:#2a1d4d;border:0;border-radius:12px;padding:14px;color:white;font-size:14px;outline:none}
-.btn{border:0;border-radius:12px;padding:14px;font-weight:700;font-size:16px;cursor:pointer}
-.btn.full{width:100%;background:white;color:#3a1d8a;margin-top:18px}
-.btn.ghost.full{width:100%;background:transparent;color:white;border:1px solid rgba(255,255,255,.15);font-weight:600;font-size:13px}
-.btn.link{background:transparent;color:rgba(255,255,255,.5);font-size:13px;margin-top:10px;width:100%}
-.note{font-size:12px;color:#fca5a5;margin-top:12px}
+:root{ --violeta:#6a11cb; --rosa:#ff5ab3; --card:#1f0736; --text:#ffffff; --mute:#cfc9e6; --stroke:#ffffff26; }
+*{box-sizing:border-box; font-family:'Inter',sans-serif} 
+html,body{height:100%}
+body{margin:0; color:var(--text); background: radial-gradient(50% 40% at 10% 10%, #00000033, transparent 60%), radial-gradient(50% 40% at 90% 10%, #00000033, transparent 60%), linear-gradient(160deg, var(--violeta), #7b1fa2 40%, #3a0f6e 70%, #0a0933); background-attachment:fixed;}
 .hidden{display:none!important}
+.header-reservar{position:absolute; top:14px; left:16px; z-index:5}
+.header-reservar h1{margin:0; font-size:18px; font-weight:800; color:white}
+.header-reservar span{font-weight:300; font-size:14px; margin-left:5px; color:var(--mute)}
+
+/* ESTE ES TU LOGIN DE LA CAPTURA */
+.auth{max-width:460px; margin:72px auto 0; background:#ffffff12; border:1px solid var(--stroke); border-radius:14px; padding:16px; backdrop-filter: blur(10px)}
+.auth h2{color:white; font-size:22px; font-weight:700; margin:0 0 12px 0}
+.auth input{width:100%; margin-top:12px; background:#ffffff08; border:1px solid #ffffff22; border-radius:10px; padding:.7rem; color:#fff; font:inherit; outline:none}
+.btn{background:var(--rosa); border:none; color:#fff; padding:.7rem .9rem; border-radius:10px; cursor:pointer; font:inherit; font-weight:700}
+.btn.full{width:100%; margin-top:18px}
+.btn.ghost{width:100%; background:transparent; border:1px solid var(--stroke); font-weight:600; font-size:13px; margin-top:8px}
+.btn.link{background:transparent; color:var(--mute); text-decoration:underline; font-size:13px; width:100%; margin-top:10px}
+.note{color:#ffdddd; font-size:14px; min-height:1.2em; margin-top:12px}
 </style>
 </head>
-<body class="bg-[#5e28d4] min-h-screen">
+<body class="min-h-screen">
+
 <div id="pantalla-login" class="min-h-screen flex flex-col p-0">
   <div class="header-reservar"><h1>reservAR <span>tu lugar, tu momento.</span></h1></div>
   <div class="flex-1 flex justify-center px-5 pb-10">
+    <!-- LOGIN ORIGINAL QUE ME PASASTE -->
     <section id="auth" class="auth">
       <h2>Ingresá</h2>
-      <input id="lEmail" placeholder="Email" value="jona@cliente.com">
+      <input id="lEmail" placeholder="Email">
       <input id="lPass" type="password" placeholder="Contraseña">
       <button onclick="login()" class="btn full">Entrar</button>
-      <button onclick="show('registro')" class="btn ghost full" style="margin-top:8px">Crear cuenta</button>
+      <button onclick="show('registro')" class="btn ghost full">Crear cuenta</button>
       <button onclick="recuperar()" class="btn link">¿Olvidaste tu contraseña?</button>
       <p id="lError" class="note hidden"></p>
     </section>
   </div>
 </div>
-<div id="pantalla-registro" class="hidden min-h-screen bg-[#5e28d4] flex items-center justify-center p-5">
-  <div class="w-full max-w-[360px] bg-[#1a1033] rounded-[24px] p-7">
-    <h2 class="text-2xl font-bold text-white">Crear cuenta</h2>
-    <input id="rNombre" placeholder="Nombre" class="w-full mt-4 bg-[#2a1d4d] border-0 rounded-xl p-3.5 text-sm text-white">
-    <input id="rEmail" placeholder="Email" class="w-full mt-2 bg-[#2a1d4d] border-0 rounded-xl p-3.5 text-sm text-white">
-    <input id="rPass" type="password" placeholder="Contraseña" class="w-full mt-2 bg-[#2a1d4d] border-0 rounded-xl p-3.5 text-sm text-white">
-    <input id="rPass2" type="password" placeholder="Repetir" class="w-full mt-2 bg-[#2a1d4d] border-0 rounded-xl p-3.5 text-sm text-white">
-    <button onclick="registro()" class="w-full mt-4 bg-white text-[#3a1d8a] font-bold py-3 rounded-xl">Crear cuenta</button>
-    <button onclick="show('login')" class="w-full mt-3 text-[13px] text-white/50">Ya tengo cuenta</button>
-    <p id="rError" class="text-[12px] text-red-300 mt-2 hidden"></p>
-  </div>
-</div>
 
+<div id="pantalla-registro" class="hidden min-h-screen flex items-center justify-center p-5">
+  <section id="register" class="auth">
+    <h2>Crear cuenta</h2>
+    <input id="rNombre" placeholder="Nombre">
+    <input id="rEmail" placeholder="Email ej: jona@gmail.com">
+    <input id="rPass" type="password" placeholder="Contraseña 6+ caracteres">
+    <input id="rPass2" type="password" placeholder="Repetir contraseña">
+    <button onclick="registro()" class="btn full">Crear</button>
+    <button onclick="show('login')" class="btn ghost full">Ya tengo cuenta</button>
+    <p id="rError" class="note hidden"></p>
+  </section>
+</div>
 <div id="pantalla-app" class="hidden min-h-screen bg-[#13052a] text-white">
   <header class="sticky top-0 z-20 bg-[#1a0a35] border-b border-white/5">
     <div class="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
