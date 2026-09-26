@@ -2,86 +2,180 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>Reservar Turno</title>
-<script src="https://cdn.tailwindcss.com"></script>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-<style>body{font-family:'Inter',sans-serif} input,button{font-size:16px!important}</style>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>reservAR - Cliente</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',sans-serif}
+body{background:#13052a;color:#fff;min-height:100vh}
+#loginPage{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;background:linear-gradient(180deg,#6a11cb 0%,#3a0f6e 100%);padding:24px}
+.loginCard{background:#13052a;border-radius:24px;padding:28px;width:100%;max-width:380px;box-shadow:0 20px 60px rgba(0,0,0,.5)}
+.logo{font-size:28px;font-weight:800;letter-spacing:-1px;margin-bottom:6px}
+.logo span{font-weight:400}
+.sub{opacity:.7;font-size:14px;margin-bottom:22px}
+input{width:100%;background:#1e0e3d;border:1px solid #2a1758;border-radius:14px;padding:14px;color:#fff;margin-bottom:12px;outline:none}
+input::placeholder{color:#7a6aa0}
+.btnPrimary{width:100%;background:linear-gradient(90deg,#6a11cb,#ff5ab3);border:0;border-radius:14px;padding:14px;font-weight:700;color:#fff;cursor:pointer;margin-top:6px}
+.btnGhost{width:100%;background:transparent;border:0;color:#9d8ac0;margin-top:12px;cursor:pointer;font-size:13px}
+#homePage{display:none;min-height:100vh;background:#f6f5fb;color:#111}
+.header{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;background:#13052a;color:#fff;position:sticky;top:0;z-index:10}
+.header .brand{font-weight:800;font-size:18px}
+.btnLogout{background:rgba(255,255,255,.12);border:0;color:#fff;padding:8px 12px;border-radius:10px;font-size:12px;cursor:pointer}
+.container{padding:16px}
+.greeting{font-size:22px;font-weight:800;color:#13052a;margin:10px 0 2px}
+.greetingSub{font-size:13px;color:#7a6aa0;margin-bottom:14px}
+.searchBox{width:100%;background:#fff;border:1px solid #e8e3f5;border-radius:16px;padding:14px 16px;display:flex;align-items:center;gap:8px;box-shadow:0 4px 20px rgba(106,17,203,.06)}
+.searchBox input{border:0;background:transparent;color:#111;margin:0;padding:0;width:100%}
+.searchBox input::placeholder{color:#9a8ab8}
+.filters{display:flex;gap:8px;margin:14px 0;overflow-x:auto}
+.pill{padding:8px 14px;border-radius:20px;border:1px solid #e8e3f5;background:#fff;color:#6a11cb;font-size:13px;font-weight:600;white-space:nowrap;cursor:pointer}
+.pill.active{background:#13052a;color:#fff;border-color:#13052a}
+.card{background:#fff;border-radius:20px;padding:16px;margin-bottom:12px;border:1px solid #efeafc;display:flex;justify-content:space-between;align-items:center;box-shadow:0 4px 20px rgba(106,17,203,.06)}
+.card b{font-size:15px;color:#13052a}
+.card small{color:#7a6aa0;display:block;margin-top:2px}
+.btnReservar{background:#13052a;color:#fff;border:0;padding:10px 16px;border-radius:12px;font-weight:700;font-size:13px;cursor:pointer}
+.hidden{display:none!important}
+</style>
 </head>
-<body class="bg-[#f6f6f7] min-h-screen">
-<div class="max-w-[420px] mx-auto bg-white min-h-screen shadow-sm">
-  <!-- Header -->
-  <div class="bg-black text-white p-6 text-center">
-    <h1 class="text-[22px] font-bold">Reservar Turno</h1>
-    <p class="text-sm opacity-70 mt-1">Elegí día y horario disponible</p>
-  </div>
+<body>
 
-  <div class="p-5 space-y-5">
-    <div>
-      <label class="text-sm font-semibold">Tu nombre</label>
-      <input id="nombre" placeholder="Ej: Jona" class="mt-2 w-full p-4 border border-gray-200 rounded-xl outline-none focus:border-black">
-    </div>
-
-    <div>
-      <label class="text-sm font-semibold">WhatsApp</label>
-      <input id="whatsapp" placeholder="Ej: 11 2345 6789" class="mt-2 w-full p-4 border border-gray-200 rounded-xl outline-none focus:border-black">
-    </div>
-
-    <div>
-      <label class="text-sm font-semibold">Fecha</label>
-      <input id="fecha" type="date" class="mt-2 w-full p-4 border border-gray-200 rounded-xl outline-none focus:border-black">
-    </div>
-
-    <div>
-      <label class="text-sm font-semibold">Horario disponible</label>
-      <div class="grid grid-cols-3 gap-2 mt-2">
-        <button onclick="elegirHora(this)" class="hora p-3.5 border border-gray-200 rounded-xl font-semibold">09:00</button>
-        <button onclick="elegirHora(this)" class="hora p-3.5 border border-gray-200 rounded-xl font-semibold">10:00</button>
-        <button onclick="elegirHora(this)" class="hora p-3.5 border border-gray-200 rounded-xl font-semibold">11:00</button>
-        <button onclick="elegirHora(this)" class="hora p-3.5 border border-gray-200 rounded-xl font-semibold">14:00</button>
-        <button onclick="elegirHora(this)" class="hora p-3.5 border border-gray-200 rounded-xl font-semibold">15:00</button>
-        <button onclick="elegirHora(this)" class="hora p-3.5 border border-gray-200 rounded-xl font-semibold">16:00</button>
-        <button onclick="elegirHora(this)" class="hora p-3.5 border border-gray-200 rounded-xl font-semibold">17:00</button>
-        <button onclick="elegirHora(this)" class="hora p-3.5 border border-gray-200 rounded-xl font-semibold">18:00</button>
-      </div>
-    </div>
-
-    <button onclick="confirmar()" class="w-full bg-black text-white py-4 rounded-xl font-bold text-[16px] active:scale-[0.98] transition">Confirmar Reserva</button>
-    <p class="text-center text-xs text-gray-400">Te llega confirmación por WhatsApp</p>
+<div id="loginPage">
+  <div class="loginCard">
+    <div class="logo">reservAR</div>
+    <div style="font-weight:400;margin-top:-4px;margin-bottom:4px">tu lugar, tu momento</div>
+    <div class="sub">Ingresá</div>
+    <input id="email" type="email" placeholder="jona@cliente.com">
+    <input id="pass" type="password" placeholder="Contraseña">
+    <button class="btnPrimary" onclick="login()">Entrar</button>
+    <button class="btnGhost" onclick="registro()">Crear cuenta</button>
+    <button class="btnGhost" onclick="recuperar()">¿Olvidaste tu contraseña?</button>
   </div>
 </div>
 
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+<div id="homePage">
+  <div class="header">
+    <div class="brand">reservAR</div>
+    <button class="btnLogout" onclick="logout()">Cerrar sesión</button>
+  </div>
+  <div class="container">
+    <div class="greeting">Bienvenido a tu momento</div>
+    <div class="greetingSub">Encontrá tu próximo turno</div>
+    
+    <div class="searchBox">
+      <span>🔍</span>
+      <input id="search" placeholder="Buscar barbería, uñas, estudio..." oninput="filtrar()">
+    </div>
 
+    <div class="filters">
+      <div class="pill active" onclick="setFilter('Todo',this)">Todo</div>
+      <div class="pill" onclick="setFilter('Barbería',this)">Barbería</div>
+      <div class="pill" onclick="setFilter('Uñas',this)">Uñas</div>
+      <div class="pill" onclick="setFilter('Estudio',this)">Estudio</div>
+    </div>
+
+    <div id="localesList">
+      <div class="card" data-cat="Barbería"><div><b>Barbería Garín Centro</b><small>Barbería • 4.9 ★</small></div><button class="btnReservar" onclick="reservar('Barbería Garín Centro')">Reservar</button></div>
+      <div class="card" data-cat="Uñas"><div><b>Nails Studio Luli</b><small>Uñas • 5.0 ★</small></div><button class="btnReservar" onclick="reservar('Nails Studio Luli')">Reservar</button></div>
+    </div>
+    
+    <div id="misReservas" style="margin-top:20px"></div>
+  </div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+<script>
 const firebaseConfig = {
-  apiKey: "AIzaSyB-7d4b2u5m9v8w0x1y2z3",
-  authDomain: "reservar-app.firebaseapp.com",
-  projectId: "reservar-app",
+  apiKey: "TU_API_KEY",
+  authDomain: "reservar-cb70d.firebaseapp.com",
+  projectId: "reservar-cb70d"
 };
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.firestore();
+let filtroActual='Todo';
 
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+auth.onAuthStateChanged(user=>{
+  if(user){
+    document.getElementById('loginPage').style.display='none';
+    document.getElementById('homePage').style.display='block';
+    cargarLocales();
+    cargarReservas();
+  }else{
+    document.getElementById('loginPage').style.display='flex';
+    document.getElementById('homePage').style.display='none';
+  }
+});
 
-let horaElegida = "";
-window.elegirHora = (btn) => {
-  document.querySelectorAll('.hora').forEach(b => b.className = 'hora p-3.5 border border-gray-200 rounded-xl font-semibold');
-  btn.className = 'hora p-3.5 border rounded-xl font-semibold bg-black text-white border-black';
-  horaElegida = btn.innerText;
+function login(){
+  const e=document.getElementById('email').value;
+  const p=document.getElementById('pass').value;
+  auth.signInWithEmailAndPassword(e,p).catch(err=>alert(err.message));
 }
+function registro(){
+  const e=document.getElementById('email').value;
+  const p=document.getElementById('pass').value;
+  auth.createUserWithEmailAndPassword(e,p).catch(err=>alert(err.message));
+}
+function recuperar(){
+  const e=document.getElementById('email').value;
+  if(!e) return alert('Poné tu email primero');
+  auth.sendPasswordResetEmail(e).then(()=>alert('Te enviamos el mail')).catch(err=>alert(err.message));
+}
+function logout(){ auth.signOut(); }
 
-window.confirmar = async () => {
-  const nombre = document.getElementById('nombre').value.trim();
-  const whatsapp = document.getElementById('whatsapp').value.trim();
-  const fecha = document.getElementById('fecha').value;
-  if(!nombre ||!whatsapp ||!fecha ||!horaElegida){ alert('Completa nombre, WhatsApp, fecha y hora'); return; }
-
+function setFilter(cat,el){
+  filtroActual=cat;
+  document.querySelectorAll('.pill').forEach(p=>p.classList.remove('active'));
+  el.classList.add('active');
+  filtrar();
+}
+function filtrar(){
+  const txt=document.getElementById('search').value.toLowerCase();
+  document.querySelectorAll('#localesList .card').forEach(c=>{
+    const nombre=c.innerText.toLowerCase();
+    const cat=c.dataset.cat;
+    const matchTxt=nombre.includes(txt);
+    const matchCat=filtroActual==='Todo' || cat===filtroActual;
+    c.style.display=(matchTxt && matchCat)?'flex':'none';
+  });
+}
+async function cargarLocales(){
   try{
-    await addDoc(collection(db, "reservas"), { nombre, whatsapp, fecha, hora: horaElegida, estado: "pendiente", creado: new Date() });
-    alert('✅ Reserva confirmada: ' + fecha + ' ' + horaElegida + '\nTe contactamos por WhatsApp');
-    location.reload();
-  }catch(e){ alert('Error: ' + e.message); }
+    const snap=await db.collection('locales').get();
+    if(snap.empty) return;
+    const list=document.getElementById('localesList');
+    list.innerHTML='';
+    snap.forEach(doc=>{
+      const l=doc.data();
+      if(l.visible===false) return;
+      list.innerHTML+=`<div class="card" data-cat="${l.categoria||'Barbería'}"><div><b>${l.nombre}</b><small>${l.categoria||'Local'} • ${l.rating||'4.9 ★'}</small></div><button class="btnReservar" onclick="reservar('${l.nombre}')">Reservar</button></div>`;
+    });
+  }catch(e){}
+}
+function reservar(nombre){
+  const fecha=prompt(`Reservar en ${nombre}\nPoné fecha y hora Ej: 27/09 15:00`);
+  if(!fecha) return;
+  db.collection('reservas').add({
+    local:nombre,
+    fecha:fecha,
+    cliente:auth.currentUser.email,
+    creado: new Date()
+  }).then(()=>{alert('Reserva guardada');cargarReservas();});
+}
+async function cargarReservas(){
+  const div=document.getElementById('misReservas');
+  try{
+    const snap=await db.collection('reservas').where('cliente','==',auth.currentUser.email).get();
+    if(snap.empty){div.innerHTML='<small style="color:#7a6aa0">Aún no tenés reservas</small>';return}
+    let html='<b style="color:#13052a">Mis reservas</b><br><br>';
+    snap.forEach(d=>{
+      const r=d.data();
+      html+=`<div class="card"><div><b>${r.local}</b><small>${r.fecha}</small></div></div>`;
+    });
+    div.innerHTML=html;
+  }catch(e){}
 }
 </script>
 </body>
