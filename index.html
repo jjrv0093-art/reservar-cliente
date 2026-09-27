@@ -1,40 +1,126 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>reservAR - tu lugar, tu momento</title>
-<script src="https://cdn.tailwindcss.com"></script>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
-<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
-<style>
-:root{ --violeta:#6a11cb; --rosa:#a78bfa; --card:#1f0736; --text:#ffffff; --mute:#cfc9e6; --stroke:#ffffff26; }
-*{box-sizing:border-box; font-family:'Inter',sans-serif} 
-html,body{height:100%}
-body{margin:0; color:var(--text); background: linear-gradient(160deg, var(--violeta), #7b1fa2 40%, #3a0f6e 70%, #0a0933); min-height:100vh; background-attachment:fixed;}
-.hidden{display:none!important}
-.header-reservar{position:absolute; top:14px; left:16px; z-index:5}
-.header-reservar h1{margin:0; font-size:18px; font-weight:800; color:white}
-.header-reservar span{font-weight:300; font-size:14px; margin-left:5px; color:var(--mute)}
-
-.auth{max-width:460px; margin:72px auto 0; background:#ffffff12; border:1px solid var(--stroke); border-radius:14px; padding:16px; backdrop-filter: blur(10px)}
-.auth h2{color:white; font-size:22px; font-weight:700; margin:0 0 12px 0}
-.auth input{width:100%; margin-top:12px; background:#ffffff08; border:1px solid #ffffff22; border-radius:10px; padding:.7rem; color:#fff; font:inherit; outline:none}
-.btn{background:#b794f6; border:none; color:#fff; padding:.7rem .9rem; border-radius:10px; cursor:pointer; font:inherit; font-weight:700}
-.btn.full{width:100%; margin-top:18px}
-.btn.ghost{width:100%; background:transparent; border:1px solid var(--stroke); font-weight:600; font-size:13px; margin-top:8px}
-.btn.link{background:transparent; border:none; color:var(--mute); text-decoration:underline; font-size:13px; width:100%; margin-top:10px}
-.note{color:#ffdddd; font-size:14px; min-height:1.2em; margin-top:12px}
-</style>
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>reservAR - tu lugar, tu momento</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
+  <style>
+    :root{
+      --violeta:#6a11cb;
+      --rosa:#a78bfa;
+      --card:#1f0736;
+      --text:#ffffff;
+      --mute:#cfc9e6;
+      --stroke:#ffffff26;
+    }
+    *{
+      box-sizing:border-box;
+      font-family:'Inter',sans-serif
+    }
+    html,body{height:100%}
+    body{
+      margin:0;
+      color:var(--text);
+      background:linear-gradient(160deg,var(--violeta),#7b1fa2 40%,#3a0f6e 70%,#0a0933);
+      min-height:100vh;
+      background-attachment:fixed;
+    }
+   .hidden{display:none!important}
+   .header-reservar{
+      position:absolute;
+      top:14px;
+      left:16px;
+      z-index:5
+    }
+   .header-reservar h1{
+      margin:0;
+      font-size:18px;
+      font-weight:800;
+      color:white
+    }
+   .header-reservar span{
+      font-weight:300;
+      font-size:14px;
+      margin-left:5px;
+      color:var(--mute)
+    }
+   .auth{
+      max-width:460px;
+      margin:72px auto 0;
+      background:#ffffff12;
+      border:1px solid var(--stroke);
+      border-radius:14px;
+      padding:16px;
+      backdrop-filter:blur(10px)
+    }
+   .auth h2{
+      color:white;
+      font-size:22px;
+      font-weight:700;
+      margin:0 0 12px 0
+    }
+   .auth input{
+      width:100%;
+      margin-top:12px;
+      background:#ffffff08;
+      border:1px solid #ffffff22;
+      border-radius:10px;
+      padding:.7rem;
+      color:#fff;
+      font:inherit;
+      outline:none
+    }
+   .btn{
+      background:#b794f6;
+      border:none;
+      color:#fff;
+      padding:.7rem.9rem;
+      border-radius:10px;
+      cursor:pointer;
+      font:inherit;
+      font-weight:700
+    }
+   .btn.full{
+      width:100%;
+      margin-top:18px
+    }
+   .btn.ghost{
+      width:100%;
+      background:transparent;
+      border:1px solid var(--stroke);
+      font-weight:600;
+      font-size:13px;
+      margin-top:8px
+    }
+   .btn.link{
+      background:transparent;
+      border:none;
+      color:var(--mute);
+      text-decoration:underline;
+      font-size:13px;
+      width:100%;
+      margin-top:10px
+    }
+   .note{
+      color:#ffdddd;
+      font-size:14px;
+      min-height:1.2em;
+      margin-top:12px
+    }
+  </style>
 </head>
 <body class="min-h-screen">
 
 <div id="pantalla-login" class="min-h-screen flex flex-col p-0">
-  <div class="header-reservar"><h1>reservAR <span>tu lugar, tu momento.</span></h1></div>
+  <div class="header-reservar">
+    <h1>reservAR <span>tu lugar, tu momento.</span></h1>
+  </div>
   <div class="flex-1 flex justify-center px-5 pb-10">
-    <!-- LOGIN ORIGINAL QUE ME PASASTE -->
     <section id="auth" class="auth">
       <h2>Ingresá</h2>
       <input id="lEmail" placeholder="Email">
@@ -59,7 +145,7 @@ body{margin:0; color:var(--text); background: linear-gradient(160deg, var(--viol
     <p id="rError" class="note hidden"></p>
   </section>
 </div>
-<div id="pantalla-app" class="hidden min-h-screen bg-[#13052a] text-white">
+ <div id="pantalla-app" class="hidden min-h-screen bg-[#13052a] text-white">
   <header class="sticky top-0 z-20 bg-[#1a0a35] border-b border-white/5">
     <div class="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
       <h1 class="font-extrabold text-xl">reserv<span class="text-violet-400">AR</span></h1>
@@ -71,55 +157,120 @@ body{margin:0; color:var(--text); background: linear-gradient(160deg, var(--viol
     <div class="max-w-5xl mx-auto px-2 flex gap-2 overflow-x-auto py-2 text-[13px]" style="scrollbar-width:none">
       <button onclick="tab('inicio')" id="t-inicio" class="tab px-4 py-2 rounded-full bg-white text-[#13052a] font-bold">Inicio</button>
       <button onclick="tab('reservas')" id="t-reservas" class="tab px-4 py-2 rounded-full bg-white/10">Reservas</button>
+      <button onclick="tab('locales')" id="t-locales" class="tab px-4 py-2 rounded-full bg-white/10">Locales</button>
       <button onclick="tab('calendario')" id="t-calendario" class="tab px-4 py-2 rounded-full bg-white/10">Calendario</button>
       <button onclick="tab('clientes')" id="t-clientes" class="tab px-4 py-2 rounded-full bg-white/10">Clientes</button>
-      <button onclick="tab('servicios')" id="t-servicios" class="tab px-4 py-2 rounded-full bg-white/10">Servicios</button>
+      <button onclick="tab('soporte')" id="t-soporte" class="tab px-4 py-2 rounded-full bg-white/10">Soporte</button>
       <button onclick="tab('ajustes')" id="t-ajustes" class="tab px-4 py-2 rounded-full bg-white/10">Ajustes</button>
     </div>
   </header>
+
   <main class="max-w-5xl mx-auto p-4">
     <div id="sec-inicio">
       <div class="mt-3 bg-[#1e1040] border border-white/10 rounded-2xl p-4">
         <p class="text-[11px] text-violet-300 font-bold">RESERVAR TU LUGAR, TU MOMENTO</p>
         <div class="flex items-center gap-3 mt-3">
           <div class="w-10 h-10 rounded-full bg-emerald-500 flex items-center justify-center font-bold">✓</div>
-          <div><p class="font-semibold" id="holaNombre">Hola Jona</p><p class="text-xs text-white/50">Bienvenido</p></div>
-          <div class="ml-auto"><span id="pillEstado" class="text-[11px] px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">Online</span></div>
+          <div>
+            <p class="font-semibold" id="holaNombre">Hola Jona</p>
+            <p class="text-xs text-white/50" id="fraseAdmi">Bienvenido a reservAR</p>
+          </div>
+          <div class="ml-auto">
+            <span id="pillEstado" class="text-[11px] px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">Online</span>
+          </div>
         </div>
       </div>
+
+      <!-- LOCALES ACTIVOS - SOLO LOS QUE PAGARON -->
+      <div id="boxLocales" class="mt-4">
+        <h3 class="font-bold text-sm">Locales disponibles</h3>
+        <div id="listaLocalesActivos" class="mt-2 grid gap-2"></div>
+      </div>
+
       <div id="listaHoy" class="mt-4 text-sm text-white/60">No hay turnos hoy</div>
     </div>
+
     <div id="sec-reservas" class="hidden">
       <h2 class="font-bold text-lg">Nueva Reserva</h2>
       <div class="mt-3 bg-[#1e1040] border border-white/10 rounded-2xl p-5">
         <input id="resCliente" placeholder="Nombre cliente" class="w-full bg-white/5 border border-white/10 rounded-xl p-3 text-sm">
         <input id="resWhatsapp" placeholder="WhatsApp" class="w-full mt-2 bg-white/5 border border-white/10 rounded-xl p-3 text-sm">
+        <select id="resLocalSelect" class="w-full mt-2 bg-white/5 border border-white/10 rounded-xl p-3 text-sm">
+          <option value="">Elegí local</option>
+        </select>
+        <select id="resServicio" class="w-full mt-2 bg-white/5 border border-white/10 rounded-xl p-3 text-sm">
+          <option value="">Elegí servicio</option>
+        </select>
         <input id="resFecha" type="datetime-local" class="w-full mt-2 bg-white/5 border border-white/10 rounded-xl p-3 text-sm">
         <p id="avisoHorario" class="text-[11px] text-amber-300 mt-2 hidden"></p>
+
+        <!-- SEÑA ENLAZADA CON LOCAL -->
+        <div id="boxSenia" class="mt-3 bg-violet-500/10 border border-violet-500/20 rounded-xl p-3">
+          <div class="flex justify-between items-center">
+            <span class="text-xs font-bold text-violet-200">Seña requerida</span>
+            <span id="txtSenia" class="text-xs bg-white text-black px-2 py-1 rounded-full font-bold">0%</span>
+          </div>
+          <p id="txtSeniaMonto" class="text-[11px] text-white/60 mt-1">Este local pide seña para confirmar</p>
+          <input id="resSenia" placeholder="Monto seña $ (ej: 2000)" class="w-full mt-2 bg-white/5 border rounded-xl p-3 text-sm">
+        </div>
+
         <div id="boxDNI" class="hidden mt-3 bg-amber-500/10 border border-amber-500/20 rounded-xl p-3">
           <p class="text-xs font-bold text-amber-200">Este local pide DNI</p>
           <input id="resDNI" placeholder="Número DNI" class="w-full mt-2 bg-white/5 border rounded-xl p-3 text-sm">
         </div>
-        <button onclick="guardarReserva()" class="w-full mt-4 bg-violet-600 py-3 rounded-xl font-bold">Guardar Reserva</button>
+
+        <button onclick="guardarReserva()" class="w-full mt-4 bg-violet-600 py-3 rounded-xl font-bold">Guardar Reserva con Seña</button>
       </div>
       <div id="listaReservas" class="mt-4 space-y-2"></div>
     </div>
-    <div id="sec-calendario" class="hidden"><h2 class="font-bold">Calendario</h2><div id="calGrid" class="mt-4 text-sm text-white/50">Calendario acá</div></div>
-    <div id="sec-clientes" class="hidden"><h2 class="font-bold">Clientes</h2><div id="listaClientes" class="mt-3 text-sm text-white/50">Lista clientes</div></div>
-    <div id="sec-servicios" class="hidden"><h2 class="font-bold">Servicios</h2><p class="text-sm text-white/50 mt-2">Corte, Color, etc.</p></div>
+
+    <div id="sec-locales" class="hidden">
+      <h2 class="font-bold">Locales</h2>
+      <div id="gridLocales" class="mt-4 grid gap-2"></div>
+    </div>
+
+    <div id="sec-calendario" class="hidden">
+      <h2 class="font-bold">Calendario</h2>
+      <div id="calGrid" class="mt-4 text-sm text-white/50">Calendario acá</div>
+    </div>
+
+    <div id="sec-clientes" class="hidden">
+      <h2 class="font-bold">Clientes</h2>
+      <div id="listaClientes" class="mt-3 text-sm text-white/50">Lista clientes</div>
+    </div>
+        <div id="sec-soporte" class="hidden">
+      <h2 class="font-bold">Soporte - Hablar con ADMI</h2>
+      <div class="mt-3 bg-[#1e1040] border border-white/10 rounded-2xl p-5">
+        <p class="text-xs text-white/60 mb-2">Tu mensaje le llega directo al panel ADMI de Jona</p>
+        <textarea id="txtSoporte" placeholder="Escribí tu problema..." class="w-full bg-white/5 border border-white/10 rounded-xl p-3 text-sm" rows="4"></textarea>
+        <button onclick="enviarSoporte()" class="w-full mt-3 bg-white text-black font-bold py-3 rounded-xl">Enviar a Soporte</button>
+        <p id="msgSoporte" class="text-xs text-emerald-300 mt-2"></p>
+      </div>
+    </div>
+
     <div id="sec-ajustes" class="hidden">
       <h2 class="font-bold">Ajustes</h2>
       <div class="mt-3 bg-[#1e1040] border border-white/10 rounded-2xl p-5 space-y-3">
-        <div><label class="text-xs text-white/60">Apertura</label><input id="cfgApertura" type="time" value="09:00" class="w-full bg-white/5 border border-white/10 rounded-xl p-3 text-sm"></div>
-        <div><label class="text-xs text-white/60">Cierre</label><input id="cfgCierre" type="time" value="19:00" class="w-full bg-white/5 border border-white/10 rounded-xl p-3 text-sm"></div>
-        <div class="flex justify-between bg-white/5 p-3 rounded-xl"><span class="text-sm">¿Pedir DNI?</span><input id="cfgPideDNI" type="checkbox" onchange="toggleDNICheck()"></div>
+        <div>
+          <label class="text-xs text-white/60">Apertura</label>
+          <input id="cfgApertura" type="time" value="09:00" class="w-full bg-white/5 border border-white/10 rounded-xl p-3 text-sm">
+        </div>
+        <div>
+          <label class="text-xs text-white/60">Cierre</label>
+          <input id="cfgCierre" type="time" value="19:00" class="w-full bg-white/5 border border-white/10 rounded-xl p-3 text-sm">
+        </div>
+        <div class="flex justify-between bg-white/5 p-3 rounded-xl">
+          <span class="text-sm">¿Pedir DNI?</span>
+          <input id="cfgPideDNI" type="checkbox" onchange="toggleDNICheck()">
+        </div>
         <button onclick="guardarCfg()" class="w-full bg-white text-black font-bold py-2 rounded-xl">Guardar Ajustes</button>
       </div>
     </div>
   </main>
 </div>
+
 <script>
-const firebaseConfig={
+const firebaseConfig = {
   apiKey: "AIzaSyA-PEGÁ-TU-CLAVE-REAL-ACÁ",
   authDomain: "reservar-cb70d.firebaseapp.com",
   projectId: "reservar-cb70d",
@@ -128,74 +279,367 @@ const firebaseConfig={
   appId: "1:123456789:web:abcdef"
 };
 firebase.initializeApp(firebaseConfig);
-const auth=firebase.auth(), db=firebase.firestore();
-let cfg={apertura:"09:00",cierre:"19:00",pideDNI:false};
+const auth = firebase.auth();
+const db = firebase.firestore();
+
+let cfg = {
+  apertura:"09:00",
+  cierre:"19:00",
+  pideDNI:false
+};
+
+let localesActivos = [];
+let brandingFrase = "Bienvenido a reservAR";
+
 function show(p){
   document.getElementById('pantalla-login').classList.add('hidden');
   document.getElementById('pantalla-registro').classList.add('hidden');
   document.getElementById('pantalla-app').classList.add('hidden');
-  document.getElementById('pantalla-'+p).classList.remove('hidden');
+  document.getElementById('pantalla-' + p).classList.remove('hidden');
 }
+
 function tab(t){
-  document.querySelectorAll('[id^=sec-]').forEach(e=>e.classList.add('hidden'));
-  document.getElementById('sec-'+t).classList.remove('hidden');
-  document.querySelectorAll('.tab').forEach(e=>{e.className='tab px-4 py-2 rounded-full bg-white/10'});
-  document.getElementById('t-'+t).className='tab px-4 py-2 rounded-full bg-white text-[#13052a] font-bold';
+  document.querySelectorAll('[id^=sec-]').forEach(e => e.classList.add('hidden'));
+  document.getElementById('sec-' + t).classList.remove('hidden');
+  document.querySelectorAll('.tab').forEach(e => {
+    e.className = 'tab px-4 py-2 rounded-full bg-white/10'
+  });
+  const bt = document.getElementById('t-' + t);
+  if(bt) bt.className = 'tab px-4 py-2 rounded-full bg-white text-[#13052a] font-bold';
 }
+
 function toggleDNICheck(){
-  const box=document.getElementById('boxDNI');
+  const box = document.getElementById('boxDNI');
   if(box) box.classList.toggle('hidden',!document.getElementById('cfgPideDNI').checked)
 }
+
 function guardarCfg(){
-  cfg.apertura=document.getElementById('cfgApertura').value;
-  cfg.cierre=document.getElementById('cfgCierre').value;
-  cfg.pideDNI=document.getElementById('cfgPideDNI').checked;
-  localStorage.setItem('cfg',JSON.stringify(cfg));
+  cfg.apertura = document.getElementById('cfgApertura').value;
+  cfg.cierre = document.getElementById('cfgCierre').value;
+  cfg.pideDNI = document.getElementById('cfgPideDNI').checked;
+  localStorage.setItem('cfg', JSON.stringify(cfg));
   alert('Guardado');
 }
+
+// === SALUDO BUENOS DIAS + NOMBRE + FRASE ADMI ===
+function saludoHorario(){
+  const h = new Date().getHours();
+  if(h < 12) return "Buenos días";
+  if(h < 19) return "Buenas tardes";
+  return "Buenas noches";
+}
+
+async function cargarBranding(){
+  try{
+    const d = await db.collection('config').doc('branding').get();
+    if(d.exists){
+      const b = d.data();
+      brandingFrase = b.saludoCliente || "tu lugar, tu momento";
+      document.getElementById('fraseAdmi').textContent = brandingFrase;
+    }
+  }catch(e){
+    console.log('sin branding');
+  }
+}
+      <div id="sec-soporte" class="hidden">
+      <h2 class="font-bold">Soporte - Hablar con ADMI</h2>
+      <div class="mt-3 bg-[#1e1040] border border-white/10 rounded-2xl p-5">
+        <p class="text-xs text-white/60 mb-2">Tu mensaje le llega directo al panel ADMI de Jona</p>
+        <textarea id="txtSoporte" placeholder="Escribí tu problema..." class="w-full bg-white/5 border border-white/10 rounded-xl p-3 text-sm" rows="4"></textarea>
+        <button onclick="enviarSoporte()" class="w-full mt-3 bg-white text-black font-bold py-3 rounded-xl">Enviar a Soporte</button>
+        <p id="msgSoporte" class="text-xs text-emerald-300 mt-2"></p>
+      </div>
+    </div>
+
+    <div id="sec-ajustes" class="hidden">
+      <h2 class="font-bold">Ajustes</h2>
+      <div class="mt-3 bg-[#1e1040] border border-white/10 rounded-2xl p-5 space-y-3">
+        <div>
+          <label class="text-xs text-white/60">Apertura</label>
+          <input id="cfgApertura" type="time" value="09:00" class="w-full bg-white/5 border border-white/10 rounded-xl p-3 text-sm">
+        </div>
+        <div>
+          <label class="text-xs text-white/60">Cierre</label>
+          <input id="cfgCierre" type="time" value="19:00" class="w-full bg-white/5 border border-white/10 rounded-xl p-3 text-sm">
+        </div>
+        <div class="flex justify-between bg-white/5 p-3 rounded-xl">
+          <span class="text-sm">¿Pedir DNI?</span>
+          <input id="cfgPideDNI" type="checkbox" onchange="toggleDNICheck()">
+        </div>
+        <button onclick="guardarCfg()" class="w-full bg-white text-black font-bold py-2 rounded-xl">Guardar Ajustes</button>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyA-PEGÁ-TU-CLAVE-REAL-ACÁ",
+  authDomain: "reservar-cb70d.firebaseapp.com",
+  projectId: "reservar-cb70d",
+  storageBucket: "reservar-cb70d.appspot.com",
+  messagingSenderId: "123456789",
+  appId: "1:123456789:web:abcdef"
+};
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.firestore();
+
+let cfg = {
+  apertura:"09:00",
+  cierre:"19:00",
+  pideDNI:false
+};
+
+let localesActivos = [];
+let brandingFrase = "Bienvenido a reservAR";
+
+function show(p){
+  document.getElementById('pantalla-login').classList.add('hidden');
+  document.getElementById('pantalla-registro').classList.add('hidden');
+  document.getElementById('pantalla-app').classList.add('hidden');
+  document.getElementById('pantalla-' + p).classList.remove('hidden');
+}
+
+function tab(t){
+  document.querySelectorAll('[id^=sec-]').forEach(e => e.classList.add('hidden'));
+  document.getElementById('sec-' + t).classList.remove('hidden');
+  document.querySelectorAll('.tab').forEach(e => {
+    e.className = 'tab px-4 py-2 rounded-full bg-white/10'
+  });
+  const bt = document.getElementById('t-' + t);
+  if(bt) bt.className = 'tab px-4 py-2 rounded-full bg-white text-[#13052a] font-bold';
+}
+
+function toggleDNICheck(){
+  const box = document.getElementById('boxDNI');
+  if(box) box.classList.toggle('hidden',!document.getElementById('cfgPideDNI').checked)
+}
+
+function guardarCfg(){
+  cfg.apertura = document.getElementById('cfgApertura').value;
+  cfg.cierre = document.getElementById('cfgCierre').value;
+  cfg.pideDNI = document.getElementById('cfgPideDNI').checked;
+  localStorage.setItem('cfg', JSON.stringify(cfg));
+  alert('Guardado');
+}
+
+// === SALUDO BUENOS DIAS + NOMBRE + FRASE ADMI ===
+function saludoHorario(){
+  const h = new Date().getHours();
+  if(h < 12) return "Buenos días";
+  if(h < 19) return "Buenas tardes";
+  return "Buenas noches";
+}
+
+async function cargarBranding(){
+  try{
+    const d = await db.collection('config').doc('branding').get();
+    if(d.exists){
+      const b = d.data();
+      brandingFrase = b.saludoCliente || "tu lugar, tu momento";
+      document.getElementById('fraseAdmi').textContent = brandingFrase;
+    }
+  }catch(e){
+    console.log('sin branding');
+  }
+}
 function login(){
-  const e=document.getElementById('lEmail').value,p=document.getElementById('lPass').value;
-  auth.signInWithEmailAndPassword(e,p).then(()=>{show('app');tab('inicio')}).catch(er=>{
-    let m=document.getElementById('lError');m.textContent=er.message;m.classList.remove('hidden')
+  const e = document.getElementById('lEmail').value;
+  const p = document.getElementById('lPass').value;
+  auth.signInWithEmailAndPassword(e,p).then(() => {
+    show('app');
+    tab('inicio')
+  }).catch(er => {
+    let m = document.getElementById('lError');
+    m.textContent = er.message;
+    m.classList.remove('hidden')
   })
 }
+
 function registro(){
-  const e=document.getElementById('rEmail').value,p=document.getElementById('rPass').value;
-  auth.createUserWithEmailAndPassword(e,p).then(()=>{show('app')}).catch(er=>{
-    let m=document.getElementById('rError');m.textContent=er.message;m.classList.remove('hidden')
+  const nombre = document.getElementById('rNombre').value.trim();
+  const e = document.getElementById('rEmail').value;
+  const p = document.getElementById('rPass').value;
+  const p2 = document.getElementById('rPass2').value;
+  if(p!== p2) return alert('Contraseñas no coinciden');
+  auth.createUserWithEmailAndPassword(e,p).then(async cred => {
+    await cred.user.updateProfile({displayName: nombre});
+    await db.collection('usuarios').doc(cred.user.uid).set({
+      nombre: nombre,
+      email: e,
+      creado: firebase.firestore.FieldValue.serverTimestamp()
+    });
+    show('app')
+  }).catch(er => {
+    let m = document.getElementById('rError');
+    m.textContent = er.message;
+    m.classList.remove('hidden')
   })
 }
-function logout(){auth.signOut().then(()=>show('login'))}
-function recuperar(){
-  const e=document.getElementById('lEmail').value;
-  if(!e)return alert('Poné tu email');
-  auth.sendPasswordResetEmail(e).then(()=>alert('Te enviamos el mail'))
+
+function logout(){
+  auth.signOut().then(() => show('login'))
 }
+
+function recuperar(){
+  const e = document.getElementById('lEmail').value;
+  if(!e) return alert('Poné tu email');
+  auth.sendPasswordResetEmail(e).then(() => alert('Te enviamos el mail'))
+}
+
+// === CARGAR LOCALES SOLO ACTIVOS - FILTRO 48HS ===
+async function cargarLocalesActivos(){
+  try{
+    const snap = await db.collection('locales').where('visible','==',true).get();
+    localesActivos = [];
+    const sel = document.getElementById('resLocalSelect');
+    const grid = document.getElementById('gridLocales');
+    const lista = document.getElementById('listaLocalesActivos');
+    sel.innerHTML = '<option value="">Elegí local</option>';
+    grid.innerHTML = '';
+    lista.innerHTML = '';
+    snap.forEach(doc => {
+      const l = doc.data();
+      const id = doc.id;
+      // filtro 48hs
+      let activo = true;
+      if(l.planActivo === false) activo = false;
+      if(l.visible === false) activo = false;
+      if(l.planVence){
+        try{
+          let v = l.planVence.toDate? l.planVence.toDate() : new Date(l.planVence.seconds * 1000);
+          const horas = (new Date() - v) / 36e5;
+          if(horas > 48) activo = false;
+        }catch(e){}
+      }
+      if(!activo) return;
+      localesActivos.push({id,...l});
+      sel.innerHTML += `<option value="${id}">${l.nombre || 'Local'} - ${l.dir || ''}</option>`;
+      const div = document.createElement('div');
+      div.className = 'bg-[#1e1040] border border-white/10 rounded-xl p-3';
+      div.innerHTML = `<b>${l.nombre || 'Local'}</b><br><span class="text-xs text-white/50">${l.dir || ''} - Seña: ${l.senia || '0'}%</span>`;
+      grid.appendChild(div);
+      const div2 = document.createElement('div');
+      div2.className = 'bg-[#1e1040] border border-white/10 rounded-xl p-3 flex justify-between items-center';
+      div2.innerHTML = `<span>${l.nombre || 'Local'}</span><button onclick="elegirLocal('${id}')" class="text-xs bg-violet-600 px-3 py-1 rounded-full">Reservar</button>`;
+      lista.appendChild(div2);
+    });
+    if(localesActivos.length === 0){
+      lista.innerHTML = '<p class="text-xs text-white/50">No hay locales activos ahora</p>';
+    }
+  }catch(e){
+    console.log(e);
+  }
+}
+
+function elegirLocal(id){
+  tab('reservas');
+  document.getElementById('resLocalSelect').value = id;
+  cargarServiciosLocal(id);
+}
+
+async function cargarServiciosLocal(id){
+  const local = localesActivos.find(x => x.id === id);
+  if(local){
+    document.getElementById('txtSenia').textContent = (local.senia || 30) + '%';
+    document.getElementById('txtSeniaMonto').textContent = 'Seña: ' + (local.senia || 30) + '% del servicio';
+    if(local.pideDNI) document.getElementById('boxDNI').classList.remove('hidden');
+  }
+  try{
+    const snap = await db.collection('locales').doc(id).collection('servicios').get();
+    const sel = document.getElementById('resServicio');
+    sel.innerHTML = '<option value="">Elegí servicio</option>';
+    snap.forEach(doc => {
+      const s = doc.data();
+      sel.innerHTML += `<option value="${s.nombre}" data-precio="${s.precio}">${s.nombre} - $${s.precio}</option>`;
+    });
+  }catch(e){}
+}
+
+document.getElementById('resLocalSelect').onchange = e => {
+  if(e.target.value) cargarServiciosLocal(e.target.value);
+};
+
+document.getElementById('resServicio').onchange = e => {
+  const opt = e.target.selectedOptions[0];
+  const precio = opt?.dataset.precio || 0;
+  const señaPorc = parseInt(document.getElementById('txtSenia').textContent) || 30;
+  const monto = Math.round(precio * señaPorc / 100);
+  document.getElementById('resSenia').value = monto;
+};
+
 function guardarReserva(){
-  const cli=document.getElementById('resCliente').value,fecha=document.getElementById('resFecha').value;
-  if(!cli||!fecha)return alert('Faltan datos');
-  const hora=fecha.split('T')[1];
-  if(hora<cfg.apertura||hora>cfg.cierre){
-    document.getElementById('avisoHorario').textContent='Fuera de horario ('+cfg.apertura+' - '+cfg.cierre+')';
-    document.getElementById('avisoHorario').classList.remove('hidden');return
+  const cli = document.getElementById('resCliente').value;
+  const fecha = document.getElementById('resFecha').value;
+  const localId = document.getElementById('resLocalSelect').value;
+  const servicio = document.getElementById('resServicio').value;
+  const senia = document.getElementById('resSenia').value;
+  if(!cli ||!fecha ||!localId) return alert('Faltan datos');
+  const hora = fecha.split('T')[1];
+  if(hora < cfg.apertura || hora > cfg.cierre){
+    document.getElementById('avisoHorario').textContent = 'Fuera de horario (' + cfg.apertura + ' - ' + cfg.cierre + ')';
+    document.getElementById('avisoHorario').classList.remove('hidden');
+    return
   }
   db.collection('reservas').add({
-    cliente:cli,whatsapp:document.getElementById('resWhatsapp').value,
-    fecha,hora,dni:document.getElementById('resDNI')?.value||'',
-    created:firebase.firestore.FieldValue.serverTimestamp()
-  }).then(()=>{alert('Reserva guardada');document.getElementById('resCliente').value='';})
+    cliente: cli,
+    whatsapp: document.getElementById('resWhatsapp').value,
+    fecha,
+    hora,
+    localId: localId,
+    servicio: servicio,
+    senia: senia,
+    seniaPorc: document.getElementById('txtSenia').textContent,
+    dni: document.getElementById('resDNI')?.value || '',
+    estado: 'pendiente',
+    created: firebase.firestore.FieldValue.serverTimestamp()
+  }).then(() => {
+    alert('Reserva guardada con seña $' + senia + ' - El LOCAL la ve al toque');
+    document.getElementById('resCliente').value = '';
+  })
 }
-auth.onAuthStateChanged(u=>{
-  if(u){show('app');tab('inicio');document.getElementById('holaNombre').textContent='Hola '+(u.displayName||u.email.split('@')[0]);}
-  else show('login')
+
+// === SOPORTE QUE VA AL ADMI ===
+function enviarSoporte(){
+  const txt = document.getElementById('txtSoporte').value.trim();
+  if(!txt) return alert('Escribí algo');
+  const u = auth.currentUser;
+  db.collection('soporte').add({
+    email: u?.email || 'anonimo',
+    mensaje: txt,
+    origen: 'CLIENTE',
+    ts: firebase.firestore.FieldValue.serverTimestamp()
+  }).then(() => {
+    document.getElementById('msgSoporte').textContent = '✅ Enviado al ADMI, Jona te responde pronto';
+    document.getElementById('txtSoporte').value = '';
+  });
+}
+
+auth.onAuthStateChanged(async u => {
+  if(u){
+    show('app');
+    tab('inicio');
+    await cargarBranding();
+    const nombre = u.displayName || u.email.split('@')[0];
+    document.getElementById('holaNombre').textContent = saludoHorario() + ', ' + nombre;
+    document.getElementById('fraseAdmi').textContent = brandingFrase;
+    cargarLocalesActivos();
+  }else{
+    show('login')
+  }
 });
-const saved=localStorage.getItem('cfg');
-if(saved){try{
-  cfg=JSON.parse(saved);
-  document.getElementById('cfgApertura').value=cfg.apertura;
-  document.getElementById('cfgCierre').value=cfg.cierre;
-  document.getElementById('cfgPideDNI').checked=cfg.pideDNI;
-}catch(e){}}
+
+const saved = localStorage.getItem('cfg');
+if(saved){
+  try{
+    cfg = JSON.parse(saved);
+    document.getElementById('cfgApertura').value = cfg.apertura;
+    document.getElementById('cfgCierre').value = cfg.cierre;
+    document.getElementById('cfgPideDNI').checked = cfg.pideDNI;
+  }catch(e){}
+}
 </script>
 </body>
-</html>
+</html>  
+  
