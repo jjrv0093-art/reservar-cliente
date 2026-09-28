@@ -14,7 +14,6 @@ body{background:linear-gradient(160deg,#6a11cb 0%,#7b1fa2 25%,#3a0f6e 60%,#0a093
 .glass{background:#ffffff12;border:1px solid #ffffff26;backdrop-filter:blur(12px);border-radius:18px}
 .btn-violeta{background:#a855f7;color:#fff;border:0;border-radius:14px;padding:14px;font-weight:800;cursor:pointer;width:100%}
 input{background:#ffffff12;border:1px solid #ffffff26;color:#fff;border-radius:12px;padding:12px 14px;width:100%;outline:0}
-input::placeholder{color:#ffffff66}
 .hidden{display:none!important}
 .tabbar{position:fixed;bottom:0;left:0;right:0;background:#0a0933ee;border-top:1px solid #ffffff26;display:flex;justify-content:space-around;padding:10px 0 22px;z-index:50}
 .tab{flex:1;text-align:center;font-size:11px;color:#ffffff66;cursor:pointer}.tab.active{color:#a855f7}.tab b{font-size:20px;display:block}
@@ -23,16 +22,15 @@ input::placeholder{color:#ffffff66}
 <body>
 <div id="authBox" style="min-height:100vh;display:grid;place-items:center;padding:20px">
 <div class="glass" style="width:100%;max-width:380px;padding:26px">
-<h1 style="font-size:18px;font-weight:800;margin-bottom:18px;letter-spacing:-0.5px">reservAR, tu lugar, tu momento.</h1>
+<h1 style="font-size:18px;font-weight:800;margin-bottom:18px">reservAR, tu lugar, tu momento.</h1>
 <input id="email" placeholder="Email" style="margin-bottom:10px">
 <input id="pass" type="password" placeholder="Contraseña" style="margin-bottom:10px">
 <input id="nombreReg" class="hidden" placeholder="Nombre (solo para crear cuenta)" style="margin-bottom:14px">
 <div style="display:flex;gap:10px">
 <button class="btn-violeta" onclick="login()">Entrar</button>
-<button class="btn-violeta" style="background:#ffffff12" onclick="mostrarRegistro()">Crear cuenta</button>
+<button class="btn-violeta" style="background:#ffffff12" onclick="mostrarRegistro()">Crear</button>
 </div>
 <p id="authMsg" style="margin-top:12px;font-size:13px;color:#ff8fa8;min-height:18px"></p>
-<div style="margin-top:14px;font-size:11px;color:#ffffff66">Si no tenés cuenta toca Crear cuenta</div>
 </div>
 </div>
 <div id="app" class="hidden">
@@ -54,98 +52,149 @@ input::placeholder{color:#ffffff66}
 <div class="glass" style="padding:16px">
 <input id="pNombre" placeholder="Nombre" style="margin-bottom:10px">
 <input id="pWsp" placeholder="WhatsApp" style="margin-bottom:10px">
-<input id="pDir" placeholder="Dirección (calle y altura)" style="margin-bottom:10px">
-<input id="pEmail" disabled style="margin-bottom:14px;opacity:.6">
+<input id="pDir" placeholder="Dirección" style="margin-bottom:10px">
+<input id="pEmail" disabled style="margin-bottom:10px;opacity:.6">
 <input id="pAlias" placeholder="Tu alias (opcional) ej: mi.alias.mp" style="margin-bottom:6px">
-<p style="font-size:11px;color:#ffffff66;margin-bottom:14px;line-height:1.3">Si ponés tu alias es solo por si un local te tiene que devolver la seña, no es obligatorio.</p>
+<p style="font-size:11px;color:#ffffff66;margin-bottom:14px">Si ponés tu alias es solo por si un local te tiene que devolver la seña, no es obligatorio.</p>
 <button class="btn-violeta" onclick="guardarPerfil()">Guardar perfil</button>
 <button style="margin-top:12px;background:transparent;border:1px solid #ffffff26;color:#fff;border-radius:12px;width:100%;padding:12px" onclick="logout()">Cerrar sesión</button>
 <p id="perfilMsg" style="margin-top:10px;font-size:12px;color:#a3ffbf"></p>
-<div style="margin-top:18px;padding:12px;border-radius:12px;background:#ffffff0d;font-size:11px;color:#ffffff88">📧 Te llega mail 1h antes de tu turno.</div>
 </div>
 </div>
 </div>
 <div id="modalLocal" class="hidden" style="position:fixed;inset:0;z-index:60;background:#0a0933f2;overflow:auto;padding:0 0 90px">
-<div style="max-width:480px;margin:0 auto"><div style="height:220px;position:relative"><img id="mImg" style="width:100%;height:100%;object-fit:cover"><button onclick="closeModal()" style="position:absolute;top:14px;left:14px;width:36px;height:36px;border-radius:999px;background:#00000088;border:1px solid #ffffff33;color:#fff">✕</button><div id="mHeart" style="position:absolute;top:14px;right:14px;width:36px;height:36px;border-radius:999px;display:grid;place-items:center;background:#ffffff12;border:1px solid #ffffff26;cursor:pointer" onclick="toggleFavModal()">♡</div><div style="position:absolute;bottom:0;left:0;right:0;padding:14px;background:linear-gradient(transparent,#0a0933)"><h2 id="mNombre" style="font-size:22px;font-weight:800"></h2><p id="mDir" style="font-size:12px;color:#ffffffbb"></p><p id="mRating" style="font-size:12px;margin-top:4px"></p></div></div><div style="padding:16px"><div class="glass" style="padding:12px;display:flex;justify-content:space-between;font-size:12px;margin-bottom:14px"><span id="mHorario">🕒 --</span><span id="mDist">📍 --</span></div><h3 style="font-size:15px;margin-bottom:10px">Servicios</h3><div id="mServs"></div><h3 style="font-size:15px;margin:14px 0 10px">Reseñas</h3><div id="mReviews"></div></div></div></div>
+<div style="max-width:480px;margin:0 auto">
+<div style="height:220px;position:relative"><img id="mImg" style="width:100%;height:100%;object-fit:cover"><button onclick="closeModal()" style="position:absolute;top:14px;left:14px;width:36px;height:36px;border-radius:999px;background:#00000088;border:1px solid #ffffff33;color:#fff">✕</button><div id="mHeart" style="position:absolute;top:14px;right:14px;width:36px;height:36px;border-radius:999px;display:grid;place-items:center;background:#ffffff12;border:1px solid #ffffff26;cursor:pointer" onclick="toggleFavModal()">♡</div><div style="position:absolute;bottom:0;left:0;right:0;padding:14px;background:linear-gradient(transparent,#0a0933)"><h2 id="mNombre" style="font-size:22px;font-weight:800"></h2><p id="mDir" style="font-size:12px;color:#ffffffbb"></p><p id="mRating" style="font-size:12px;margin-top:4px"></p></div></div>
+<div style="padding:16px"><div class="glass" style="padding:12px;display:flex;justify-content:space-between;font-size:12px;margin-bottom:14px"><span id="mHorario">🕒 --</span><span id="mDist">📍 --</span></div><h3 style="font-size:15px;margin-bottom:10px">Servicios</h3><div id="mServs"></div><h3 style="font-size:15px;margin:14px 0 10px">Reseñas</h3><div id="mReviews"></div></div></div></div>
+<div id="app" class="hidden">
+<div style="padding:18px 16px 90px;max-width:480px;margin:0 auto">
+<div id="view-inicio">
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+<div><p style="font-size:12px;color:#ffffff99">Hola,</p><h2 id="holaNombre" style="font-size:20px;font-weight:800">—</h2><p id="locTxt" style="font-size:11px;color:#ffffff66">📍 Obteniendo ubicación...</p></div>
+<div class="glass" style="width:40px;height:40px;display:grid;place-items:center;border-radius:12px" onclick="getGPS()">📍</div>
+</div>
+<input id="buscador" placeholder="Buscar barbería, uñas, peluquería..." oninput="filtrarLocales()" style="margin-bottom:14px">
+<div id="premiumBox"></div>
+<h3 style="margin:6px 0 10px;font-size:15px">Cerca tuyo</h3><div id="cercaBox"></div>
+<h3 style="margin:14px 0 10px;font-size:15px">Todos los locales</h3><div id="localesBox"></div>
+</div>
+<div id="view-reservas" class="hidden"><h2 style="font-size:20px;font-weight:800;margin-bottom:14px">Mis Reservas</h2><div id="misReservasBox"></div></div>
+<div id="view-favs" class="hidden"><h2 style="font-size:20px;font-weight:800;margin-bottom:14px">Favoritos ❤️</h2><div id="favsBox"></div></div>
+<div id="view-perfil" class="hidden">
+<h2 style="font-size:20px;font-weight:800;margin-bottom:14px">Perfil</h2>
+<div class="glass" style="padding:16px">
+<input id="pNombre" placeholder="Nombre" style="margin-bottom:10px">
+<input id="pWsp" placeholder="WhatsApp" style="margin-bottom:10px">
+<input id="pDir" placeholder="Dirección" style="margin-bottom:10px">
+<input id="pEmail" disabled style="margin-bottom:10px;opacity:.6">
+<input id="pAlias" placeholder="Tu alias (opcional) ej: mi.alias.mp" style="margin-bottom:6px">
+<p style="font-size:11px;color:#ffffff66;margin-bottom:14px">Si ponés tu alias es solo por si un local te tiene que devolver la seña, no es obligatorio.</p>
+<button class="btn-violeta" onclick="guardarPerfil()">Guardar perfil</button>
+<button style="margin-top:12px;background:transparent;border:1px solid #ffffff26;color:#fff;border-radius:12px;width:100%;padding:12px" onclick="logout()">Cerrar sesión</button>
+<p id="perfilMsg" style="margin-top:10px;font-size:12px;color:#a3ffbf"></p>
+</div>
+</div>
+</div>
+<div id="modalLocal" class="hidden" style="position:fixed;inset:0;z-index:60;background:#0a0933f2;overflow:auto;padding:0 0 90px">
+<div style="max-width:480px;margin:0 auto">
+<div style="height:220px;position:relative"><img id="mImg" style="width:100%;height:100%;object-fit:cover"><button onclick="closeModal()" style="position:absolute;top:14px;left:14px;width:36px;height:36px;border-radius:999px;background:#00000088;border:1px solid #ffffff33;color:#fff">✕</button><div id="mHeart" style="position:absolute;top:14px;right:14px;width:36px;height:36px;border-radius:999px;display:grid;place-items:center;background:#ffffff12;border:1px solid #ffffff26;cursor:pointer" onclick="toggleFavModal()">♡</div><div style="position:absolute;bottom:0;left:0;right:0;padding:14px;background:linear-gradient(transparent,#0a0933)"><h2 id="mNombre" style="font-size:22px;font-weight:800"></h2><p id="mDir" style="font-size:12px;color:#ffffffbb"></p><p id="mRating" style="font-size:12px;margin-top:4px"></p></div></div>
+<div style="padding:16px"><div class="glass" style="padding:12px;display:flex;justify-content:space-between;font-size:12px;margin-bottom:14px"><span id="mHorario">🕒 --</span><span id="mDist">📍 --</span></div><h3 style="font-size:15px;margin-bottom:10px">Servicios</h3><div id="mServs"></div><h3 style="font-size:15px;margin:14px 0 10px">Reseñas</h3><div id="mReviews"></div></div></div></div>
 <div id="modalReserva" class="hidden" style="position:fixed;inset:0;z-index:70;background:#0a0933f8;display:grid;place-items:end center">
 <div class="glass" style="width:100%;max-width:480px;border-radius:22px 22px 0 0;padding:18px;max-height:90vh;overflow:auto">
 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px"><h3 id="rServNombre" style="font-size:16px;font-weight:800">Reservar</h3><button onclick="closeReserva()" style="background:#ffffff12;border:1px solid #ffffff26;border-radius:999px;width:32px;height:32px;color:#fff">✕</button></div>
 <p id="rServDetalle" style="font-size:12px;color:#ffffff88;margin-bottom:12px"></p>
-<div id="senaBox" class="hidden" style="background:#a855f722;border:1px solid #a855f788;padding:12px;border-radius:12px;margin-bottom:12px;font-size:12px"><b>Este local pide seña</b><div id="senaTxt" style="margin-top:6px;color:#ffffffbb"></div><div style="margin-top:8px"><input id="rComprobante" placeholder="Link o alias desde donde transferiste + últimos 4 dígitos"></div></div>
+<div id="senaBox" class="hidden" style="background:#a855f722;border:1px solid #a855f788;padding:12px;border-radius:12px;margin-bottom:12px;font-size:12px"><b>Este local pide seña</b><div id="senaTxt" style="margin-top:6px;color:#ffffffbb"></div><input id="rComprobante" placeholder="Comprobante: últimos 4 dígitos / alias" style="margin-top:8px"></div>
 <label style="font-size:11px;color:#ffffff88">Fecha</label><input id="rFecha" type="date" style="margin:6px 0 12px">
-<label style="font-size:11px;color:#ffffff88">Horarios (bloquea ocupados +30min traslado)</label><div id="rHoras" style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:8px 0 14px"></div>
+<label style="font-size:11px;color:#ffffff88">Horarios (bloquea +30min)</label><div id="rHoras" style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:8px 0 14px"></div>
 <label style="font-size:11px;color:#ffffff88">Dirección destino</label><input id="rDireccion" placeholder="Ej: Calle 7 1234 La Plata" style="margin:6px 0 12px">
 <p id="rMsg" style="font-size:12px;color:#ff8fa8;margin-bottom:10px"></p><button class="btn-violeta" onclick="confirmarReserva()">Confirmar reserva</button>
 </div></div>
 <div class="tabbar"><div class="tab active" onclick="switchTab('inicio')"><b>⌂</b>Inicio</div><div class="tab" onclick="switchTab('reservas')"><b>◷</b>Reservas</div><div class="tab" onclick="switchTab('favs')"><b>♥</b>Favoritos</div><div class="tab" onclick="switchTab('perfil')"><b>☺</b>Perfil</div></div></div>
 <script>
 const firebaseConfig = {
-  apiKey: "PEGA_AQUI_TU_APIKEY_COMPLETA_DE_FIREBASE_CONSOLE_SIN_CORTAR",
-  authDomain: "reservar-cb70d.firebaseapp.com",
-  projectId: "reservar-cb70d",
-  storageBucket: "reservar-cb70d.appspot.com",
-  messagingSenderId: "PEGA_AQUI",
-  appId: "PEGA_AQUI"
+  apiKey: "AIzaSyDvHjjMD9deHXvG1A-XAD08bprmoSDA1Wc",
+  authDomain: "reservar-cliente.firebaseapp.com",
+  projectId: "reservar-cliente",
+  storageBucket: "reservar-cliente.firebasestorage.app",
+  messagingSenderId: "475239389010",
+  appId: "1:475239389010:web:89b5018b0f679740a4cc8b"
 };
 firebase.initializeApp(firebaseConfig);
-const auth=firebase.auth();const db=firebase.firestore();
+const auth=firebase.auth();
+const db=firebase.firestore();
 let me=null,myData=null,locales=[],myPos=null,selectedLocal=null,selectedServ=null,selectedHora=null,reservasDelLocal=[];
 function hav(lat1,lon1,lat2,lon2){const R=6371;const dLat=(lat2-lat1)*Math.PI/180;const dLon=(lon2-lon1)*Math.PI/180;const a=Math.sin(dLat/2)**2+Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*Math.sin(dLon/2)**2;return R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));}
 function todayISO(){return new Date().toISOString().split('T')[0];}
-function mostrarRegistro(){document.getElementById('nombreReg').classList.remove('hidden');document.getElementById('authMsg').innerText='Poné nombre, mail y contraseña y toca Crear cuenta de nuevo';}
+function mostrarRegistro(){document.getElementById('nombreReg').classList.remove('hidden');document.getElementById('authMsg').innerText='Poné nombre, mail y contraseña y toca Crear de nuevo';}
+</script>
+<script>
 async function registro(){
-  const email=document.getElementById('email').value.trim();const pass=document.getElementById('pass').value.trim();const nom=document.getElementById('nombreReg').value.trim();
+  const email=document.getElementById('email').value.trim();
+  const pass=document.getElementById('pass').value.trim();
+  const nom=document.getElementById('nombreReg').value.trim();
   const msg=document.getElementById('authMsg');msg.innerText='';
   if(!nom){msg.innerText='Poné tu nombre primero';document.getElementById('nombreReg').classList.remove('hidden');return;}
   if(!email||!pass){msg.innerText='Che, hay error en el mail o contraseña';return;}
-  try{const cred=await auth.createUserWithEmailAndPassword(email,pass);await db.collection('users').doc(cred.user.uid).set({nombre:nom,email:email,rol:'cliente',favoritos:[],creado:firebase.firestore.FieldValue.serverTimestamp()});}catch(e){console.log(e);msg.innerText='Che, hay error en el mail o contraseña: '+e.message;}
+  try{
+    const cred=await auth.createUserWithEmailAndPassword(email,pass);
+    await db.collection('users').doc(cred.user.uid).set({nombre:nom,email:email,rol:'cliente',favoritos:[],creado:firebase.firestore.FieldValue.serverTimestamp()});
+  }catch(e){console.log(e);msg.innerText='Che, hay error en el mail o contraseña: '+e.message;}
 }
 async function login(){
-  const email=document.getElementById('email').value.trim();const pass=document.getElementById('pass').value.trim();const msg=document.getElementById('authMsg');msg.innerText='';
+  const email=document.getElementById('email').value.trim();
+  const pass=document.getElementById('pass').value.trim();
+  const msg=document.getElementById('authMsg');msg.innerText='';
   if(!email||!pass){msg.innerText='Che, hay error en el mail o contraseña';return;}
   try{await auth.signInWithEmailAndPassword(email,pass);}catch(e){
     let txt='Che, hay error en el mail o contraseña';
     if(e.code==='auth/user-not-found') txt='Che, ese mail no existe';
     if(e.code==='auth/wrong-password') txt='Che, hay error en la contraseña';
     if(e.code==='auth/invalid-email') txt='Che, el mail está mal escrito';
-    msg.innerText=txt; console.log(e.code);
+    msg.innerText=txt;
   }
 }
 auth.onAuthStateChanged(async u=>{
   if(!u){document.getElementById('authBox').classList.remove('hidden');document.getElementById('app').classList.add('hidden');return;}
   me=u;const doc=await db.collection('users').doc(u.uid).get();myData=doc.exists?doc.data():{email:u.email};if(!myData.nombre) myData.nombre=u.email.split('@')[0];
-  document.getElementById('holaNombre').innerText=myData.nombre;document.getElementById('pNombre').value=myData.nombre||'';document.getElementById('pWsp').value=myData.wsp||'';document.getElementById('pDir').value=myData.direccion||'';document.getElementById('pEmail').value=myData.email||u.email;document.getElementById('pAlias').value=myData.alias||'';
-  document.getElementById('authBox').classList.add('hidden');document.getElementById('app').classList.remove('hidden');getGPS();loadLocales();loadMisReservas();
+  document.getElementById('holaNombre').innerText=myData.nombre;
+  document.getElementById('pNombre').value=myData.nombre||'';
+  document.getElementById('pWsp').value=myData.wsp||'';
+  document.getElementById('pDir').value=myData.direccion||'';
+  document.getElementById('pEmail').value=myData.email||u.email;
+  document.getElementById('pAlias').value=myData.alias||'';
+  document.getElementById('authBox').classList.add('hidden');
+  document.getElementById('app').classList.remove('hidden');
+  getGPS();loadLocales();loadMisReservas();
 });
 function logout(){auth.signOut();}
 async function getGPS(){try{navigator.geolocation.getCurrentPosition(p=>{myPos={lat:p.coords.latitude,lng:p.coords.longitude};document.getElementById('locTxt').innerText=`📍 ${myPos.lat.toFixed(2)}, ${myPos.lng.toFixed(2)}`;if(locales.length) renderLocales();},()=>{document.getElementById('locTxt').innerText='📍 Activa GPS';});}catch(e){}}
-</script>
-<script>
 async function loadLocales(){const snap=await db.collection('locales').where('visible','==',true).get();locales=snap.docs.map(d=>({id:d.id,...d.data()}));renderLocales();}
 function filtrarLocales(){renderLocales();}
 function renderLocales(){
  const q=document.getElementById('buscador').value.toLowerCase();let list=[...locales];if(q) list=list.filter(l=>(l.nombre||'').toLowerCase().includes(q)||(l.direccion||'').toLowerCase().includes(q));
  list=list.map(l=>{let d=null;if(myPos&&l.lat&&l.lng) d=hav(myPos.lat,myPos.lng,l.lat,l.lng);return {...l,_dist:d};}).sort((a,b)=>{if(a._dist==null) return 1;if(b._dist==null) return -1;return a._dist-b._dist;});
  const premium=list.filter(l=>l.plan==='premium'||l.destacado).slice(0,5);
- document.getElementById('premiumBox').innerHTML=premium.map(p=>`<div style="border-radius:20px;overflow:hidden;position:relative;height:160px;margin-bottom:14px;border:1px solid #a855f788" onclick="openLocal('${p.id}')"><img src="${p.foto||'https://images.unsplash.com/photo-1521590832167-7bcbfaa6381f'}" style="width:100%;height:100%;object-fit:cover"><span style="position:absolute;top:10px;left:10px;background:#a855f7;padding:4px 10px;border-radius:999px;font-size:10px;font-weight:800">★ PREMIUM</span><div style="position:absolute;bottom:10px;left:12px;right:12px;display:flex;justify-content:space-between"><b style="font-size:14px">${p.nombre}</b><span style="background:#00000099;padding:6px 10px;border-radius:999px;font-size:11px">${p._dist!=null?p._dist.toFixed(1)+'km':''}</span></div></div>`).join('')||'';
- const htmlCard=(l)=>`<div class="glass" style="padding:14px;display:flex;gap:12px;align-items:center;margin-bottom:12px;position:relative" onclick="openLocal('${l.id}')"><img src="${l.foto||''}" style="width:62px;height:62px;border-radius:14px;object-fit:cover;background:#ffffff12"><div style="flex:1"><b style="font-size:14px">${l.nombre}</b><div style="font-size:11px;color:#ffffff88">${l.direccion||''}</div><div style="font-size:11px;color:#ffffff66">${l._dist!=null?'📍 a '+l._dist.toFixed(1)+'km':''}</div></div><div style="position:absolute;right:12px;top:12px;width:36px;height:36px;border-radius:999px;display:grid;place-items:center;background:${myData&&myData.favoritos&&myData.favoritos.includes(l.id)?'#a855f7':'#ffffff12'};border:1px solid #ffffff26;cursor:pointer" onclick="event.stopPropagation();toggleFav('${l.id}')">${myData&&myData.favoritos&&myData.favoritos.includes(l.id)?'♥':'♡'}</div></div>`;
- document.getElementById('cercaBox').innerHTML=list.filter(l=>l._dist!=null&&l._dist<5).map(htmlCard).join('')||`<div style="font-size:12px;color:#ffffff66">Activa GPS para ver cerca tuyo</div>`;
- document.getElementById('localesBox').innerHTML=list.map(htmlCard).join('');renderFavs(list);
+ document.getElementById('premiumBox').innerHTML=premium.map(p=>`<div style="border-radius:20px;overflow:hidden;position:relative;height:160px;margin-bottom:14px;border:1px solid #a855f788" onclick="openLocal('${p.id}')"><img src="${p.foto||''}" style="width:100%;height:100%;object-fit:cover"><span style="position:absolute;top:10px;left:10px;background:#a855f7;padding:4px 10px;border-radius:999px;font-size:10px;font-weight:800">★ PREMIUM</span><div style="position:absolute;bottom:10px;left:12px;right:12px;display:flex;justify-content:space-between"><b>${p.nombre}</b><span style="background:#00000099;padding:6px 10px;border-radius:999px;font-size:11px">${p._dist!=null?p._dist.toFixed(1)+'km':''}</span></div></div>`).join('')||'';
+ const card=(l)=>`<div class="glass" style="padding:14px;display:flex;gap:12px;align-items:center;margin-bottom:12px;position:relative" onclick="openLocal('${l.id}')"><img src="${l.foto||''}" style="width:62px;height:62px;border-radius:14px;background:#ffffff12"><div style="flex:1"><b style="font-size:14px">${l.nombre}</b><div style="font-size:11px;color:#ffffff88">${l.direccion||''}</div><div style="font-size:11px;color:#ffffff66">${l._dist!=null?'📍 a '+l._dist.toFixed(1)+'km':''}</div></div><div style="position:absolute;right:12px;top:12px;width:36px;height:36px;border-radius:999px;display:grid;place-items:center;background:${myData&&myData.favoritos&&myData.favoritos.includes(l.id)?'#a855f7':'#ffffff12'}" onclick="event.stopPropagation();toggleFav('${l.id}')">${myData&&myData.favoritos&&myData.favoritos.includes(l.id)?'♥':'♡'}</div></div>`;
+ document.getElementById('cercaBox').innerHTML=list.filter(l=>l._dist!=null&&l._dist<5).map(card).join('')||`<div style="font-size:12px;color:#ffffff66">Activa GPS</div>`;
+ document.getElementById('localesBox').innerHTML=list.map(card).join('');renderFavs(list);
 }
+</script>
+<script>
 function renderFavs(all){const favIds=myData?.favoritos||[];const favs=all.filter(l=>favIds.includes(l.id));document.getElementById('favsBox').innerHTML=favs.length?favs.map(l=>`<div class="glass" style="padding:14px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center"><b>${l.nombre}</b><button class="btn-violeta" style="width:auto;padding:8px 12px;font-size:12px" onclick="openLocal('${l.id}')">Ver</button></div>`).join(''):`<div class="glass" style="padding:20px;text-align:center;color:#ffffff66;font-size:13px">Aún no tenés favoritos</div>`;}
 async function toggleFav(id){let favs=myData.favoritos||[];favs=favs.includes(id)?favs.filter(x=>x!==id):[...favs,id];await db.collection('users').doc(me.uid).update({favoritos:favs});myData.favoritos=favs;renderLocales();}
 function toggleFavModal(){if(selectedLocal) toggleFav(selectedLocal.id).then(()=>{const on=myData.favoritos.includes(selectedLocal.id);document.getElementById('mHeart').innerText=on?'♥':'♡';});}
-async function openLocal(id){selectedLocal=locales.find(l=>l.id===id)||{id};if(!selectedLocal.nombre){const d=await db.collection('locales').doc(id).get();selectedLocal={id:d.id,...d.data()};}document.getElementById('mImg').src=selectedLocal.foto||'';document.getElementById('mNombre').innerText=selectedLocal.nombre||'';document.getElementById('mDir').innerText=selectedLocal.direccion||'';document.getElementById('mHorario').innerText=`🕒 ${selectedLocal.apertura||'09:00'} - ${selectedLocal.cierre||'20:00'}`;document.getElementById('mDist').innerText=selectedLocal._dist!=null?`📍 a ${selectedLocal._dist.toFixed(1)}km`:'';document.getElementById('mRating').innerText=selectedLocal.promedioEstrellas?`★ ${selectedLocal.promedioEstrellas.toFixed(1)} (${selectedLocal.totalReviews||0})`:'Sin reseñas';document.getElementById('modalLocal').classList.remove('hidden');const on=myData.favoritos.includes(selectedLocal.id);document.getElementById('mHeart').innerText=on?'♥':'♡';loadServs(selectedLocal.id);loadReviews(selectedLocal.id);}
+async function openLocal(id){selectedLocal=locales.find(l=>l.id===id)||{id};if(!selectedLocal.nombre){const d=await db.collection('locales').doc(id).get();selectedLocal={id:d.id,...d.data()};}document.getElementById('mImg').src=selectedLocal.foto||'';document.getElementById('mNombre').innerText=selectedLocal.nombre||'';document.getElementById('mDir').innerText=selectedLocal.direccion||'';document.getElementById('mHorario').innerText=`🕒 ${selectedLocal.apertura||'09:00'} - ${selectedLocal.cierre||'20:00'}`;document.getElementById('mDist').innerText=selectedLocal._dist!=null?`📍 a ${selectedLocal._dist.toFixed(1)}km`:'';document.getElementById('mRating').innerText=selectedLocal.promedioEstrellas?`★ ${selectedLocal.promedioEstrellas.toFixed(1)}`:'Sin reseñas';document.getElementById('modalLocal').classList.remove('hidden');const on=myData.favoritos.includes(selectedLocal.id);document.getElementById('mHeart').innerText=on?'♥':'♡';loadServs(selectedLocal.id);loadReviews(selectedLocal.id);}
 function closeModal(){document.getElementById('modalLocal').classList.add('hidden');}
 async function loadServs(localId){const snap=await db.collection('servicios').where('uid','==',localId).where('activo','==',true).get();const servs=snap.docs.map(d=>({id:d.id,...d.data()}));window._servsCache=servs;document.getElementById('mServs').innerHTML=servs.length?servs.map(s=>`<div class="glass" style="padding:12px;display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><div><b style="font-size:13px">${s.nombre}</b><br><span style="font-size:11px;color:#ffffff88">${s.duracion||60}min · ${s.precio?'$'+s.precio:'Consultar'} ${s.sena?'· Seña $'+s.sena:''}</span></div><button class="btn-violeta" style="width:auto;padding:8px 14px;font-size:12px" onclick="openReserva('${s.id}')">Reservar</button></div>`).join(''):`<div style="color:#ffffff66;font-size:12px">Sin servicios</div>`;}
-async function loadReviews(localId){const snap=await db.collection('reviews').where('localId','==',localId).where('estado','==','aprobado').orderBy('fecha','desc').limit(20).get();const revs=snap.docs.map(d=>d.data());document.getElementById('mReviews').innerHTML=revs.length?revs.map(r=>`<div class="glass" style="padding:10px;margin-bottom:8px"><div style="font-size:12px">${'★'.repeat(r.estrellas||5)} <span style="color:#ffffff66">${r.anonimo?'Anónimo':r.nombre}</span></div><div style="font-size:12px;color:#ffffffbb">${r.texto||''}</div></div>`).join(''):`<div style="color:#ffffff66;font-size:12px">Sin reseñas aprobadas</div>`;}
-function openReserva(servId){selectedServ=(window._servsCache||[]).find(s=>s.id===servId);document.getElementById('rServNombre').innerText=selectedServ.nombre;document.getElementById('rServDetalle').innerText=`${selectedServ.duracion} min · ${selectedServ.precio?'$'+selectedServ.precio:'Consultar'}`;document.getElementById('rFecha').value=todayISO();document.getElementById('rDireccion').value=myData.direccion||'';
-const senaBox=document.getElementById('senaBox');if(selectedLocal.config?.pideSena||selectedServ.sena){senaBox.classList.remove('hidden');document.getElementById('senaTxt').innerText=`Monto: $${selectedServ.sena||selectedLocal.config.montoSena||''} - Alias local: ${selectedLocal.alias||selectedLocal.config.alias||'Consultar en local'} - CBU: ${selectedLocal.cbu||selectedLocal.config.cbu||''}`;}else{senaBox.classList.add('hidden');}
-document.getElementById('modalReserva').classList.remove('hidden');loadHoras();document.getElementById('rFecha').onchange=loadHoras;
-}
+async function loadReviews(localId){const snap=await db.collection('reviews').where('localId','==',localId).where('estado','==','aprobado').orderBy('fecha','desc').limit(20).get();const revs=snap.docs.map(d=>d.data());document.getElementById('mReviews').innerHTML=revs.length?revs.map(r=>`<div class="glass" style="padding:10px;margin-bottom:8px"><div style="font-size:12px">${'★'.repeat(r.estrellas||5)} <span style="color:#ffffff66">${r.anonimo?'Anónimo':r.nombre}</span></div><div style="font-size:12px;color:#ffffffbb">${r.texto||''}</div></div>`).join(''):`<div style="color:#ffffff66;font-size:12px">Sin reseñas</div>`;}
+function openReserva(servId){selectedServ=(window._servsCache||[]).find(s=>s.id===servId);document.getElementById('rServNombre').innerText=selectedServ.nombre;document.getElementById('rServDetalle').innerText=`${selectedServ.duracion} min · ${selectedServ.precio?'$'+selectedServ.precio:'Consultar'}`;document.getElementById('rFecha').value=todayISO();document.getElementById('rDireccion').value=myData.direccion||'';const senaBox=document.get
+  ElementById('senaBox');if(selectedLocal.config?.pideSena||selectedServ.sena){senaBox.classList.remove('hidden');document.getElementById('senaTxt').innerText=`Monto: $${selectedServ.sena||selectedLocal.config.montoSena||''} - Alias local: ${selectedLocal.alias||selectedLocal.config?.alias||'Consultar'} - CBU: ${selectedLocal.cbu||selectedLocal.config?.cbu||''}`;}else{senaBox.classList.add('hidden');}document.getElementById('modalReserva').classList.remove('hidden');loadHoras();document.getElementById('rFecha').onchange=loadHoras;}
 function closeReserva(){document.getElementById('modalReserva').classList.add('hidden');selectedHora=null;}
 function parseMin(s){const [h,m]=s.split(':').map(Number);return h*60+m;}function minToStr(m){return `${String(Math.floor(m/60)).padStart(2,'0')}:${String(m%60).padStart(2,'0')}`;}
-async function loadHoras(){const fecha=document.getElementById('rFecha').value;if(!fecha||!selectedLocal) return;document.getElementById('rHoras').innerHTML=`<div style="grid-column:1/-1;color:#ffffff66;font-size:12px">Cargando...</div>`;const snap=await db.collection('reservas').where('uid','==',selectedLocal.id).where('fecha','==',fecha).get();reservasDelLocal=snap.docs.map(d=>d.data());const apertura=parseMin(selectedLocal.apertura||'09:00');const cierre=parseMin(selectedLocal.cierre||'20:00');const durTotal=parseInt(selectedServ.duracion||60)+30;let slots=[];for(let t=apertura;t+durTotal<=cierre;t+=30) slots.push(t);document.getElementById('rHoras').innerHTML=slots.map(t=>{const fin=t+durTotal;const ocupado=reservasDelLocal.some(r=>{let rIni=parseMin(r.hora||'00:00');let rDur=parseInt(r.duracionTotal||60)+30;return (t<rIni+rDur&&fin>rIni);});return `<div style="padding:10px 14px;border-radius:12px;border:1px solid #ffffff26;background:${ocupado?'#ffffff11':'#ffffff12'};cursor:pointer;font-weight:700;font-size:14px;text-align:center;opacity:${ocupado?'.3':'1'}" onclick="${ocupado?'':'selHora(\''+minToStr(t)+'\',this)'}">${minToStr(t)}</div>`;}).join('');}
+</script>
+<script>
+async function loadHoras(){const fecha=document.getElementById('rFecha').value;if(!fecha||!selectedLocal) return;document.getElementById('rHoras').innerHTML=`<div style="grid-column:1/-1;color:#ffffff66;font-size:12px">Cargando...</div>`;const snap=await db.collection('reservas').where('uid','==',selectedLocal.id).where('fecha','==',fecha).get();reservasDelLocal=snap.docs.map(d=>d.data());const apertura=parseMin(selectedLocal.apertura||'09:00');const cierre=parseMin(selectedLocal.cierre||'20:00');const durTotal=parseInt(selectedServ.duracion||60)+30;let slots=[];for(let t=apertura;t+durTotal<=cierre;t+=30) slots.push(t);document.getElementById('rHoras').innerHTML=slots.map(t=>{const fin=t+durTotal;const ocupado=reservasDelLocal.some(r=>{let rIni=parseMin(r.hora||'00:00');let rDur=parseInt(r.duracionTotal||60)+30;return (t<rIni+rDur&&fin>rIni);});return `<div style="padding:10px 14px;border-radius:12px;border:1px solid #ffffff26;background:#ffffff12;text-align:center;opacity:${ocupado?'.3':'1'}" onclick="${ocupado?'':'selHora(\''+minToStr(t)+'\',this)'}">${minToStr(t)}</div>`;}).join('');}
 function selHora(h,el){selectedHora=h;document.querySelectorAll('#rHoras div').forEach(s=>s.style.background='#ffffff12');el.style.background='#a855f7';}
 async function confirmarReserva(){const fecha=document.getElementById('rFecha').value;const dir=document.getElementById('rDireccion').value.trim();const msg=document.getElementById('rMsg');msg.innerText='';if(!fecha||!selectedHora){msg.innerText='Elegí fecha y hora';return;}if(!dir){msg.innerText='Poné dirección';return;}try{await db.collection('reservas').add({uid:selectedLocal.id,clienteUid:me.uid,clienteNombre:myData.nombre,clienteEmail:myData.email,aliasCliente:myData.alias||'',direccion:dir,servicioId:selectedServ.id,servicioNombre:selectedServ.nombre,duracion:parseInt(selectedServ.duracion||60),duracionTotal:parseInt(selectedServ.duracion||60)+30,precio:selectedServ.precio||'',fecha:fecha,hora:selectedHora,fechaHora:firebase.firestore.Timestamp.fromDate(new Date(fecha+'T'+selectedHora+':00')),estado:'pendiente',comprobante:document.getElementById('rComprobante').value||'',sena:selectedServ.sena||'',creado:firebase.firestore.FieldValue.serverTimestamp()});closeReserva();closeModal();alert('¡Reserva enviada!');switchTab('reservas');loadMisReservas();}catch(e){msg.innerText=e.message;}}
 async function loadMisReservas(){if(!me) return;const snap=await db.collection('reservas').where('clienteUid','==',me.uid).orderBy('fechaHora','desc').limit(40).get();const list=snap.docs.map(d=>({id:d.id,...d.data()}));document.getElementById('misReservasBox').innerHTML=list.length?list.map(r=>`<div class="glass" style="padding:14px;margin-bottom:12px"><div style="display:flex;justify-content:space-between"><b style="font-size:13px">${r.servicioNombre}</b><span style="font-size:10px;padding:3px 8px;border-radius:999px;background:${r.estado==='pendiente'?'#ffcc0033':'#00ff8833'}">${r.estado}</span></div><div style="font-size:11px;color:#ffffff88">${r.fecha} ${r.hora} · ${r.direccion}</div>${r.estado==='pendiente'?`<button style="margin-top:10px;width:100%;background:transparent;border:1px solid #ff5a5a55;color:#ff8a8a;border-radius:10px;padding:8px;font-size:12px" onclick="cancelarReserva('${r.id}')">Cancelar</button>`:''}</div>`).join(''):`<div class="glass" style="padding:20px;text-align:center;color:#ffffff66">Sin reservas</div>`;}
