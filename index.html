@@ -1,63 +1,380 @@
-<!DOCTYPE html><html lang='es'><head><meta charset='UTF-8'><meta name='viewport' content='width=device-width,initial-scale=1.0'><title>reservAR Cliente - Spa Uñas Gym</title>
-<style>
-:root{--stroke:#ffffff26}*{box-sizing:border-box}body{margin:0;font-family:system-ui;color:#fff;background:linear-gradient(160deg,#6a11cb,#7b1fa2 40%,#3a0f6e 70%,#0a0933);background-attachment:fixed;min-height:100vh}
-.hidden{display:none!important}.topbar{position:sticky;top:0;z-index:30;display:flex;justify-content:space-between;align-items:center;padding:12px 16px;background:rgba(31,7,54,.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--stroke)}
-.logo{font-weight:900;font-size:22px}.logo span{font-weight:300;font-size:13px;color:#d8d0f0;margin-left:6px}.pill{padding:6px 12px;border-radius:999px;background:#ffffff1f;border:1px solid var(--stroke);font-size:12px}
-.avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#a855f7,#ff5ab3);display:grid;place-items:center;font-weight:800;cursor:pointer;border:2px solid #ffffff44}
-.wrap{max-width:1100px;margin:0 auto;padding:16px}.hero{margin:20px 0 12px}.hero h1{margin:0;font-size:clamp(22px,5vw,32px);line-height:1.15;font-weight:900}.hero h1 small{display:block;font-weight:400;font-size:clamp(16px,3.5vw,20px);color:#e6d8ff;margin-top:4px}
-.card{background:#ffffff12;border:1px solid var(--stroke);border-radius:16px;padding:16px;margin-bottom:14px;backdrop-filter:blur(8px)}.input{width:100%;padding:.75rem .9rem;border-radius:14px;border:1px solid #ffffff22;background:#ffffff14;color:#fff}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}.localCard{background:#fffffffa;color:#1a1040;border-radius:16px;padding:10px;overflow:hidden;border:1px solid #ffffff55}
-.localCard .img{height:110px;border-radius:12px;background:#e9e0ff center/cover;display:flex;align-items:flex-end;justify-content:flex-end;padding:6px}.badge{background:#fde68a;color:#000;padding:3px 8px;border-radius:999px;font-size:10px;font-weight:800}
-.btn{background:#a855f7;border:none;color:#fff;padding:.6rem .9rem;border-radius:10px;cursor:pointer;font-weight:700}.btn.full{width:100%}.btn.ghost{background:transparent;border:1px solid #ffffff44;color:#fff}.btn.small{padding:.4rem .6rem;font-size:12px}
-.modal{position:fixed;inset:0;z-index:100;background:#0008;display:flex;align-items:flex-end;justify-content:center}.modalBox{width:100%;max-width:560px;background:#faf7ff;color:#1a1040;border-radius:22px 22px 0 0;padding:18px 16px 24px;max-height:88vh;overflow:auto;border:1px solid #ffffff88}
-.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#1f0736;border:1px solid #ffffff33;padding:10px 16px;border-radius:12px;z-index:9999;color:#fff}
-#btnSoporte{position:fixed;right:18px;bottom:18px;z-index:50;width:56px;height:56px;border-radius:50%;border:none;cursor:pointer;background:linear-gradient(135deg,#a855f7,#ff5ab3);box-shadow:0 8px 24px #0006;font-size:24px;color:#fff}
-</style>
-<script src='https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js'></script><script src='https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js'></script><script src='https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js'></script>
-</head><body>
-<div class='topbar'><div class='logo'>reservAR <span>tu lugar, tu momento.</span></div><div style='display:flex;gap:10px;align-items:center'><span class='pill'>Panel Cliente</span><div id='avatarJD' class='avatar'>JD</div><button id='btnLogout' class='btn small ghost hidden'>Salir</button></div></div>
-<section id='auth' style='max-width:420px;margin:30px auto;background:#ffffff12;border:1px solid var(--stroke);border-radius:14px;padding:20px'><h2 style='margin-top:0'>Iniciar sesión</h2><input id='email' class='input' type='email' placeholder='tu@correo.com' style='margin-bottom:8px'><input id='password' class='input' type='password' placeholder='Contraseña' style='margin-bottom:8px'><p id='loginMsg' style='color:#fca5a5;min-height:18px;font-size:13px'></p><button id='loginBtn' class='btn full'>Entrar</button><p style='text-align:center'><a href='#' id='goForgot' style='color:#cfc9e6;font-size:13px'>Olvidaste tu contraseña?</a></p><p style='font-size:14px'>No tenés cuenta? <a href='#' id='goRegister' style='color:#ff5ab3'>Crear cuenta</a></p></section>
-<section id='register' class='hidden' style='max-width:420px;margin:30px auto;background:#ffffff12;border:1px solid var(--stroke);border-radius:14px;padding:20px'><h2>Crear cuenta</h2><input id='regNombre' class='input' placeholder='Nombre' style='margin-bottom:8px'><input id='regEmail' class='input' type='email' placeholder='Correo' style='margin-bottom:8px'><input id='regPass' class='input' type='password' placeholder='Contraseña' style='margin-bottom:8px'><input id='regPass2' class='input' type='password' placeholder='Repetir' style='margin-bottom:8px'><p id='regMsg' style='color:#fca5a5;font-size:13px'></p><button id='registerBtn' class='btn full'>Registrarme</button><p><a href='#' id='goLogin' style='color:#ff5ab3'>Iniciar sesión</a></p></section>
-<section id='forgot' class='hidden' style='max-width:420px;margin:30px auto;background:#ffffff12;border:1px solid var(--stroke);border-radius:14px;padding:20px'><h2>Recuperar</h2><input id='forgotEmail' class='input' type='email' placeholder='tu correo'><p id='forgotMsg'></p><p id='forgotOk' style='color:#86efac'></p><button id='forgotBtn' class='btn full'>Enviar link</button><p><a href='#' id='goBackLogin' style='color:#ff5ab3'>Volver</a></p></section>
-<section id='app' class='hidden'><div class='wrap'><div class='hero'><h1 id='saludoNombre'>Hola, Juan,<small id='saludoTexto'>que tengas un maravilloso día ✨</small></h1><div style='margin-top:12px;display:flex;gap:8px'><input id='buscador' class='input' placeholder='Buscar locales, masajes, uñas, spa' style='flex:1;background:#ffffffee;color:#2a1750'><button id='btnUbicacion' class='btn small'>📍</button></div></div>
-<div class='card'><div style='display:flex;justify-content:space-between'><h3 style='margin:0'>⭐ Destacados de locales</h3><span class='pill' id='countDest'>0</span></div><p style='font-size:12px;color:#cfc9e6;margin:6px 0'>Elegidos para masajes, uñas, spa, gym</p><div id='listaDest' class='grid'></div></div>
-<div class='card'><div style='display:flex;justify-content:space-between'><h3 style='margin:0'>📍 Cerca tuyo</h3><span class='pill' id='distInfo'>Activa GPS</span></div><div id='listaCerca' class='grid' style='margin-top:10px'></div></div>
-<div class='card'><h3 style='margin:0 0 8px'>Todos los locales</h3><div id='listaTodos' class='grid'></div></div>
-<div class='card' id='cardReserva' style='border:1px solid #a855f7'><h3>Reservar en: <span id='reservaLocalNombre'>-</span></h3><div id='reservaInfo' style='font-size:12px;color:#cfc9e6'></div><div style='display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px'><div><label>Servicio</label><select id='rServicio' class='input'></select></div><div><label>Fecha y hora</label><input id='rFechaHora' type='datetime-local' class='input'></div><div id='boxDNI' class='hidden'><label>DNI</label><input id='rDNI' class='input' placeholder='DNI si lo pide el local'></div><div><label>Comentario</label><input id='rComentario' class='input'></div></div><p id='rSenaInfo' style='font-size:12px;color:#e9d5ff'></p><button id='btnConfirmarReserva' class='btn full' style='margin-top:10px'>Confirmar reserva</button><p id='rMsg'></p></div>
-<div class='card'><h3>Mis reservas</h3><ul id='misReservas' style='list-style:none;padding:0;margin:0'></ul></div></div></section>
-<div id='modalPerfil' class='modal hidden'><div class='modalBox'><div style='display:flex;justify-content:space-between;align-items:center'><h2 style='margin:0'>Perfil</h2><button id='closePerfil' class='btn small ghost' style='color:#000;border-color:#0003'>✕</button></div><div style='text-align:center;margin:12px 0'><div class='avatar' style='width:64px;height:64px;margin:0 auto;font-size:20px'>JD</div><b id='perfilNombreTop'>Juan Díaz</b><div style='font-size:12px;color:#6b5a9a'>Cliente • Premium</div></div><div style='display:grid;grid-template-columns:1fr 1fr;gap:10px'><div><label>Nombre</label><input id='perNombre' class='input' style='color:#000;background:#fff;border-color:#ddd'></div><div><label>WhatsApp</label><input id='perWhats' class='input' style='color:#000;background:#fff;border-color:#ddd' placeholder='+54 9 11...'></div><div style='grid-column:1/-1'><label>Dirección</label><input id='perDireccion' class='input' style='color:#000;background:#fff;border-color:#ddd'></div><div style='grid-column:1/-1'><label>Email - podés cambiarlo</label><div style='display:flex;gap:6px'><input id='perEmail' class='input' style='color:#000;background:#fff;border-color:#ddd;flex:1'><button id='btnCambiarEmail' class='btn small' style='white-space:nowrap'>Cambiar email</button><button id='btnVerifEmail' class='btn small ghost' style='color:#5b21b6;border-color:#5b21b6'>Verificar</button></div><div id='emailHint' style='font-size:11px;color:#6b7280;margin-top:4px'>Si cambiás te enviamos verificación al nuevo mail</div></div><div style='grid-column:1/-1'><label>Alias opcional para devolución seña</label><input id='perAlias' class='input' style='color:#000;background:#fff;border-color:#ddd' placeholder='Ej: juanp.mp'></div></div><div style='margin-top:14px'><button id='btnGuardarPerfil' class='btn full' style='background:#5b21f6'>Guardar cambios</button><p id='perfilMsg' style='font-size:12px;color:#16a34a;text-align:center'></p><p style='font-size:11px;color:#6b7280;text-align:center'>Los cambios se guardarán en tu perfil 🔒</p></div></div></div>
-<button id='btnSoporte'>💬</button><div id='panelSoporte' class='hidden' style='position:fixed;right:18px;bottom:88px;z-index:1000;width:330px;max-width:92vw;background:#1f0736;border:1px solid #ffffff44;border-radius:16px;padding:14px'><h4 style='margin:0'>Soporte</h4><
-                                                                                                                                                                                                                                                                               
-                                                                                                                                                                                                                                                                               
-                                                                                                                                                                                                                                                                               select id='sopTipo' class='input' style='margin:8px 0'><option value='error'>Error</option><option value='queja'>Queja</option><option value='sugerencia'>Sugerencia</option></select><textarea id='sopMsg' class='input' placeholder='Qué pasó?'></textarea><input id='sopEmail' class='input' placeholder='Tu email' style='margin-top:8px'><button id='btnEnviarSoporte' class='btn full' style='margin-top:8px'>Enviar a soporte</button><p id='sopStatus' style='font-size:12px;color:#86efac'></p><button id='btnCerrarSoporte' class='btn small ghost full'>Cerrar</button></div><div id='toast' class='toast hidden'></div>
-<script>
-const firebaseConfig={apiKey:"AIzaSyC57wshaJ2EuIBoBdXv18opL4u_Vuw2bAQ",authDomain:"reservar-cb70d.firebaseapp.com",projectId:"reservar-cb70d",storageBucket:"reservar-cb70d.firebasestorage.app",messagingSenderId:"630908928696",appId:"1:630908928696:web:5e89f5f2b1cc2b240e6a4d"};
-firebase.initializeApp(firebaseConfig);const auth=firebase.auth();const db=firebase.firestore();const $=id=>document.getElementById(id);const toast=m=>{const t=$('toast');t.textContent=m;t.classList.remove('hidden');setTimeout(()=>t.classList.add('hidden'),3000)};
-let userPos=null,todosLocales=[],localSel=null,saludoTxt="que tengas un maravilloso día ✨";
-function hav(a,b,c,d){const R=6371, dLat=(c-a)*Math.PI/180,dLon=(d-b)*Math.PI/180, e=Math.sin(dLat/2)**2+Math.cos(a*Math.PI/180)*Math.cos(c*Math.PI/180)*Math.sin(dLon/2)**2;return R*2*Math.atan2(Math.sqrt(e),Math.sqrt(1-e));}
-  $('goRegister').onclick=e=>{e.preventDefault();$('auth').classList.add('hidden');$('register').classList.remove('hidden')};$('goLogin').onclick=e=>{e.preventDefault();$('register').classList.add('hidden');$('auth').classList.remove('hidden')};$('goForgot').onclick=e=>{e.preventDefault();$('auth').classList.add('hidden');$('forgot').classList.remove('hidden')};$('goBackLogin').onclick=e=>{e.preventDefault();$('forgot').classList.add('hidden');$('auth').classList.remove('hidden')};
-$('loginBtn').onclick=async()=>{const e=$('email').value.trim(),p=$('password').value;if(!e||!p){$('loginMsg').textContent='Completa';return}try{await auth.signInWithEmailAndPassword(e,p)}catch(err){$('loginMsg').textContent=err.message}};
-$('registerBtn').onclick=async()=>{const n=$('regNombre').value.trim(),e=$('regEmail').value.trim(),p1=$('regPass').value,p2=$('regPass2').value;if(!n||!e||!p1){$('regMsg').textContent='Completa';return}if(p1!==p2){$('regMsg').textContent='No coinciden';return}try{const c=await auth.createUserWithEmailAndPassword(e,p1);await db.collection('users').doc(c.user.uid).set({nombre:n,email:e,rol:'cliente',creado:firebase.firestore.FieldValue.serverTimestamp()});await db.collection('clientes_perfiles').doc(c.user.uid).set({nombre:n,email:e,whatsapp:'',direccion:'',alias:''});toast('Cuenta creada')}catch(err){$('regMsg').textContent=err.message}};
-$('forgotBtn').onclick=async()=>{const e=$('forgotEmail').value.trim();try{await auth.sendPasswordResetEmail(e);$('forgotOk').textContent='Mail enviado'}catch(err){$('forgotMsg').textContent=err.message}};
-$('btnLogout').onclick=()=>auth.signOut();
-auth.onAuthStateChanged(async u=>{ if(!u){$('auth').classList.remove('hidden');$('app').classList.add('hidden');$('btnLogout').classList.add('hidden');return} $('auth').classList.add('hidden');$('register').classList.add('hidden');$('forgot').classList.add('hidden');$('app').classList.remove('hidden');$('btnLogout').classList.remove('hidden'); await cargarBranding();await cargarPerfil();await cargarLocales();await cargarMisReservas();pedirUbicacion();});
-async function cargarBranding(){ try{const d=await db.collection('config').doc('branding').get();if(d.exists) saludoTxt=d.data().saludoCliente||saludoTxt; const ud=await db.collection('users').doc(auth.currentUser.uid).get();const nom=ud.exists?(ud.data().nombre||'Juan'): 'Juan';$('saludoNombre').innerHTML=`Hola, ${nom},<small id='saludoTexto'>${saludoTxt}</small>`; $('perfilNombreTop').textContent=nom; $('avatarJD').textContent=nom.substring(0,2).toUpperCase();}catch(e){}}
-async function cargarPerfil(){ try{const doc=await db.collection('clientes_perfiles').doc(auth.currentUser.uid).get();const uDoc=await db.collection('users').doc(auth.currentUser.uid).get();const data=doc.exists?doc.data():{};const uData=uDoc.exists?uDoc.data():{}; $('perNombre').value=data.nombre||uData.nombre||'';$('perWhats').value=data.whatsapp||'';$('perDireccion').value=data.direccion||'';$('perEmail').value=auth.currentUser.email;$('perAlias').value=data.alias||'';}catch(e){}}
-$('avatarJD').onclick=()=>{$('modalPerfil').classList.remove('hidden')};$('closePerfil').onclick=()=>{$('modalPerfil').classList.add('hidden')};$('modalPerfil').onclick=e=>{if(e.target.id==='modalPerfil')$('modalPerfil').classList.add('hidden')};
-$('btnGuardarPerfil').onclick=async()=>{ try{await db.collection('clientes_perfiles').doc(auth.currentUser.uid).set({nombre:$('perNombre').value.trim(),whatsapp:$('perWhats').value.trim(),direccion:$('perDireccion').value.trim(),alias:$('perAlias').value.trim(),email:auth.currentUser.email,updated:firebase.firestore.FieldValue.serverTimestamp()},{merge:true});await db.collection('users').doc(auth.currentUser.uid).set({nombre:$('perNombre').value.trim()},{merge:true});$('perfilMsg').textContent='Guardado!';setTimeout(()=>{$('perfilMsg').textContent='';$('modalPerfil').classList.add('hidden')},1000);toast('Perfil guardado');cargarBranding();}catch(e){toast(e.message)} };
-$('btnCambiarEmail').onclick=async()=>{ const nuevo=$('perEmail').value.trim();if(!nuevo||nuevo===auth.currentUser.email){toast('Mail igual');return} if(!confirm(`Cambiar a ${nuevo}?`))return;try{await auth.currentUser.updateEmail(nuevo);await auth.currentUser.sendEmailVerification();await db.collection('clientes_perfiles').doc(auth.currentUser.uid).set({email:nuevo},{merge:true});await db.collection('users').doc(auth.currentUser.uid).set({email:nuevo},{merge:true});$('emailHint').textContent='Verificación enviada a '+nuevo;$('emailHint').style.color='#16a34a';toast('Mail cambiado')}catch(e){if(e.code==='auth/requires-recent-login'){toast('Logueate de nuevo')}else toast(e.message)} };
-$('btnVerifEmail').onclick=async()=>{try{await auth.currentUser.sendEmailVerification();toast('Verificación enviada')}catch(e){toast(e.message)}};
-async function cargarLocales(){ try{const snap=await db.collection('locales').where('visible','!=',false).get();todosLocales=[];snap.forEach(d=>todosLocales.push({id:d.id,...d.data()})); if(todosLocales.length===0){const snap2=await db.collection('config').get();snap2.forEach(d=>{const c=d.data();if(c.localNombre) todosLocales.push({id:d.id,nombre:c.localNombre,direccion:c.direccion||'',lat:c.lat||null,lng:c.lng||null,destacado:c.destacado||false,pideDni:c.pideDni||false,apertura:c.apertura,cierre:c.cierre,senaTipo:c.senaTipo||'porcentaje',senaValor:c.senaValor||0,rubro:c.rubro||'Spa'})});} renderDest();renderTodos();}catch(e){console.log(e)}}
-function cardLocal(l,dist){ const rubro=l.rubro||'Spa • Uñas • Masajes';const distTxt=dist!=null?`📍 ${dist.toFixed(1)}km`:`📍 ${l.direccion||''}`; const badge=l.destacado?`<span class='badge'>DESTACADO</span>`:''; const imgStyle=l.foto?`background-image:url(${l.foto})`:'background:linear-gradient(135deg,#d8b4fe,#f0abfc)'; return `<div class='localCard'><div class='img' style='${imgStyle}'><span style='margin-left:auto'>${badge}</span></div><div style='padding:8px 4px 2px'><b>${l.nombre||l.localNombre}</b><div style='font-size:11px;color:#6b5a9a'>${rubro} • ⭐ 4.8 • ${distTxt}</div><button class='btn small full' style='margin-top:8px;background:#5b21f6' onclick='selLocal("${l.id}")'>Reservar</button></div></div>`;}
-function renderDest(){const c=$('listaDest');const d=todosLocales.filter(l=>l.destacado);$('countDest').textContent=d.length;c.innerHTML=d.length?d.map(l=>{let di=null;if(userPos&&l.lat&&l.lng) di=hav(userPos.lat,userPos.lng,l.lat,l.lng);return cardLocal(l,di)}).join(''):'<div style="color:#cfc9e6;font-size:12px">Sin destacados - ADMI marca con ★</div>'}
-function renderTodos(f=''){let list=todosLocales;if(f) list=list.filter(l=>(l.nombre||l.localNombre||'').toLowerCase().includes(f.toLowerCase()));$('listaTodos').innerHTML=list.map(l=>{let di=null;if(userPos&&l.lat&&l.lng) di=hav(userPos.lat,userPos.lng,l.lat,l.lng);return cardLocal(l,di)}).join('')||'<div style="color:#cfc9e6">Sin locales</div>'}
-function renderCerca(){const c=$('listaCerca');if(!userPos){c.innerHTML='<div style="color:#cfc9e6;font-size:12px">Activá GPS</div>';return}const cerca=todosLocales.map(l=>{if(!l.lat||!l.lng) return null;return {...l,_dist:hav(userPos.lat,userPos.lng,l.lat,l.lng)}}).filter(Boolean).filter(l=>l._dist<=5).sort((a,b)=>a._dist-b._dist);$('distInfo').textContent=`${cerca.length} a 5km`;c.innerHTML=cerca.length?cerca.map(l=>cardLocal(l,l._dist)).join(''):'<div style="color:#cfc9e6">No hay a 5km</div>'}
-$('buscador').addEventListener('input',e=>renderTodos(e.target.value));$('btnUbicacion').onclick=()=>pedirUbicacion(true);
-function pedirUbicacion(f){if(!navigator.geolocation){toast('Sin GPS');return}if(userPos&&!f){renderCerca();return}navigator.geolocation.getCurrentPosition(p=>{userPos={lat:p.coords.latitude,lng:p.coords.longitude};$('distInfo').textContent=`📍 ${userPos.lat.toFixed(2)}`;renderCerca();renderDest();renderTodos($('buscador').value);toast('GPS ok')},()=>toast('No GPS'))}
-window.selLocal=async id=>{localSel=todosLocales.find(l=>l.id===id);if(!localSel) return;$('reservaLocalNombre').textContent=localSel.nombre||localSel.localNombre;$('reservaInfo').textContent=`${localSel.direccion||''} ${localSel.apertura?`• ${localSel.apertura}-${localSel.cierre}`:''}`;$('boxDNI').classList.toggle('hidden',!localSel.pideDni);try{const snap=await db.collection('servicios').where('uid','==',id).get();$('rServicio').innerHTML='<option value="">Elegí servicio</option>';snap.forEach(d=>{const s=d.data();const o=document.createElement('option');o.value=s.nombre;o.textContent=`${s.nombre} $${s.precio} ${s.duracion}min`;o.dataset.price=s.precio;o.dataset.dur=s.duracion;$('rServicio').appendChild(o)});if($('rServicio').options.length===1) $('rServicio').innerHTML+='<option value="Consulta">Consulta general</option>';}catch(e){$('rServicio').innerHTML='<option>Consulta general</option>'};$('cardReserva').scrollIntoView({behavior:'smooth'});updSena()};
-function updSena(){if(!localSel) return;const sel=$('rServicio').selectedOptions[0];const precio=sel?Number(sel.dataset.price||0):0;if(localSel.senaTipo==='ninguna') $('rSenaInfo').textContent='Sin seña';else if(localSel.senaTipo==='fijo') $('rSenaInfo').textContent=`Seña $${localSel.senaValor}`;else {$('rSenaInfo').textContent=`Seña ${localSel.senaValor}% = $${Math.round(precio*localSel.senaValor/100)}`}};$('rServicio').addEventListener('change',updSena);
-$('btnConfirmarReserva').onclick=async()=>{if(!localSel){$('rMsg').textContent='Elegí local';return}const fh=$('rFechaHora').value,serv=$('rServicio').value,dni=$('rDNI').value.trim(),com=$('rComentario').value.trim();if(!fh||!serv){$('rMsg').textContent='Falta fecha/servicio';return}if(localSel.pideDni&&!dni){$('rMsg').textContent='Pide DNI';return}const sel=$('rServicio').selectedOptions[0];const precio=sel?Number(sel.dataset.price||0):0;const dur=sel?Number(sel.dataset.dur||60):60;let sena=0;if(localSel.senaTipo==='fijo') sena=localSel.senaValor;else if(localSel.senaTipo==='porcentaje') sena=Math.round(precio*localSel.senaValor/100);try{await db.collection('reservas').add({uid:localSel.id,clienteUid:auth.currentUser.uid,cliente:$('perNombre').value||auth.currentUser.email,nombre:$('perNombre').value||auth.currentUser.email,whats:$('perWhats').value||'',servicio:serv,precio,duracion:dur,dur,fechaHora:fh,fecha:fh,estado:'pendiente',origen:'cliente',comentario:com,dni:dni||'',sena,ts:new Date(fh).getTime(),createdAt:firebase.firestore.FieldValue.serverTimestamp()});$('rMsg').style.color='#86efac';$('rMsg').textContent='Reserva enviada';toast('Reserva enviada');cargarMisReservas();}catch(e){$('rMsg').textContent=e.message}};
-async function cargarMisReservas(){const ul=$('misReservas');try{const snap=await db.collection('reservas').where('clienteUid','==',auth.currentUser.uid).orderBy('ts','desc').limit(20).get();ul.innerHTML='';if(snap.empty){ul.innerHTML='<li style="padding:10px;border:1px solid #ffffff22;border-radius:12px;background:#ffffff0f">Sin reservas</li>';return}snap.forEach(d=>{const r=d.data();const li=document.createElement('li');li.style.cssText='padding:10px;border:1px solid #ffffff22;border-radius:12px;background:#ffffff0f;margin-bottom:8px';li.innerHTML=`<b>${r.servicio}</b> en ${r.uid}<br><span style='font-size:11px;color:#cfc9e6'>${r.fechaHora} - ${r.estado}</span>`;ul.appendChild(li)});}catch(e){ul.innerHTML='<li>Error</li>'}}
-$('btnSoporte').onclick=()=>$('panelSoporte').classList.toggle('hidden');$('btnCerrarSoporte').onclick=()=>$('panelSoporte').classList.add('hidden');
-$('btnEnviarSoporte').onclick=async()=>{const t=$('sopTipo').value,m=$('sopMsg').value.trim(),e=$('sopEmail').value.trim()||auth.currentUser?.email||'';if(!m){$('sopStatus').textContent='Escribí mensaje';return}try{await db.collection('soporte').add({tipo:t,msg:m,mensaje:m,texto:m,email:e,contacto:e,uid:auth.currentUser?auth.currentUser.uid:'anonimo',origen:'cliente',fecha:firebase.firestore.FieldValue.serverTimestamp(),ts:Date.now(),createdAt:firebase.firestore.FieldValue.serverTimestamp()});$('sopStatus').textContent='Enviado!';$('sopMsg').value='';setTimeout(()=>{$('panelSoporte').classList.add('hidden');$('sopStatus').textContent=''},1200);toast('Soporte enviado')}catch(err){$('sopStatus').textContent=err.message}};
-</script></body></html>
+<!DOCTYPE html>
+<html lang='es'>
+  <head>
+    <meta charset='UTF-8'>
+    <meta name='viewport' content='width=device-width,initial-scale=1.0'>
+    <title>reservAR Cliente - Spa Uñas Gym</title>
+    <style>
+      :root{
+        --stroke:#ffffff26;
+      }
+      *{
+        box-sizing:border-box;
+      }
+      body{
+        margin:0;
+        font-family:system-ui;
+        color:#fff;
+        background:linear-gradient(160deg,#6a11cb,#7b1fa2 40%,#3a0f6e 70%,#0a0933);
+        background-attachment:fixed;
+        min-height:100vh;
+        padding-bottom:70px;
+      }
+      .hidden{
+        display:none!important;
+      }
+      .topbar{
+        position:sticky;
+        top:0;
+        z-index:30;
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        padding:12px 16px;
+        background:rgba(31,7,54,.96);
+        backdrop-filter:blur(12px);
+        border-bottom:1px solid var(--stroke);
+      }
+      .logo{
+        font-weight:900;
+        font-size:22px;
+      }
+      .logo span{
+        font-weight:300;
+        font-size:13px;
+        color:#d8d0f0;
+        margin-left:6px;
+      }
+      .pill{
+        padding:6px 12px;
+        border-radius:999px;
+        background:#ffffff1f;
+        border:1px solid var(--stroke);
+        font-size:12px;
+      }
+      .avatar{
+        width:36px;
+        height:36px;
+        border-radius:50%;
+        background:linear-gradient(135deg,#a855f7,#ff5ab3);
+        display:grid;
+        place-items:center;
+        font-weight:800;
+        cursor:pointer;
+        border:2px solid #ffffff44;
+      }
+      /* BOTTOM TAPS IGUAL A TU CAPTURA */
+      .bottomNav{
+        position:fixed;
+        left:0;
+        right:0;
+        bottom:0;
+        z-index:40;
+        display:flex;
+        justify-content:space-around;
+        background:rgba(31,7,54,.98);
+        border-top:1px solid var(--stroke);
+        padding:8px 0;
+      }
+      .bottomNav button{
+        background:none;
+        border:none;
+        color:#cfc9e6;
+        font-size:11px;
+        display:flex;
+        flex-direction:column;
+        align-items:center;
+        gap:2px;
+      }
+      .bottomNav button.active{
+        color:#fff;
+      }
+    </style>
+  </head>
+  <body>
+  <!-- HEADER IGUAL CAPTURA -->
+  <div class='topbar'>
+    <div class='logo'>
+      reservAR
+      <span>tu lugar, tu momento.</span>
+    </div>
+    <div style='display:flex;gap:10px;align-items:center'>
+      <span class='pill'>Panel Cliente</span>
+      <div style='display:flex;flex-direction:column;align-items:center'>
+        <div id='avatarJD' class='avatar'>JD</div>
+        <span style='font-size:9px;color:#d8d0f0'>Perfil</span>
+      </div>
+      <button id='btnLogout' class='btn small ghost hidden'>Salir</button>
+    </div>
+  </div>
+
+  <!-- AUTH -->
+  <section id='auth' style='max-width:420px;margin:30px auto;background:#ffffff12;border:1px solid var(--stroke);border-radius:14px;padding:20px'>
+    <h2 style='margin-top:0'>Iniciar sesión</h2>
+    <input id='email' class='input' type='email' placeholder='tu@correo.com' style='margin-bottom:8px'>
+    <input id='password' class='input' type='password' placeholder='Contraseña' style='margin-bottom:8px'>
+    <p id='loginMsg' style='color:#fca5a5;min-height:18px;font-size:13px'></p>
+    <button id='loginBtn' class='btn full'>Entrar</button>
+    <p style='text-align:center'>
+      <a href='#' id='goForgot' style='color:#cfc9e6;font-size:13px'>Olvidaste tu contraseña?</a>
+    </p>
+    <p style='font-size:14px'>No tenés cuenta? <a href='#' id='goRegister' style='color:#ff5ab3'>Crear cuenta</a></p>
+  </section>
+
+  <section id='register' class='hidden' style='max-width:420px;margin:30px auto;background:#ffffff12;border:1px solid var(--stroke);border-radius:14px;padding:20px'>
+    <h2>Crear cuenta</h2>
+    <input id='regNombre' class='input' placeholder='Nombre' style='margin-bottom:8px'>
+    <input id='regEmail' class='input' type='email' placeholder='Correo' style='margin-bottom:8px'>
+    <input id='regPass' class='input' type='password' placeholder='Contraseña' style='margin-bottom:8px'>
+    <input id='regPass2' class='input' type='password' placeholder='Repetir' style='margin-bottom:8px'>
+    <p id='regMsg' style='color:#fca5a5;font-size:13px'></p>
+    <button id='registerBtn' class='btn full'>Registrarme</button>
+    <p><a href='#' id='goLogin' style='color:#ff5ab3'>Iniciar sesión</a></p>
+  </section>
+    <!-- APP -->
+  <section id='app' class='hidden'>
+    <div class='wrap'>
+      <!-- HERO IGUAL CAPTURA -->
+      <div class='hero'>
+        <h1 id='saludoNombre'>
+          Hola, Juan,
+          <small id='saludoTexto'>que tengas un maravilloso día ✨</small>
+        </h1>
+        <div style='margin-top:12px;display:flex;gap:8px'>
+          <input
+            id='buscador'
+            class='input'
+            placeholder='Buscar locales, masajes, uñas, spa'
+            style='flex:1;background:#ffffffee;color:#2a1750'
+          >
+          <button id='btnUbicacion' class='btn small'>📍</button>
+        </div>
+      </div>
+
+      <!-- DESTACADOS -->
+      <div class='card'>
+        <div style='display:flex;justify-content:space-between'>
+          <h3 style='margin:0'>⭐ Destacados de locales</h3>
+          <span class='pill' id='countDest'>0</span>
+        </div>
+        <p style='font-size:12px;color:#cfc9e6;margin:6px 0'>
+          Elegidos para masajes, uñas, spa, gym
+        </p>
+        <div id='listaDest' class='grid'></div>
+      </div>
+
+      <!-- CERCA -->
+      <div class='card'>
+        <div style='display:flex;justify-content:space-between'>
+          <h3 style='margin:0'>📍 Cerca tuyo</h3>
+          <span class='pill' id='distInfo'>Activa GPS</span>
+        </div>
+        <div id='listaCerca' class='grid' style='margin-top:10px'></div>
+      </div>
+
+      <!-- TODOS -->
+      <div class='card'>
+        <h3 style='margin:0 0 8px'>Todos los locales</h3>
+        <div id='listaTodos' class='grid'></div>
+      </div>
+            <!-- RESERVA -->
+      <div class='card' id='cardReserva' style='border:1px solid #a855f7'>
+        <h3>
+          Reservar en:
+          <span id='reservaLocalNombre'>-</span>
+        </h3>
+        <div id='reservaInfo' style='font-size:12px;color:#cfc9e6'></div>
+        <div style='display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px'>
+          <div>
+            <label>Servicio</label>
+            <select id='rServicio' class='input'></select>
+          </div>
+          <div>
+            <label>Día</label>
+            <input id='rFecha' type='date' class='input'>
+          </div>
+          <div style='grid-column:1/-1'>
+            <label>Horarios disponibles del local</label>
+            <div id='slotsHora' style='display:flex;flex-wrap:wrap;gap:6px;margin-top:6px'></div>
+            <input id='rFechaHora' type='hidden'>
+            <!-- fallback si local no tiene horario configurado -->
+            <input id='rFechaHoraFallback' type='datetime-local' class='input hidden' style='margin-top:6px'>
+          </div>
+          <div id='boxDNI' class='hidden'>
+            <label>DNI - lo pide este local</label>
+            <input id='rDNI' class='input' placeholder='Tu DNI'>
+          </div>
+          <div>
+            <label>Comentario</label>
+            <input id='rComentario' class='input'>
+          </div>
+        </div>
+        <p id='rSenaInfo' style='font-size:12px;color:#e9d5ff'></p>
+        <button id='btnConfirmarReserva' class='btn full' style='margin-top:10px'>
+          Confirmar reserva
+        </button>
+        <p id='rMsg'></p>
+      </div>
+
+      <div class='card'>
+        <h3>Mis reservas</h3>
+        <ul id='misReservas' style='list-style:none;padding:0;margin:0'></ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- PERFIL MODAL IGUAL A TU CAPTURA 2 - SIN PREMIUM -->
+  <div id='modalPerfil' class='modal hidden'>
+    <div class='modalBox'>
+      <div style='display:flex;justify-content:space-between;align-items:center'>
+        <h2 style='margin:0'>Perfil</h2>
+        <button id='closePerfil' class='btn small ghost' style='color:#000;border-color:#0003'>✕</button>
+      </div>
+      <div style='text-align:center;margin:12px 0'>
+        <div class='avatar' style='width:64px;height:64px;margin:0 auto;font-size:20px'>JD</div>
+        <b id='perfilNombreTop'>Juan Díaz</b>
+        <div style='font-size:12px;color:#6b5a9a'>Cliente</div>
+      </div>
+        <!-- BOTTOM TAPS IGUAL CAPTURA 1 -->
+  <div class='bottomNav'>
+    <button class='active' onclick="document.getElementById('app').scrollIntoView()">🏠<span>Inicio</span></button>
+    <button onclick="document.getElementById('misReservas').scrollIntoView({behavior:'smooth'})">📅<span>Reservas</span></button>
+    <button>❤️<span>Favoritos</span></button>
+    <button id='btnBottomPerfil'>👤<span>Perfil</span></button>
+  </div>
+
+  <button id='btnSoporte'>💬</button>
+  <div id='toast' class='toast hidden'></div>
+
+  <script src='https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js'></script>
+  <script src='https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js'></script>
+  <script src='https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js'></script>
+  <script>
+    const firebaseConfig={
+      apiKey:"AIzaSyC57wshaJ2EuIBoBdXv18opL4u_Vuw2bAQ",
+      authDomain:"reservar-cb70d.firebaseapp.com",
+      projectId:"reservar-cb70d",
+      storageBucket:"reservar-cb70d.firebasestorage.app",
+      messagingSenderId:"630908928696",
+      appId:"1:630908928696:web:5e89f5f2b1cc2b240e6a4d"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const auth=firebase.auth();
+    const db=firebase.firestore();
+    const $=id=>document.getElementById(id);
+    const toast=m=>{
+      const t=$('toast');
+      t.textContent=m;
+      t.classList.remove('hidden');
+      setTimeout(()=>t.classList.add('hidden'),3000);
+    };
+
+    let userPos=null;
+    let todosLocales=[];
+    let localSel=null;
+    let horaSel=null;
+    let reservasDelDia=[];
+
+    // PERFIL TAP
+    $('avatarJD').onclick=()=>$('modalPerfil').classList.remove('hidden');
+    $('btnBottomPerfil').onclick=()=>$('modalPerfil').classList.remove('hidden');
+    $('closePerfil').onclick=()=>$('modalPerfil').classList.add('hidden');
+
+    // SLOTS LOGICA - EVITA SUPERPOSICION
+    async function cargarSlots(fechaStr){
+      const cont=$('slotsHora');
+      cont.innerHTML='Cargando...';
+      if(!localSel||!fechaStr){
+        cont.innerHTML='';
+        return;
+      }
+      // traer reservas de ese local ese dia
+      try{
+        const snap=await db.collection('reservas')
+         .where('uid','==',localSel.id)
+         .where('fecha','>=',fechaStr)
+         .where('fecha','<',fechaStr+'z')
+         .get();
+        reservasDelDia=[];
+        snap.forEach(d=>{
+          const r=d.data();
+          if(r.fechaHora) reservasDelDia.push(r.fechaHora.slice(11,16));
+        });
+      }catch(e){ reservasDelDia=[]; }
+
+      // horarios del local
+      const apertura=localSel.apertura||'09:00';
+      const cierre=localSel.cierre||'18:00';
+      const dur=60;
+
+      cont.innerHTML='';
+      let [h0,m0]=apertura.split(':').map(Number);
+      let [h1,m1]=cierre.split(':').map(Number);
+      let cur=h0*60+m0;
+      let end=h1*60+m1;
+
+      for(;cur+dur<=end;cur+=dur){
+        let hh=String(Math.floor(cur/60)).padStart(2,'0');
+        let mm=String(cur%60).padStart(2,'0');
+        let hora=`${hh}:${mm}`;
+        let ocupado=reservasDelDia.includes(hora);
+
+        let b=document.createElement('button');
+        b.textContent=hora;
+        b.className='btn small';
+        b.style.background=ocupado?'#444':(horaSel===hora?'#5b21f6':'#ffffff1f');
+        b.style.opacity=ocupado?'0.4':'1';
+        b.disabled=ocupado;
+        b.onclick=()=>{
+          horaSel=hora;
+          $('rFechaHora').value=`${fechaStr}T${hora}`;
+          cargarSlots(fechaStr);
+          toast(`Elegiste ${hora}`);
+        };
+        cont.appendChild(b);
+      }
+
+      if(cont.children.length===0){
+        // fallback si no tiene config
+        $('rFechaHoraFallback').classList.remove('hidden');
+        cont.innerHTML='<span style="font-size:11px;color:#cfc9e6">Este local no configuró horarios, elegí libre</span>';
+      }
+    }
+
+    $('rFecha').addEventListener('change',e=>cargarSlots(e.target.value));
+
+    window.selLocal=async id=>{
+      localSel=todosLocales.find(l=>l.id===id);
+      if(!localSel) return;
+      $('reservaLocalNombre').textContent=localSel.nombre||localSel.localNombre;
+      $('boxDNI').classList.toggle('hidden',!localSel.pideDni);
+      $('rFecha').valueAsDate=new Date();
+      horaSel=null;
+      cargarSlots($('rFecha').value);
+      $('cardReserva').scrollIntoView({behavior:'smooth'});
+    };
+
+    $('btnConfirmarReserva').onclick=async()=>{
+      let fh=$('rFechaHora').value||$('rFechaHoraFallback').value;
+      let dni=$('rDNI').value.trim();
+      if(!fh){ toast('Elegí horario'); return; }
+      if(localSel.pideDni&&!dni){ toast('Este local pide DNI'); return; }
+      // crear reserva con dni
+      try{
+        await db.collection('reservas').add({
+          uid:localSel.id,
+          clienteUid:auth.currentUser.uid,
+          servicio:$('rServicio').value,
+          fechaHora:fh,
+          fecha:fh.split('T')[0],
+          dni:dni||'',
+          estado:'pendiente',
+          ts:new Date(fh).getTime(),
+          createdAt:firebase.firestore.FieldValue.serverTimestamp()
+        });
+        toast('Reserva OK - sin superposición');
+      }catch(e){ toast(e.message); }
+    };
+  </script>
+</body>
+</html>
