@@ -2,380 +2,492 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" 
-content="width=device-width, initial-scale=1.0">
-<title>Cliente - Reservar</title>
-<script src="https://cdn.tailwindcss.com">
-</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Reservar - Cliente</title>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Plus Jakarta Sans',sans-serif}
+body{background:linear-gradient(160deg,#6a11cb 0%,#7b1fa2 25%,#3a0f6e 60%,#0a0933 100%);min-height:100vh;color:#fff;overflow-x:hidden}
+.glass{background:#ffffff12;border:1px solid #ffffff26;backdrop-filter:blur(12px);border-radius:18px}
+.btn-violeta{background:#a855f7;color:#fff;border:0;border-radius:14px;padding:14px;font-weight:800;cursor:pointer;width:100%}
+.btn-violeta:disabled{opacity:.4}
+input,select,textarea{background:#ffffff12;border:1px solid #ffffff26;color:#fff;border-radius:12px;padding:12px 14px;width:100%;outline:0}
+input::placeholder{color:#ffffff66}
+.tabbar{position:fixed;bottom:0;left:0;right:0;background:#0a0933ee;border-top:1px solid #ffffff26;display:flex;justify-content:space-around;padding:10px 0 22px;z-index:50;backdrop-filter:blur(10px)}
+.tab{flex:1;text-align:center;font-size:11px;color:#ffffff66;cursor:pointer}
+.tab.active{color:#a855f7}
+.tab b{font-size:20px;display:block}
+.card-local{padding:14px;display:flex;gap:12px;align-items:center;margin-bottom:12px;position:relative}
+.img-local{width:62px;height:62px;border-radius:14px;object-fit:cover;background:#ffffff12}
+.heart{position:absolute;right:12px;top:12px;width:36px;height:36px;border-radius:999px;display:grid;place-items:center;background:#ffffff12;border:1px solid #ffffff26;cursor:pointer;font-size:16px}
+.heart.on{background:#a855f7;border-color:#a855f7}
+.premium-banner{border-radius:20px;overflow:hidden;position:relative;height:160px;margin-bottom:14px;border:1px solid #a855f788}
+.premium-banner img{width:100%;height:100%;object-fit:cover}
+.premium-tag{position:absolute;top:10px;left:10px;background:#a855f7;padding:4px 10px;border-radius:999px;font-size:10px;font-weight:800}
+.slot{padding:10px 14px;border-radius:12px;border:1px solid #ffffff26;background:#ffffff12;cursor:pointer;font-weight:700;font-size:14px;text-align:center}
+.slot.busy{opacity:.25;pointer-events:none;text-decoration:line-through}
+.slot.sel{background:#a855f7;border-color:#a855f7}
+.hidden{display:none !important}
+</style>
 </head>
-<body class="bg-gray-100">
-<header class="bg-white p-3 shadow sticky top-0">
-<div class="flex justify-between">
-<div class="font-black">RESERVAS</div>
-<div class="text-xs text-right">
-<div id="userNombre">Mi Perfil</div>
-<div id="userEmail"></div>
+<body>
+<div id="authBox" style="min-height:100vh;display:grid;place-items:center;padding:20px">
+<div class="glass" style="width:100%;max-width:380px;padding:26px">
+<h1 style="font-size:28px;font-weight:800;margin-bottom:6px">Reservar</h1>
+<p style="color:#ffffff99;margin-bottom:18px;font-size:14px">Cliente - Mar del Plata / La Plata</p>
+<input id="email" placeholder="Email" style="margin-bottom:10px">
+<input id="pass" type="password" placeholder="Contraseña" style="margin-bottom:10px">
+<input id="nombreReg" placeholder="Nombre (solo registro)" style="margin-bottom:14px">
+<div style="display:flex;gap:10px">
+<button class="btn-violeta" onclick="login()">Entrar</button>
+<button class="btn-violeta" style="background:#ffffff12" onclick="registro()">Crear cuenta</button>
 </div>
-</div>
-<div class="flex gap-2 mt-3 overflow-x-auto">
-<button id="btn-inicio" 
-onclick="showTab('inicio')" 
-class="btn-tab bg-black text-white px-4 py-2 rounded-full text-sm">
-Inicio
-</button>
-<button id="btn-reservas" 
-onclick="showTab('reservas')" 
-class="btn-tab border px-4 py-2 rounded-full text-sm">
-Reservas
-</button>
-<button id="btn-locales" 
-onclick="showTab('locales')" 
-class="btn-tab border px-4 py-2 rounded-full text-sm">
-Locales
-</button>
-<button id="btn-soporte" 
-onclick="showTab('soporte')" 
-class="btn-tab border px-4 py-2 rounded-full text-sm">
-Soporte
-</button>
-<button id="btn-perfil" 
-onclick="showTab('perfil')" 
-class="btn-tab border px-4 py-2 rounded-full text-sm">
-Perfil
-</button>
-</div>
-</header>
-<main class="p-4 max-w-xl mx-auto">
-<div id="tab-inicio" class="tab">
-<div class="bg-black text-white p-6 rounded-2xl mb-4">
-<h1 id="saludoCliente" class="text-lg font-bold">
-RESERVAR - TU LUGAR, TU MOMENTO
-</h1>
-<p id="subSaludo" class="text-sm opacity-80 mt-1">
-Elegí tu local favorito
-</p>
-</div>
-<h2 class="font-bold mb-2">Locales disponibles</h2>
-<div id="listaLocales"></div>
-</div>
-<div id="tab-reservas" class="tab hidden">
-<h2 class="font-bold mb-3">Nueva Reserva</h2>
-<div class="bg-white p-4 rounded-xl shadow space-y-3">
-<select id="reservaLocal" 
-class="w-full border p-3 rounded-lg">
-</select>
-<input id="reservaFecha" type="date" 
-class="w-full border p-3 rounded-lg">
-<input id="reservaPersonas" type="number" 
-placeholder="Personas" 
-class="w-full border p-3 rounded-lg">
-<input id="reservaHora" type="time" 
-class="w-full border p-3 rounded-lg">
-<div id="boxDNI" class="hidden">
-<label class="text-xs font-bold">DNI (lo pide el local)</label>
-<input id="reservaDNI" 
-class="w-full border p-3 rounded-lg mt-1">
-</div>
-<div id="boxSena" class="hidden bg-yellow-50 p-3 rounded-lg border">
-<div id="senaInfo" class="text-sm font-bold"></div>
-</div>
-<textarea id="reservaNota" placeholder="Nota" 
-class="w-full border p-3 rounded-lg"></textarea>
-<button id="btnCrear" 
-class="w-full bg-black text-white p-3 rounded-lg font-bold">
-Confirmar Reserva
-</button>
-</div>
-<h2 class="font-bold mt-6 mb-2">Mis Reservas</h2>
-<div id="misReservas"></div>
-</div>
-<div id="tab-locales" class="tab hidden">
-<h2 class="font-bold mb-2">Locales</h2>
-<div id="listaLocales2"></div>
-</div>
-
-<div id="tab-soporte" class="tab hidden">
-<div class="bg-white p-4 rounded-xl">
-<div id="soporteInfo"></div>
+<p id="authMsg" style="margin-top:12px;font-size:13px;color:#ff8fa8"></p>
 </div>
 </div>
 
-<div id="tab-perfil" class="tab hidden">
-<h2 class="font-bold mb-3">Mi Perfil</h2>
-<div class="bg-white p-4 rounded-xl shadow space-y-3">
-<input id="p_nombre" 
-placeholder="Nombre *" 
-class="w-full border p-3 rounded-lg">
-<input id="p_apellido" 
-placeholder="Apellido" 
-class="w-full border p-3 rounded-lg">
-<input id="p_dni" 
-placeholder="DNI" 
-class="w-full border p-3 rounded-lg">
-<input id="p_nacimiento" type="date" 
-class="w-full border p-3 rounded-lg">
-<input id="p_whatsapp" 
-placeholder="WhatsApp *" 
-class="w-full border p-3 rounded-lg">
-<input id="p_email" disabled 
-class="w-full border p-3 rounded-lg bg-gray-100">
-<input id="p_direccion" 
-placeholder="Dirección" 
-class="w-full border p-3 rounded-lg">
-<input id="p_ciudad" 
-value="Mar del Plata" 
-class="w-full border p-3 rounded-lg">
-<button id="btnGuardarPerfil" 
-class="w-full bg-black text-white p-3 rounded-lg font-bold">
-Guardar Perfil
-</button>
-<button id="btnLogout" 
-class="w-full border p-3 rounded-lg">
-Salir
-</button>
+<div id="app" class="hidden">
+<div style="padding:18px 16px 90px;max-width:480px;margin:0 auto">
+<!-- INICIO -->
+<div id="view-inicio">
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+<div>
+<p style="font-size:12px;color:#ffffff99">Hola,</p>
+<h2 id="holaNombre" style="font-size:20px;font-weight:800">—</h2>
+<p id="locTxt" style="font-size:11px;color:#ffffff66">📍 Obteniendo ubicación...</p>
+</div>
+<div class="glass" style="width:40px;height:40px;display:grid;place-items:center;border-radius:12px" onclick="getGPS()">📍</div>
+</div>
+
+<input id="buscador" placeholder="Buscar barbería, uñas, peluquería..." oninput="filtrarLocales()" style="margin-bottom:14px">
+
+<div id="premiumBox"></div>
+
+<h3 style="margin:6px 0 10px;font-size:15px">Cerca tuyo</h3>
+<div id="cercaBox"></div>
+
+<h3 style="margin:14px 0 10px;font-size:15px">Todos los locales</h3>
+<div id="localesBox"></div>
+</div>
+
+<!-- MIS RESERVAS -->
+<div id="view-reservas" class="hidden">
+<h2 style="font-size:20px;font-weight:800;margin-bottom:14px">Mis Reservas</h2>
+<div id="misReservasBox"></div>
+</div>
+
+<!-- FAVORITOS -->
+<div id="view-favs" class="hidden">
+<h2 style="font-size:20px;font-weight:800;margin-bottom:14px">Favoritos ❤️</h2>
+<div id="favsBox"></div>
+</div>
+
+<!-- PERFIL -->
+<div id="view-perfil" class="hidden">
+<h2 style="font-size:20px;font-weight:800;margin-bottom:14px">Perfil</h2>
+<div class="glass" style="padding:16px">
+<input id="pNombre" placeholder="Nombre" style="margin-bottom:10px">
+<input id="pDni" placeholder="DNI (requerido si local pide)" style="margin-bottom:10px">
+<input id="pWsp" placeholder="WhatsApp" style="margin-bottom:10px">
+<input id="pDir" placeholder="Dirección (calle y altura)" style="margin-bottom:10px">
+<input id="pEmail" disabled style="margin-bottom:14px;opacity:.6">
+<button class="btn-violeta" onclick="guardarPerfil()">Guardar perfil</button>
+<button style="margin-top:12px;background:transparent;border:1px solid #ffffff26;color:#fff;border-radius:12px;width:100%;padding:12px" onclick="logout()">Cerrar sesión</button>
+<p id="perfilMsg" style="margin-top:10px;font-size:12px;color:#a3ffbf"></p>
+<div style="margin-top:18px;padding:12px;border-radius:12px;background:#ffffff0d;font-size:11px;color:#ffffff88">📧 Recordatorio: te llegará mail 1h antes de tu turno.</div>
 </div>
 </div>
-</main>
+</div>
 
-<script type="module">
-import { initializeApp } from 
-"https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getAuth, onAuthStateChanged, signOut } from 
-"https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import { getFirestore, doc, getDoc, getDocs, collection, 
-query, where, addDoc, setDoc, Timestamp } from 
-"https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+<!-- MODAL LOCAL -->
+<div id="modalLocal" class="hidden" style="position:fixed;inset:0;z-index:60;background:#0a0933f2;overflow:auto;padding:0 0 90px">
+<div style="max-width:480px;margin:0 auto">
+<div style="height:220px;position:relative">
+<img id="mImg" style="width:100%;height:100%;object-fit:cover">
+<button onclick="closeModal()" style="position:absolute;top:14px;left:14px;width:36px;height:36px;border-radius:999px;background:#00000088;border:1px solid #ffffff33;color:#fff">✕</button>
+<div id="mHeart" class="heart" style="top:14px;right:14px" onclick="toggleFavModal()">♡</div>
+<div style="position:absolute;bottom:0;left:0;right:0;padding:14px;background:linear-gradient(transparent,#0a0933)">
+<h2 id="mNombre" style="font-size:22px;font-weight:800"></h2>
+<p id="mDir" style="font-size:12px;color:#ffffffbb"></p>
+<p id="mRating" style="font-size:12px;margin-top:4px"></p>
+</div>
+</div>
+<div style="padding:16px">
+<div class="glass" style="padding:12px;display:flex;justify-content:space-between;font-size:12px;margin-bottom:14px">
+<span id="mHorario">🕒 --</span><span id="mDist">📍 -- km</span>
+</div>
+<h3 style="font-size:15px;margin-bottom:10px">Servicios</h3>
+<div id="mServs"></div>
+<h3 style="font-size:15px;margin:14px 0 10px">Reseñas de clientes</h3>
+<div id="mReviews"></div>
+</div>
+</div>
+</div>
 
+<!-- MODAL RESERVA -->
+<div id="modalReserva" class="hidden" style="position:fixed;inset:0;z-index:70;background:#0a0933f8;display:grid;place-items:end center">
+<div class="glass" style="width:100%;max-width:480px;border-radius:22px 22px 0 0;padding:18px;max-height:90vh;overflow:auto">
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+<h3 id="rServNombre" style="font-size:16px;font-weight:800">Reservar</h3>
+<button onclick="closeReserva()" style="background:#ffffff12;border:1px solid #ffffff26;border-radius:999px;width:32px;height:32px;color:#fff">✕</button>
+</div>
+<p id="rServDetalle" style="font-size:12px;color:#ffffff88;margin-bottom:12px"></p>
+<label style="font-size:11px;color:#ffffff88">Fecha</label>
+<input id="rFecha" type="date" style="margin:6px 0 12px">
+<label style="font-size:11px;color:#ffffff88">Horarios disponibles (bloquea ocupados + 30min traslado)</label>
+<div id="rHoras" style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:8px 0 14px"></div>
+<label style="font-size:11px;color:#ffffff88">Dirección destino (La Plata / Mar del Plata)</label>
+<input id="rDireccion" placeholder="Ej: Calle 7 1234 La Plata" style="margin:6px 0 12px">
+<div id="dniAviso" class="hidden" style="background:#ffcc0055;border:1px solid #ffcc00;padding:10px;border-radius:12px;font-size:12px;margin-bottom:12px">⚠️ Este local pide DNI, cargalo en perfil.</div>
+<p id="rMsg" style="font-size:12px;color:#ff8fa8;margin-bottom:10px"></p>
+<button class="btn-violeta" onclick="confirmarReserva()">Confirmar reserva</button>
+</div>
+</div>
+
+<div class="tabbar">
+<div class="tab active" onclick="switchTab('inicio')"><b>⌂</b>Inicio</div>
+<div class="tab" onclick="switchTab('reservas')"><b>◷</b>Reservas</div>
+<div class="tab" onclick="switchTab('favs')"><b>♥</b>Favoritos</div>
+<div class="tab" onclick="switchTab('perfil')"><b>☺</b>Perfil</div>
+</div>
+</div>
+
+<script>
 const firebaseConfig = {
-apiKey: "AIzaSyAcb2-mFc8SdyY0JJ9bK3KAVh7S0Q1Z7b0",
-authDomain: "reservas-mardel.firebaseapp.com",
-projectId: "reservas-mardel",
-storageBucket: "reservas-mardel.appspot.com",
-messagingSenderId: "123456789",
-appId: "1:123456789:web:abc123"
-};
-
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
-
-let currentUser=null;
-let perfilData={};
-let localesCache=[];
-let localSeleccionado=null;
-
-onAuthStateChanged(auth, async (user)=>{
-if(!user){
-location.href="login.html";
-return;
-}
-currentUser=user;
-const uDoc = await getDoc(
-doc(db,"usuarios",user.uid)
-);
-perfilData = uDoc.exists() ? 
-uDoc.data() : {email:user.email};
-document.getElementById("userEmail").innerText = 
-perfilData.email || user.email;
-document.getElementById("userNombre").innerText = 
-perfilData.nombre || 'Mi Perfil';
-cargarBranding();
-cargarLocales();
-cargarPerfilForm();
-cargarMisReservas();
-});
-
-async function cargarBranding(){
-const b = await getDoc(
-doc(db,"config","branding")
-);
-if(b.exists()){
-document.getElementById("saludoCliente").innerText = 
-b.data().saludoCliente || 
-"RESERVAR - TU LUGAR, TU MOMENTO";
-document.getElementById("subSaludo").innerText = 
-b.data().subSaludoCliente || "Elegí tu local";
-document.getElementById("soporteInfo").innerText = 
-b.data().infoSoporte || "Soporte ADMI";
-}
-}
- async function cargarLocales(){
-const cont = document.getElementById("listaLocales");
-cont.innerHTML = "Cargando...";
-const snap = await getDocs(
-query(
-collection(db,"locales"), 
-where("habilitado","==",true)
-)
-);
-localesCache=[];
-snap.forEach(d=>{
-if(d.data().planActivo!==false){
-localesCache.push({id:d.id, ...d.data()});
-}
-});
-cont.innerHTML="";
-const sel = document.getElementById("reservaLocal");
-sel.innerHTML='<option value="">Elegí local</option>';
-localesCache.forEach(l=>{
-cont.innerHTML+=`
-<div class="bg-white p-4 rounded-xl shadow mb-3">
-<div class="font-bold">${l.nombre}</div>
-<div class="text-xs text-gray-500">${l.direccion||''}</div>
-<button data-id="${l.id}" 
-class="btn-elegir mt-2 w-full bg-black text-white p-2 rounded-lg text-sm">
-Reservar acá
-</button>
-</div>`;
-sel.innerHTML+=`<option value="${l.id}">${l.nombre}</option>`;
-});
-document.querySelectorAll(".btn-elegir").forEach(b=>{
-b.onclick=()=>{ elegirLocal(b.dataset.id); }
-});
-document.getElementById("listaLocales2").innerHTML = cont.innerHTML;
+ apiKey: "AIzaSyB8p3o5t0o6d9l5
+  <script>
+async function loadLocales(){
+ const snap=await db.collection('locales').where('visible','==',true).get();
+ locales=snap.docs.map(d=>({id:d.id,...d.data()}));
+ renderLocales();
 }
 
-function elegirLocal(id){
-localSeleccionado = localesCache.find(x=>x.id==id);
-document.getElementById("reservaLocal").value=id;
-onLocalChange();
-showTab('reservas');
+function filtrarLocales(){renderLocales();}
+
+function renderLocales(){
+ const q=buscador.value.toLowerCase();
+ let list=[...locales];
+ if(q) list=list.filter(l=>(l.nombre||'').toLowerCase().includes(q)||(l.direccion||'').toLowerCase().includes(q)||(l.barrio||'').toLowerCase().includes(q));
+ // distancia
+ list=list.map(l=>{
+   let d=null;
+   if(myPos && l.lat && l.lng) d=hav(myPos.lat,myPos.lng,l.lat,l.lng);
+   return {...l, _dist:d};
+ }).sort((a,b)=>{
+   if(a._dist==null) return 1; if(b._dist==null) return -1; return a._dist-b._dist;
+ });
+
+ // premium banner
+ const premium=list.filter(l=>l.plan==='premium' || l.destacado===true).slice(0,5);
+ premiumBox.innerHTML=premium.map(p=>`
+   <div class="premium-banner" onclick="openLocal('${p.id}')">
+     <img src="${p.foto||p.imagen||'https://images.unsplash.com/photo-1521590832167-7bcbfaa6381f'}">
+     <span class="premium-tag">★ PREMIUM</span>
+     <div style="position:absolute;bottom:10px;left:12px;right:12px;display:flex;justify-content:space-between;align-items:end">
+       <div><b style="font-size:14px">${p.nombre}</b><br><span style="font-size:11px;opacity:.8">${p.direccion||''}</span></div>
+       <span style="background:#00000099;padding:6px 10px;border-radius:999px;font-size:11px">${p._dist!=null?p._dist.toFixed(1)+'km':''}</span>
+     </div>
+   </div>
+ `).join('') || `<div class="glass" style="padding:12px;font-size:12px;color:#ffffff88;margin-bottom:12px">Sin locales premium aún</div>`;
+
+ // cerca y todos
+ const cerca=list.filter(l=>l._dist!=null && l._dist<5);
+ const htmlCard=(l)=>`
+   <div class="glass card-local" onclick="openLocal('${l.id}')">
+     <img class="img-local" src="${l.foto||l.imagen||'https://images.unsplash.com/photo-1585747860715-2ba37e788b09'}">
+     <div style="flex:1">
+       <div style="display:flex;gap:6px;align-items:center">
+         <b style="font-size:14px">${l.nombre||'Local'}</b>
+         ${l.promedioEstrellas?`<span style="font-size:11px;background:#a855f7;padding:2px 6px;border-radius:999px">★ ${l.promedioEstrellas.toFixed(1)}</span>`:''}
+       </div>
+       <div style="font-size:11px;color:#ffffff88">${l.direccion||''} ${l.barrio?'· '+l.barrio:''}</div>
+       <div style="font-size:11px;color:#ffffff66;margin-top:2px">${l._dist!=null?`📍 a ${l._dist.toFixed(1)}km`:'📍 '+ (l.ciudad||'La Plata / MdP')}</div>
+     </div>
+     <div class="heart ${myData&&myData.favoritos&&myData.favoritos.includes(l.id)?'on':''}" onclick="event.stopPropagation();toggleFav('${l.id}')">${myData&&myData.favoritos&&myData.favoritos.includes(l.id)?'♥':'♡'}</div>
+   </div>
+ `;
+ cercaBox.innerHTML=cerca.length?cerca.map(htmlCard).join(''):`<div style="font-size:12px;color:#ffffff66">Activa GPS para ver cerca tuyo</div>`;
+ localesBox.innerHTML=list.map(htmlCard).join('');
+ // favs tab render
+ renderFavs(list);
 }
 
-function onLocalChange(){
-const id = document.getElementById("reservaLocal").value;
-localSeleccionado = localesCache.find(x=>x.id==id);
-const boxDni = document.getElementById("boxDNI");
-const boxSena = document.getElementById("boxSena");
-if(!localSeleccionado){
-boxDni.classList.add("hidden");
-boxSena.classList.add("hidden");
-return;
-}
-if(localSeleccionado.pideDNI) 
-boxDni.classList.remove("hidden");
-else 
-boxDni.classList.add("hidden");
-if(localSeleccionado.pideSena){
-boxSena.classList.remove("hidden");
-document.getElementById("senaInfo").innerText = 
-"Seña: $" + (localSeleccionado.montoSena||0);
-} else {
-boxSena.classList.add("hidden");
-}
+function renderFavs(all){
+ const favIds=myData?.favoritos||[];
+ const favs=all.filter(l=>favIds.includes(l.id));
+ if(!favs.length){favsBox.innerHTML=`<div class="glass" style="padding:20px;text-align:center;color:#ffffff66;font-size:13px">Aún no tenés favoritos<br>Toca ♥ en un local</div>`;return;}
+ favsBox.innerHTML=favs.map(l=>`
+   <div class="glass card-local" onclick="openLocal('${l.id}')">
+     <img class="img-local" src="${l.foto||''}">
+     <div style="flex:1"><b>${l.nombre}</b><br><span style="font-size:11px;color:#ffffff88">${l.direccion||''}</span></div>
+     <button class="btn-violeta" style="width:auto;padding:8px 12px;font-size:12px" onclick="event.stopPropagation();openLocal('${l.id}')">Reservar</button>
+   </div>
+ `).join('');
 }
 
-function cargarPerfilForm(){
-document.getElementById("p_nombre").value = perfilData.nombre||"";
-document.getElementById("p_apellido").value = perfilData.apellido||"";
-document.getElementById("p_dni").value = perfilData.dni||"";
-document.getElementById("p_nacimiento").value = perfilData.nacimiento||"";
-document.getElementById("p_whatsapp").value = perfilData.whatsapp||"";
-document.getElementById("p_email").value = perfilData.email||currentUser.email;
-document.getElementById("p_direccion").value = perfilData.direccion||"";
-document.getElementById("p_ciudad").value = perfilData.ciudad||"Mar del Plata";
+async function toggleFav(id){
+ if(!myData) return;
+ let favs=myData.favoritos||[];
+ favs=favs.includes(id)?favs.filter(x=>x!==id):[...favs,id];
+ await db.collection('users').doc(me.uid).update({favoritos:favs});
+ myData.favoritos=favs; renderLocales();
+}
+function toggleFavModal(){if(selectedLocal) toggleFav(selectedLocal.id).then(()=>{updateHeartModal();});}
+function updateHeartModal(){
+ const on=myData.favoritos.includes(selectedLocal.id);
+ document.getElementById('mHeart').className='heart '+(on?'on':'');
+ document.getElementById('mHeart').innerText=on?'♥':'♡';
 }
 
+async function openLocal(id){
+ selectedLocal=locales.find(l=>l.id===id);
+ if(!selectedLocal){const d=await db.collection('locales').doc(id).get(); selectedLocal={id:d.id,...d.data()};}
+ document.getElementById('mImg').src=selectedLocal.foto||selectedLocal.imagen||'';
+ document.getElementById('mNombre').innerText=selectedLocal.nombre||'';
+ document.getElementById('mDir').innerText=selectedLocal.direccion||'';
+ document.getElementById('mHorario').innerText=`🕒 ${selectedLocal.apertura||'09:00'} - ${selectedLocal.cierre||'20:00'}`;
+ document.getElementById('mDist').innerText=selectedLocal._dist!=null?`📍 a ${selectedLocal._dist.toFixed(1)}km`:`📍 ${selectedLocal.ciudad||''}`;
+ document.getElementById('mRating').innerText=selectedLocal.promedioEstrellas?`★ ${selectedLocal.promedioEstrellas.toFixed(1)} (${selectedLocal.totalReviews||0} reseñas)`:'Sin reseñas aún';
+ document.getElementById('modalLocal').classList.remove('hidden');
+ updateHeartModal();
+ loadServs(selectedLocal.id);
+ loadReviews(selectedLocal.id);
+}
+
+function closeModal(){document.getElementById('modalLocal').classList.add('hidden');}
+
+async function loadServs(localId){
+ const snap=await db.collection('servicios').where('uid','==',localId).where('activo','==',true).get();
+ const servs=snap.docs.map(d=>({id:d.id,...d.data()}));
+ if(!servs.length){mServs.innerHTML=`<div style="color:#ffffff66;font-size:12px">Este local aún no cargó servicios</div>`;return;}
+ mServs.innerHTML=servs.map(s=>`
+   <div class="glass" style="padding:12px;display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+     <div><b style="font-size:13px">${s.nombre}</b><br><span style="font-size:11px;color:#ffffff88">${s.duracion||60}min · ${s.precio? '$'+s.precio : 'Consultar'} ${s.sena?'· Seña $'+s.sena:''}</span></div>
+     <button class="btn-violeta" style="width:auto;padding:8px 14px;font-size:12px" onclick="openReserva('${s.id}','${s.nombre.replace(/'/g,'')}','${s.duracion||60}','${s.precio||''}')">Reservar</button>
+   </div>
+ `).join('');
+ window._servsCache=servs;
+}
+async function loadReviews(localId){
+ const snap=await db.collection('reviews').where('localId','==',localId).where('estado','==','aprobado').orderBy('fecha','desc').limit(20).get();
+ const revs=snap.docs.map(d=>d.data());
+ if(!revs.length){mReviews.innerHTML=`<div style="color:#ffffff66;font-size:12px">Sin reseñas aprobadas aún</div>`;return;}
+ mReviews.innerHTML=revs.map(r=>`
+   <div class="glass" style="padding:10px;margin-bottom:8px">
+     <div style="font-size:12px"> ${'★'.repeat(r.estrellas||5)} <span style="color:#ffffff66">${r.anonimo?'Anónimo':(r.nombre||'Cliente')}</span></div>
+     <div style="font-size:12px;margin-top:4px;color:#ffffffbb">${r.texto||''}</div>
+   </div>
+ `).join('');
+}
+</script>
+ <script>
+// ========= RESERVA CON BLOQUEO REAL =========
+function openReserva(servId, nombre, dur, precio){
+ selectedServ= (window._servsCache||[]).find(s=>s.id===servId) || {id:servId,nombre,duracion:parseInt(dur)||60,precio};
+ document.getElementById('rServNombre').innerText=selectedServ.nombre;
+ document.getElementById('rServDetalle').innerText=`${selectedServ.duracion} min · ${selectedServ.precio?'$'+selectedServ.precio:'Consultar'} · Traslado +30min bloqueado`;
+ document.getElementById('rFecha').value=todayISO();
+ document.getElementById('rDireccion').value=myData.direccion||'';
+ document.getElementById('modalReserva').classList.remove('hidden');
+ // aviso DNI si local pide
+ if(selectedLocal.config?.pideDNI || selectedLocal.pideDNI){
+   if(!myData.dni){document.getElementById('dniAviso').classList.remove('hidden');}
+   else{document.getElementById('dniAviso').classList.add('hidden');}
+ }else{document.getElementById('dniAviso').classList.add('hidden');}
+ loadHoras();
+ document.getElementById('rFecha').onchange=loadHoras;
+}
+
+function closeReserva(){document.getElementById('modalReserva').classList.add('hidden'); selectedHora=null;}
+
+function parseMin(str){const [h,m]=str.split(':').map(Number); return h*60+m;}
+function minToStr(min){const h=Math.floor(min/60).toString().padStart(2,'0'); const mm=(min%60).toString().padStart(2,'0'); return `${h}:${mm}`;}
+
+async function loadHoras(){
+ const fecha=document.getElementById('rFecha').value;
+ if(!fecha||!selectedLocal) return;
+ document.getElementById('rHoras').innerHTML=`<div style="grid-column:1/-1;color:#ffffff66;font-size:12px">Cargando disponibilidad...</div>`;
+ // 1) reservas del dia de ese local
+ const snap=await db.collection('reservas').where('uid','==',selectedLocal.id).where('fecha','==',fecha).get();
+ reservasDelLocal=snap.docs.map(d=>d.data());
+
+ const apertura=parseMin(selectedLocal.apertura||'09:00');
+ const cierre=parseMin(selectedLocal.cierre||'20:00');
+ const durServ=parseInt(selectedLocal.config?.duracion || selectedServ.duracion || 60);
+ const durTotal=durServ + 30; // 30 traslado como me pediste
+
+ let slots=[];
+ for(let t=apertura; t+durTotal<=cierre; t+=30){
+   slots.push(t);
+ }
+
+ // marcar ocupados
+ const html=slots.map(t=>{
+   const fin=t+durTotal;
+   const ocupado=reservasDelLocal.some(r=>{
+     // r puede tener hora inicio y duracionTotal o fin
+     let rIni= r.hora? parseMin(r.hora) : parseMin(r.horaInicio||'00:00');
+     let rDur= parseInt(r.duracionTotal || r.duracion || 60) + 30;
+     // si ya guarda fin
+     let rFin= rIni + rDur;
+     return (t < rFin && fin > rIni); // superposición
+   });
+   const str=minToStr(t);
+   return `<div class="slot ${ocupado?'busy':''}" data-h="${str}" onclick="selHora('${str}', this)">${str} ${ocupado?'✕':''}</div>`;
+ }).join('');
+
+ document.getElementById('rHoras').innerHTML=html || `<div style="color:#ffffff66">Cerrado</div>`;
+}
+
+function selHora(h, el){
+ selectedHora=h;
+ document.querySelectorAll('.slot').forEach(s=>s.classList.remove('sel'));
+ el.classList.add('sel');
+}
+
+async function confirmarReserva(){
+ const fecha=document.getElementById('rFecha').value;
+ const dir=document.getElementById('rDireccion').value.trim();
+ const msg=document.getElementById('rMsg');
+ msg.innerText='';
+
+ if(!fecha||!selectedHora){msg.innerText='Elegí fecha y hora';return;}
+ if(!dir){msg.innerText='Poné dirección La Plata / MdP';return;}
+ if((selectedLocal.config?.pideDNI || selectedLocal.pideDNI) && !myData.dni){
+   msg.innerText='Este local pide DNI, cargalo en Perfil'; switchTab('perfil'); return;
+ }
+
+ // re-validar choque por seguridad
+ await loadHoras();
+ const t=parseMin(selectedHora);
+ const durTotal=parseInt(selectedServ.duracion||60)+30;
+ const choque=reservasDelLocal.some(r=>{
+   let rIni=parseMin(r.hora||r.horaInicio||'00:00');
+   let rDur=parseInt(r.duracionTotal||r.duracion||60)+30;
+   return (t < rIni+rDur && t+durTotal > rIni);
+ });
+ if(choque){msg.innerText='Ese horario se acaba de ocupar, elegí otro'; loadHoras(); return;}
+
+ // guardar
+ try{
+   const fechaHora = new Date(fecha+'T'+selectedHora+':00');
+   await db.collection('reservas').add({
+     uid: selectedLocal.id,
+     clienteUid: me.uid,
+     clienteNombre: myData.nombre||me.email,
+     clienteEmail: myData.email||me.email,
+     dni: myData.dni||'',
+     direccion: dir,
+     lat: myPos?.lat||null,
+     lng: myPos?.lng||null,
+     servicioId: selectedServ.id,
+     servicioNombre: selectedServ.nombre,
+     duracion: parseInt(selectedServ.duracion||60),
+     duracionTotal: durTotal,
+     precio: selectedServ.precio||'',
+     fecha: fecha,
+     hora: selectedHora,
+     fechaHora: firebase.firestore.Timestamp.fromDate(fechaHora),
+     estado: 'pendiente',
+     recordatorioEnviado: false,
+     creado: firebase.firestore.FieldValue.serverTimestamp(),
+     origen: 'cliente-app'
+   });
+   closeReserva(); closeModal();
+   alert('¡Reserva enviada! Te llegará mail 1h antes.');
+   switchTab('reservas');
+   loadMisReservas();
+ }catch(e){msg.innerText=e.message;}
+}
+
+// ========= MIS RESERVAS =========
+async function loadMisReservas(){
+ if(!me) return;
+ const snap=await db.collection('reservas').where('clienteUid','==',me.uid).orderBy('fechaHora','desc').limit(40).get();
+ const list=snap.docs.map(d=>({id:d.id,...d.data()}));
+ if(!list.length){misReservasBox.innerHTML=`<div class="glass" style="padding:20px;text-align:center;color:#ffffff66;font-size:13px">Aún no tenés reservas</div>`;return;}
+ misReservasBox.innerHTML=list.map(r=>`
+   <div class="glass" style="padding:14px;margin-bottom:12px">
+     <div style="display:flex;justify-content:space-between">
+       <b style="font-size:13px">${r.servicioNombre||'Servicio'}</b>
+       <span style="font-size:10px;padding:3px 8px;border-radius:999px;background:${r.estado==='pendiente'?'#ffcc0033':'#00ff8833'}">${r.estado}</span>
+     </div>
+     <div style="font-size:11px;color:#ffffff88;margin-top:4px">${r.fecha} ${r.hora} · ${r.direccion||''}</div>
+     <div style="font-size:11px;color:#ffffff66">Local: ${locales.find(l=>l.id===r.uid)?.nombre||r.uid}</div>
+     ${r.estado==='completada'?`<button class="btn-violeta" style="margin-top:10px;padding:8px;font-size:12px" onclick="dejarReview('${r.uid}','${r.id}')">Dejar reseña anónima</button>`:''}
+     ${r.estado==='pendiente'?`<button style="margin-top:10px;width:100%;background:transparent;border:1px solid #ff5a5a55;color:#ff8a8a;border-radius:10px;padding:8px;font-size:12px" onclick="cancelarReserva('${r.id}')">Cancelar</button>`:''}
+   </div>
+ `).join('');
+}
+
+async function cancelarReserva(id){
+ if(!confirm('¿Cancelar reserva?')) return;
+ await db.collection('reservas').doc(id).update({estado:'cancelada'});
+ loadMisReservas();
+}
+</script>
+ <script>
+// ========= PERFIL =========
 async function guardarPerfil(){
-const data={
-nombre: document.getElementById("p_nombre").value.trim(),
-apellido: document.getElementById("p_apellido").value.trim(),
-dni: document.getElementById("p_dni").value.trim(),
-nacimiento: document.getElementById("p_nacimiento").value,
-whatsapp: document.getElementById("p_whatsapp").value.trim(),
-email: document.getElementById("p_email").value.trim(),
-direccion: document.getElementById("p_direccion").value.trim(),
-ciudad: document.getElementById("p_ciudad").value.trim(),
-rol:"cliente",
-updatedAt: Timestamp.now()
-};
-if(!data.nombre || !data.whatsapp){
-alert("Nombre y WhatsApp obligatorios");
-return;
-}
-await setDoc(doc(db,"usuarios",currentUser.uid), data, {merge:true});
-perfilData={...perfilData,...data};
-document.getElementById("userNombre").innerText = data.nombre;
-alert("Perfil guardado!");
+ const nom=pNombre.value.trim();
+ const dni=pDni.value.trim();
+ const wsp=pWsp.value.trim();
+ const dir=pDir.value.trim();
+ if(!nom){perfilMsg.innerText='Poné nombre';return;}
+ await db.collection('users').doc(me.uid).update({nombre:nom,dni:dni,wsp:wsp,direccion:dir});
+ myData.nombre=nom; myData.dni=dni; myData.wsp=wsp; myData.direccion=dir;
+ holaNombre.innerText=nom;
+ perfilMsg.innerText='✅ Perfil guardado';
+ setTimeout(()=>perfilMsg.innerText='',2000);
 }
 
-async function crearReserva(){
-if(!perfilData.nombre){
-alert("Primero completa Perfil");
-showTab('perfil');
-return;
-}
-const localId=document.getElementById("reservaLocal").value;
-const fecha=document.getElementById("reservaFecha").value;
-const personas=document.getElementById("reservaPersonas").value;
-const hora=document.getElementById("reservaHora").value;
-if(!localId||!fecha||!personas||!hora){
-alert("Completa todo");
-return;
-}
-const reserva={
-localId,
-localNombre: localesCache.find(x=>x.id==localId)?.nombre||"",
-clienteUid: currentUser.uid,
-clienteNombre: (perfilData.nombre+" "+(perfilData.apellido||"")).trim(),
-clienteEmail: currentUser.email,
-clienteWhatsapp: perfilData.whatsapp||"",
-clienteDNI: document.getElementById("reservaDNI").value||perfilData.dni||"",
-fecha, hora,
-personas: parseInt(personas),
-nota: document.getElementById("reservaNota").value,
-estado:"pendiente",
-pideDNI: localSeleccionado?.pideDNI||false,
-pideSena: localSeleccionado?.pideSena||false,
-montoSena: localSeleccionado?.montoSena||0,
-createdAt: Timestamp.now()
-};
-await addDoc(collection(db,"reservas"), reserva);
-alert("Reserva creada!");
-cargarMisReservas();
-showTab('inicio');
+// ========= COMENTARIOS ANÓNIMOS CONTROLADOS POR LOCALES =========
+async function dejarReview(localId, reservaId){
+ const estrellas=prompt('¿Cuántas estrellas 1 a 5?');
+ if(!estrellas) return;
+ const est=parseInt(estrellas);
+ if(est<1||est>5){alert('Tiene que ser 1 a 5');return;}
+ const texto=prompt('Comentario (opcional):')||'';
+ const anon=confirm('¿Querés que sea ANÓNIMO?\nOK = Sí anónimo\nCancelar = Con tu nombre');
+ try{
+   await db.collection('reviews').add({
+     localId: localId,
+     clienteUid: me.uid,
+     reservaId: reservaId,
+     nombre: myData.nombre||'Cliente',
+     estrellas: est,
+     texto: texto,
+     anonimo: anon,
+     estado: 'pendiente', // LOCAL lo aprueba/rechaza en su panel Reseñas
+     fecha: firebase.firestore.FieldValue.serverTimestamp()
+   });
+   alert('¡Gracias! Tu reseña quedó pendiente de aprobación por el local.');
+ }catch(e){alert(e.message);}
 }
 
-async function cargarMisReservas(){
-const cont=document.getElementById("misReservas");
-cont.innerHTML="Cargando...";
-const snap=await getDocs(
-query(
-collection(db,"reservas"), 
-where("clienteUid","==",currentUser.uid)
-)
-);
-if(snap.empty){
-cont.innerHTML="<div class='bg-white p-4 rounded-xl text-sm'>Sin reservas</div>";
-return;
-}
-cont.innerHTML="";
-snap.forEach(d=>{
-const r=d.data();
-cont.innerHTML+=`
-<div class="bg-white p-4 rounded-xl shadow mb-2">
-<div class="font-bold">${r.localNombre}</div>
-<div class="text-xs">${r.fecha} ${r.hora} - ${r.personas} pers - ${r.estado}</div>
-</div>`;
-});
+// ========= SWITCH TABS VERTICAL =========
+function switchTab(name){
+ document.querySelectorAll('[id^=view-]').forEach(v=>v.classList.add('hidden'));
+ document.getElementById('view-'+name).classList.remove('hidden');
+ document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+ const map={inicio:0,reservas:1,favs:2,perfil:3};
+ document.querySelectorAll('.tab')[map[name]].classList.add('active');
+ if(name==='reservas') loadMisReservas();
+ if(name==='inicio') renderLocales();
+ window.scrollTo(0,0);
 }
 
-window.showTab=(tab)=>{
-document.querySelectorAll(".tab").forEach(t=>t.classList.add("hidden"));
-document.getElementById("tab-"+tab).classList.remove("hidden");
-document.querySelectorAll(".btn-tab").forEach(b=>{
-b.classList.remove("bg-black","text-white");
-});
-document.getElementById("btn-"+tab).classList.add("bg-black","text-white");
-};
+// ========= RECORDATORIO MAIL (para tu cloud function después) =========
+// Guardamos clienteEmail y fechaHora. Vos desde ADMI podés correr function que busca reservas where fechaHora == now+1h y estado pendiente y manda mail con mailjs o sendgrid. Por ahora queda guardado.
 
-document.getElementById("reservaLocal").addEventListener("change", onLocalChange);
-document.getElementById("btnCrear").addEventListener("click", crearReserva);
-document.getElementById("btnGuardarPerfil").addEventListener("click", guardarPerfil);
-document.getElementById("btnLogout").addEventListener("click", async()=>{
-await signOut(auth);
-location.href="login.html";
+// ========= INIT BUSCADOR GPS AL CARGAR =========
+window.addEventListener('load',()=>{
+  if(myPos) renderLocales();
 });
 </script>
+</div>
 </body>
 </html>
