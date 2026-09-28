@@ -275,25 +275,75 @@
     let horaSel=null;
     let reservasDelDia=[];
 
-    // PERFIL TAP
-    $('avatarJD').onclick=()=>$('modalPerfil').classList.remove('hidden');
-    $('btnBottomPerfil').onclick=()=>$('modalPerfil').classList.remove('hidden');
-    $('closePerfil').onclick=()=>$('modalPerfil').classList.add('hidden');
-
-    // SLOTS LOGICA - EVITA SUPERPOSICION
-    async function cargarSlots(fechaStr){
-      const cont=$('slotsHora');
-      cont.innerHTML='Cargando...';
-      if(!localSel||!fechaStr){
-        cont.innerHTML='';
-        return;
+    // PERFIL TAP - FIX NO QUEDA ABIERTO
+$('avatarJD').onclick=()=>{
+  $('modalPerfil').classList.add('show');
+  $('modalPerfil').classList.remove('hidden');
+};
+$('btnBottomPerfil').onclick=()=>{
+  $('modalPerfil').classList.add('show');
+  $('modalPerfil').classList.remove('hidden');
+};
+$('closePerfil').onclick=()=>{
+  $('modalPerfil').classList.remove('show');
+  $('modalPerfil').classList.add('hidden');
+};
+$('modalPerfil').onclick=e=>{
+  if(e.target.id==='modalPerfil'){
+    $('modalPerfil').classList.remove('show');
+    $('modalPerfil').classList.add('hidden');
+  }
+};
+      async function cargarSlots(fechaStr){
+  const cont=$('slotsHora');
+  cont.innerHTML='Cargando...';
+  if(!localSel||!fechaStr){
+    cont.innerHTML='';
+    return;
+  }
+  // traer reservas de ese local ese dia
+  try{
+    const snap=await db.collection('reservas')
+     .where('uid','==',localSel.id)
+     .where('fecha','==',fechaStr)
+     .get();
+    reservasDelDia=[];
+    snap.forEach(d=>{
+      const r=d.data();
+      if(r.fechaHora){
+        reservasDelDia.push(r.fechaHora.slice(11,16));
       }
-      // traer reservas de ese local ese dia
-      try{
-        const snap=await db.collection('reservas')
-         .where('uid','==',localSel.id)
-         .where('fecha','>=',fechaStr)
-         .where('fecha','<',fechaStr+'z')
+    });
+  }catch(e){ reservasDelDia=[]; }
+
+  const apertura=localSel.apertura||'09:00';
+  const cierre=localSel.cierre||'18:00';
+  const dur=60;
+  cont.innerHTML='';
+  let [h0,m0]=apertura.split(':').map(Number);
+  let [h1,m1]=cierre.split(':').map(Number);
+  let cur=h0*60+m0;
+  let end=h1*60+m1;
+  for(;cur+dur<=end;cur+=dur){
+    let hh=String(Math.floor(cur/60)).padStart(2,'0');
+    let mm=String(cur%60).padStart(2,'0');
+    let hora=`${hh}:${mm}`;
+    let ocupado=reservasDelDia.includes(hora);
+    let b=document.createElement('button');
+    b.textContent=hora;
+    b.className='btn small';
+    b.style.background=ocupado?'#444':(horaSel===hora?'#5b21f6':'#ffffff1f');
+    b.style.opacity=ocupado?'0.4':'1';
+    b.disabled=ocupado;
+    b.onclick=()=>{
+      horaSel=hora;
+      $('rFechaHora').value=`${fechaStr}T${hora}`;
+      cargarSlots(fechaStr);
+      toast(`Elegiste ${hora}`);
+    };
+    cont.appendChild(b);
+  }
+}
          .get();
         reservasDelDia=[];
         snap.forEach(d=>{
