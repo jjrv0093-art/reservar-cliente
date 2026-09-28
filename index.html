@@ -1,560 +1,99 @@
-<!DOCTYPE html>
-<html lang='es'>
-<head>
-<meta charset='UTF-8'>
-<meta name='viewport' content='width=device-width,initial-scale=1.0'>
-<title>reservAR - Cliente</title>
 <style>
-:root{
- --stroke:#ffffff26;
- --panel:#ffffff12;
- --panel2:#1f0736
-}
-*{
- box-sizing:border-box
-}
-body{
- margin:0;
- font-family:system-ui;
- color:#fff;
- background:linear-gradient(160deg,#6a11cb,#7b1fa2 40%,#3a0f6e 70%,#0a0933);
- background-attachment:fixed
-}
+:root{--stroke:#ffffff26;--panel:#ffffff12}
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui;color:#fff;background:linear-gradient(160deg,#6a11cb,#7b1fa2 40%,#3a0f6e 70%,#0a0933);background-attachment:fixed}
 .hidden{display:none!important}
-.wrap{
- max-width:500px;
- margin:0 auto;
- padding:16px;
- padding-bottom:90px
-}
-.topbar{
- position:sticky;
- top:0;
- z-index:20;
- display:flex;
- justify-content:space-between;
- align-items:center;
- padding:12px 16px;
- background:rgba(31,7,54,.98);
- border-bottom:1px solid var(--stroke);
- backdrop-filter:blur(12px)
-}
-.logo{font-weight:900;font-size:18px}
-.logo span{
- font-weight:300;
- font-size:12px;
- color:#cfc9e6
-}
-.right{
- display:flex;
- gap:8px;
- align-items:center
-}
-.avatar{
- width:34px;
- height:34px;
- border-radius:999px;
- background:#fff;
- color:#3a0f6e;
- display:flex;
- align-items:center;
- justify-content:center;
- font-weight:900
-}
-  .pill{
- padding:6px 10px;
- border-radius:999px;
- border:1px solid var(--stroke);
- background:#ffffff18;
- font-size:12px
-}
-.screen{
- display:none
-}
-.screen.active{
- display:block
-}
-.card{
- background:var(--panel);
- border:1px solid var(--stroke);
- border-radius:16px;
- padding:16px;
- margin-bottom:12px
-}
-.search{
- width:100%;
- padding:12px 14px;
- border-radius:12px;
- border:1px solid #ffffff22;
- background:#ffffff08;
- color:#fff
-}
-.btn{
- background:#a855f7;
- border:none;
- color:#fff;
- padding:.7rem 1rem;
- border-radius:12px;
- cursor:pointer;
- font-weight:700
-}
-.btn.ghost{
- background:transparent;
- border:1px solid var(--stroke)
-}
-.btn.full{
- width:100%
-}
-.btn.small{
- padding:.4rem .8rem;
- font-size:12px
-}
-.bottomNav{
- position:fixed;
- bottom:0;
- left:0;
- right:0;
- z-index:30;
- background:rgba(31,7,54,.98);
- border-top:1px solid var(--stroke);
- display:flex;
- justify-content:space-around;
- padding:8px 0 12px;
- backdrop-filter:blur(12px)
-}
-.bottomNav button{
- background:transparent;
- border:none;
- color:#cfc9e6;
- font-size:11px;
- display:flex;
- flex-direction:column;
- align-items:center;
- gap:4px;
- cursor:pointer
-}
-.bottomNav button.active{
- color:#fff
-}
-.item{
- display:flex;
- justify-content:space-between;
- gap:8px;
- padding:12px;
- border:1px solid var(--stroke);
- border-radius:12px;
- background:#ffffff0f;
- margin-bottom:8px
-}
-.slot{
- padding:10px 14px;
- border-radius:999px;
- border:1px solid var(--stroke);
- background:#ffffff12;
- cursor:pointer
-}
-.slot.active{
- background:#fff;
- color:#3a0f6e;
- font-weight:800
-}
-.slot.ocupado{
- opacity:.3;
- text-decoration:line-through;
- pointer-events:none
-}
-  .auth{
- max-width:420px;
- margin:30px auto;
- background:var(--panel);
- border:1px solid var(--stroke);
- border-radius:14px;
- padding:16px
-}
-.auth input{
- width:100%;
- padding:.7rem;
- border-radius:10px;
- border:1px solid #ffffff22;
- background:#ffffff08;
- color:#fff;
- margin-bottom:8px
-}
-.modal{
- position:fixed;
- inset:0;
- z-index:100;
- background:#0008;
- display:none;
- align-items:flex-end;
- justify-content:center
-}
-.modal.show{
- display:flex
-}
-input,select,textarea{
- width:100%;
- padding:.6rem .7rem;
- border-radius:10px;
- border:1px solid #ffffff22;
- background:#ffffff08;
- color:#fff
-}
-.toast{
- position:fixed;
- bottom:90px;
- left:50%;
- transform:translateX(-50%);
- background:#1f0736;
- border:1px solid #ffffff33;
- padding:10px 16px;
- border-radius:12px;
- z-index:9999
-}
+.wrap{max-width:500px;margin:0 auto;padding:16px;padding-bottom:90px}
+.topbar{position:sticky;top:0;z-index:20;display:flex;justify-content:space-between;align-items:center;padding:12px 16px;background:rgba(31,7,54,.98);border-bottom:1px solid var(--stroke);backdrop-filter:blur(12px)}
+.logo{font-weight:900}.logo span{font-weight:300;font-size:12px;color:#cfc9e6}
+.right{display:flex;gap:8px;align-items:center}
+.avatar{width:34px;height:34px;border-radius:999px;background:#fff;color:#3a0f6e;display:flex;align-items:center;justify-content:center;font-weight:900}
+.pill{padding:6px 10px;border-radius:999px;border:1px solid var(--stroke);background:#ffffff18;font-size:12px}
+.screen{display:none}.screen.active{display:block}
+.card{background:var(--panel);border:1px solid var(--stroke);border-radius:16px;padding:16px;margin-bottom:12px}
+.search{width:100%;padding:12px 14px;border-radius:12px;border:1px solid #ffffff22;background:#ffffff08;color:#fff}
+.btn{background:#a855f7;border:0;color:#fff;padding:.7rem 1rem;border-radius:12px;font-weight:700;cursor:pointer}.btn.ghost{background:transparent;border:1px solid var(--stroke)}.btn.full{width:100%}
+.item{display:flex;justify-content:space-between;gap:8px;padding:12px;border:1px solid var(--stroke);border-radius:12px;background:#ffffff0f;margin-bottom:8px}
+.slot{padding:10px 14px;border-radius:999px;border:1px solid var(--stroke);background:#ffffff12;cursor:pointer}.slot.active{background:#fff;color:#3a0f6e;font-weight:800}.slot.ocupado{opacity:.3;text-decoration:line-through;pointer-events:none}
+.auth{max-width:420px;margin:30px auto;background:var(--panel);border:1px solid var(--stroke);border-radius:16px;padding:16px}.auth input{width:100%;padding:.7rem;border-radius:10px;border:1px solid #ffffff22;background:#ffffff08;color:#fff;margin-bottom:8px}
+input,select,textarea{width:100%;padding:.6rem.7rem;border-radius:10px;border:1px solid #ffffff22;background:#ffffff08;color:#fff}
+.bottomNav{position:fixed;bottom:0;left:0;right:0;z-index:30;background:rgba(31,7,54,.98);border-top:1px solid var(--stroke);display:flex;justify-content:space-around;padding:8px 0 12px}.bottomNav button{background:transparent;border:0;color:#cfc9e6;font-size:11px;display:flex;flex-direction:column;align-items:center;gap:4px}.bottomNav button.active{color:#fff}
+.toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:#1f0736;border:1px solid #ffffff33;padding:10px 16px;border-radius:12px;z-index:9999}
 </style>
 <script src='https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js'></script>
 <script src='https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js'></script>
 <script src='https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js'></script>
-</head>
-<body>
-<div class="topbar">
- <div class="logo">
-  reservAR
-  <span>tu lugar, tu momento.</span>
+<script src='https://www.gstatic.com/firebasejs/10.12.5/firebase-storage-compat.js'></script>
+<div id=topbar class="topbar hidden">
+ <div class=logo>reservAR <span>tu lugar, tu momento.</span></div>
+ <div class=right><span class=pill>Panel Cliente</span><div id=avatarTop class=avatar>JD</div></div>
+</div>
+<div id=authBox class=auth>
+ <h2 id=authTitle>Iniciar sesión</h2>
+ <div id=loginFields>
+  <input id=email placeholder="tu@correo.com">
+  <input id=pass type=password placeholder="Contraseña">
+  <p id=loginMsg style="color:#fca5a5;font-size:12px;min-height:14px"></p>
+  <button id=loginBtn class="btn full">Entrar</button>
+  <button id=forgotBtn style="background:0;border:0;width:100%;color:#cfc9e6;text-decoration:underline;margin-top:10px;font-size:13px">¿Olvidaste tu contraseña?</button>
+  <div style="text-align:center;margin-top:12px;font-size:13px">¿No tenés cuenta? <b id=goReg style="color:#f472b6;cursor:pointer">Crear cuenta</b></div>
  </div>
- <div class="right">
-  <span class="pill">Panel Cliente</span>
-  <div id="avatarTop" class="avatar">JD</div>
+ <div id=regFields class=hidden>
+  <input id=rNom placeholder="Nombre y apellido">
+  <input id=rWsp placeholder="WhatsApp">
+  <input id=rDir placeholder="Dirección">
+  <input id=rEmail placeholder="tu@correo.com">
+  <input id=rPass type=password placeholder="Contraseña min 6">
+  <p id=regMsg style="color:#fca5a5;font-size:12px;min-height:14px"></p>
+  <button id=regBtn class="btn full">Crear cuenta</button>
+  <button id=backLog style="background:0;border:0;width:100%;color:#cfc9e6;text-decoration:underline;margin-top:10px;font-size:13px">Ya tengo cuenta</button>
  </div>
 </div>
-
-<div id="authBox" class="auth">
- <h2>Iniciar sesión</h2>
- <input id="email" placeholder="tu@correo.com">
- <input id="pass" type="password" placeholder="pass">
- <p id="loginMsg" style="color:#fca5a5"></p>
- <button id="loginBtn" class="btn full">Entrar</button>
+<div id=app class="wrap hidden">
+<section id=s-inicio class="screen active">
+ <div class=card><h2 id=saludo>Hola ✨</h2><input id=searchLocal class=search placeholder="🔍 Buscar locales..."></div>
+ <div class=card><h3>⭐ Destacados</h3><div id=destacados></div></div>
+ <div class=card><h3>Reservar turno</h3>
+  <label>Local</label><select id=rLocal></select>
+  <label>Servicio</label><select id=rServicio></select>
+  <label>Fecha</label><input id=rFecha type=date>
+  <div style="margin-top:8px"><p style="font-size:12px;color:#cfc9e6">Horarios - solo toca uno libre</p><div id=slots style="display:flex;gap:8px;flex-wrap:wrap;margin:8px 0"></div><div id=slotInfo style="font-size:12px;color:#fde68a"></div></div>
+  <div id=boxDni class=hidden style="border:1px dashed #ffffff40;border-radius:12px;padding:10px"><small>Este local solicita DNI</small><input id=fDni type=file accept="image/*"></div>
+  <button id=btnReservar class="btn full" style="margin-top:10px">Confirmar reserva en este horario</button>
+  <a id=btnWA href="#" target=_blank class="btn ghost full" style="display:block;text-align:center;margin-top:8px;text-decoration:none">💬 WhatsApp del local</a>
+ </div>
+</section>
+<section id=s-reservas class=screen><div class=card><h3>Mis reservas</h3><ul id=listaReservas style="list-style:none;padding:0"></ul></div></section>
+<section id=s-favoritos class=screen><div class=card><h3>❤️ Favoritos</h3><div id=listaFavs></div></div></section>
+<section id=s-perfil class=screen>
+ <div class=card><h3 id=perfilNombre>Perfil</h3><p id=perfilEmail style="color:#cfc9e6"></p><div class=item>Iniciales: <b id=perfilInicial>JD</b></div>
+  <input id=pNom placeholder="Nombre"><input id=pWsp placeholder="WhatsApp"><input id=pDir placeholder="Dirección"><input id=pMail disabled style="opacity:.5">
+  <button id=btnSavePerf class="btn full" style="margin-top:8px">Guardar cambios</button></div>
+ <div class=card><h3>💬 Soporte</h3><textarea id=soporteMsg placeholder="Contanos..."></textarea><button id=btnSoporte class="btn full" style="margin-top:8px">Enviar</button></div>
+ <div class=card><button id=btnLogout class="btn ghost full">Salir</button></div>
+</section>
 </div>
-
-<div id="app" class="wrap hidden">
- <section id="s-inicio" class="screen active">
-  <div class="card">
-   <h2 id="saludo">Hola Juan, que tengas un maravilloso día ✨</h2>
-   <input id="searchLocal" class="search" placeholder="🔍 Buscar locales...">
-  </div>
-  <div class="card">
-   <div style="display:flex;justify-content:space-between">
-    <h3>⭐ Destacados</h3>
-    <span style="color:#a855f7;font-size:13px">Ver todo</span>
-   </div>
-   <div id="destacados"></div>
-  </div>
-    <div class="card">
-   <h3>Reservar turno</h3>
-   <div style="display:grid;gap:8px">
-    <label>Local</label>
-    <select id="rLocal"></select>
-    
-    <label>Servicio</label>
-    <select id="rServicio"></select>
-    
-    <label>Fecha</label>
-    <input id="rFecha" type="date">
-    
-    <div style="margin-top:8px">
-     <p style="font-size:12px;color:#cfc9e6">
-      Horarios disponibles - solo toca uno libre
-     </p>
-     <div id="slots" style="display:flex;gap:8px;flex-wrap:wrap;margin:8px 0"></div>
-     <div id="slotInfo" style="font-size:12px;color:#fde68a"></div>
-    </div>
-
-    <button id="btnReservar" class="btn full">
-     Confirmar reserva en este horario
-    </button>
-
-    <a id="btnWA" href="#" target="_blank" class="btn ghost full" style="display:block;text-align:center;margin-top:8px;text-decoration:none">
-     💬 Hablar con el local por WhatsApp
-    </a>
-   </div>
-  </div>
- </section>
-
- <section id="s-reservas" class="screen">
-  <div class="card">
-   <h3>Mis reservas</h3>
-   <ul id="listaReservas" style="list-style:none;padding:0"></ul>
-  </div>
- </section>
-
- <section id="s-favoritos" class="screen">
-  <div class="card">
-   <h3>❤️ Favoritos</h3>
-   <div id="listaFavs" class="item">Próximamente</div>
-  </div>
- </section>
-
- <section id="s-perfil" class="screen">
-  <div class="card">
-   <h3 id="perfilNombre">Juan Doe</h3>
-   <p id="perfilEmail" style="color:#cfc9e6"></p>
-   <div class="item">
-    Iniciales:
-    <b id="perfilInicial">JD</b>
-   </div>
-  </div>
-  <div class="card">
-   <h3>💬 Soporte / Queja</h3>
-   <p style="font-size:12px;color:#cfc9e6">
-    ¿Tuviste un inconveniente? Mandanos tu queja
-   </p>
-   <textarea id="soporteMsg" placeholder="Contanos el inconveniente..."></textarea>
-   <button id="btnSoporte" class="btn full" style="margin-top:8px">
-    Enviar a soporte
-   </button>
-  </div>
-  <div class="card">
-   <button id="btnLogout" class="btn ghost full">
-    Salir / Cerrar sesión
-   </button>
-  </div>
- </section>
+<div id=bottomNav class="bottomNav hidden">
+ <button class=active data-screen=inicio>🏠<span>Inicio</span></button>
+ <button data-screen=reservas>📅<span>Reservas</span></button>
+ <button data-screen=favoritos>❤️<span>Favs</span></button>
+ <button data-screen=perfil>👤<span>Perfil</span></button>
 </div>
-
-<div class="bottomNav">
- <button class="active" data-screen="inicio">
-  🏠
-  <span>Inicio</span>
- </button>
- <button data-screen="reservas">
-  📅
-  <span>Reservas</span>
- </button>
- <button data-screen="favoritos">
-  ❤️
-  <span>Favoritos</span>
- </button>
- <button data-screen="perfil">
-  👤
-  <span>Perfil</span>
- </button>
-</div>
-
-<div id="toast" class="toast hidden"></div>
+<div id=toast class="toast hidden"></div>
 <script>
-const firebaseConfig={
- apiKey:"AIzaSyC57wshaJ2EuIBoBdXv18opL4u_Vuw2bAQ",
- authDomain:"reservar-cb70d.firebaseapp.com",
- projectId:"reservar-cb70d"
-};
-firebase.initializeApp(firebaseConfig);
-const auth=firebase.auth();
-const db=firebase.firestore();
-const $=id=>document.getElementById(id);
-const toast=m=>{
- const t=$('toast');
- t.textContent=m;
- t.classList.remove('hidden');
- setTimeout(()=>t.classList.add('hidden'),3000)
-};
-
-let cfgLocal=null;
-let servicios=[];
-let reservasDelDia=[];
-let horaElegida=null;
-let localElegidoId=null;
-
-function goScreen(n){
- document.querySelectorAll('.bottomNav button').forEach(b=>{
-  b.classList.toggle('active',b.dataset.screen===n)
- });
- document.querySelectorAll('.screen').forEach(s=>{
-  s.classList.toggle('active',s.id==='s-'+n)
- });
-}
-
-document.querySelectorAll('.bottomNav button').forEach(b=>{
- b.addEventListener('click',()=>{
-  goScreen(b.dataset.screen)
- })
-});
-
-auth.onAuthStateChanged(u=>{
- if(u){
-  $('authBox').classList.add('hidden');
-  $('app').classList.remove('hidden');
-  const nombre=u.email.split('@')[0];
-  const ini=nombre.slice(0,2).toUpperCase();
-  $('avatarTop').textContent=ini;
-  $('perfilInicial').textContent=ini;
-  $('perfilEmail').textContent=u.email;
-  $('saludo').textContent=`Hola ${nombre}, que tengas un maravilloso día ✨`;
-  $('perfilNombre').textContent=nombre;
-  cargarLocales();
-  cargarMisReservas();
- } else {
-  $('app').classList.add('hidden');
-  $('authBox').classList.remove('hidden');
- }
-});
-
-$('loginBtn').addEventListener('click',async()=>{
- try{
-  await auth.signInWithEmailAndPassword(
-   $('email').value.trim(),
-   $('pass').value
-  )
- }catch(e){
-  $('loginMsg').textContent=e.message
- }
-});
-
-$('btnLogout').addEventListener('click',()=>auth.signOut());
-
-async function cargarLocales(){
- const sel=$('rLocal');
- sel.innerHTML='<option>Cargando...</option>';
- const snap=await db.collection('config').get();
- sel.innerHTML='';
- snap.forEach(d=>{
-  const c=d.data();
-  const o=document.createElement('option');
-  o.value=d.id;
-  o.textContent=(c.localNombre||'Local')+' - '+(c.direccion||'');
-  o.dataset.tel=c.tel||'';
-  o.dataset.ap=c.apertura||'09:00';
-  o.dataset.ci=c.cierre||'18:00';
-  sel.appendChild(o);
- });
- if(sel.options.length){
-  sel.selectedIndex=0;
-  onLocalChange();
- }
- sel.addEventListener('change',onLocalChange);
-}
-
-async function onLocalChange(){
- const opt=$('rLocal').options[$('rLocal').selectedIndex];
- if(!opt) return;
- localElegidoId=opt.value;
- cfgLocal={
-  tel:opt.dataset.tel,
-  apertura:opt.dataset.ap,
-  cierre:opt.dataset.ci
- };
- $('btnWA').href=cfgLocal.tel?
-  `https://wa.me/${cfgLocal.tel.replace(/\D/g,'')}`:'#';
-
- const snap=await db.collection('servicios')
- .where('uid','==',localElegidoId).get();
- servicios=[];
- const selS=$('rServicio');
- selS.innerHTML='';
- snap.forEach(d=>{
-  servicios.push({...d.data(),id:d.id});
-  const o=document.createElement('option');
-  o.value=d.data().nombre;
-  o.textContent=d.data().nombre+' - $'+d.data().precio+' ('+d.data().duracion+'m)';
-  o.dataset.dur=d.data().duracion;
-  selS.appendChild(o);
- });
- $('destacados').innerHTML=servicios.slice(0,3).map(s=>
-  `<div class="item"><div>${s.nombre} ⭐</div><div>$${s.precio}</div></div>`
- ).join('')||'<div class="item">Sin servicios aún</div>';
- generarSlotsUI();
-}
-  function generarSlotsUI(){
- const fecha=$('rFecha').value;
- const servOpt=$('rServicio').options[$('rServicio').selectedIndex];
- if(!fecha||!servOpt||!cfgLocal){
-  $('slots').innerHTML='<span style="font-size:12px">Elegí fecha y servicio</span>';
-  return;
- }
- const dur=Number(servOpt.dataset.dur||60);
- db.collection('reservas')
- .where('uid','==',localElegidoId).get().then(snap=>{
-  reservasDelDia=snap.docs.map(d=>d.data())
-   .filter(r=>r.fechaHora&&r.fechaHora.startsWith(fecha));
-  const horasOcupadas=reservasDelDia.map(r=>r.fechaHora.slice(11,16));
-  let [h,m]=cfgLocal.apertura.split(':').map(Number);
-  let [hc,mc]=cfgLocal.cierre.split(':').map(Number);
-  let act=h*60+m;
-  let fin=hc*60+mc;
-  $('slots').innerHTML='';
-  while(act+dur<=fin){
-   let hora=`${String(Math.floor(act/60)).padStart(2,'0')}:${String(act%60).padStart(2,'0')}`;
-   let ocupado=horasOcupadas.includes(hora);
-   const b=document.createElement('button');
-   b.className='slot'+(ocupado?' ocupado':'');
-   b.textContent=hora;
-   if(!ocupado){
-    b.addEventListener('click',()=>{
-     horaElegida=hora;
-     document.querySelectorAll('.slot').forEach(x=>x.classList.remove('active'));
-     b.classList.add('active');
-     $('slotInfo').textContent=`Elegiste ${hora} - Duración ${dur}min`;
-    });
-   }
-   $('slots').appendChild(b);
-   act+=dur;
-  }
-  if($('slots').children.length===0){
-   $('slots').innerHTML='<span style="font-size:12px">No hay horarios para ese día</span>';
-  }
- });
-}
-
-$('rFecha').addEventListener('change',generarSlotsUI);
-$('rServicio').addEventListener('change',generarSlotsUI);
-
-$('btnReservar').addEventListener('click',async()=>{
- if(!localElegidoId||!horaElegida||!$('rFecha').value){
-  return toast('Elegí local, servicio, fecha y hora');
- }
- const serv=$('rServicio').value;
- const fechaHora=$('rFecha').value+'T'+horaElegida;
- const precio=servicios.find(s=>s.nombre===serv)?.precio||0;
- try{
-  await db.collection('reservas').add({
-   cliente:auth.currentUser.email,
-   servicio:serv,
-   fechaHora,
-   precio,
-   estado:'confirmada',
-   uid:localElegidoId,
-   origen:'cliente',
-   ts:Date.now()
-  });
-  toast('¡Reserva confirmada para '+horaElegida+'!');
-  horaElegida=null;
-  cargarMisReservas();
-  generarSlotsUI();
-  goScreen('reservas');
- }catch(e){
-  toast(e.message);
- }
-});
-
-async function cargarMisReservas(){
- const snap=await db.collection('reservas')
- .where('cliente','==',auth.currentUser.email).get();
- $('listaReservas').innerHTML=snap.docs.map(d=>{
-  const r=d.data();
-  return `<li class="item"><div><b>${r.servicio}</b><div style="font-size:12px">${r.fechaHora} - $${r.precio}</div></div><div>${r.estado}</div></li>`;
- }).join('')||'<li class="item">Sin reservas</li>';
-}
-
-$('btnSoporte').addEventListener('click',async()=>{
- const msg=$('soporteMsg').value.trim();
- if(!msg) return toast('Escribí algo');
- await db.collection('soporte').add({
-  email:auth.currentUser.email,
-  msg,
-  ts:Date.now()
- });
- $('soporteMsg').value='';
- toast('Enviado a soporte ✅');
-});
-</script>
-</body>
-</html>
+const firebaseConfig={apiKey:"AIzaSyC57wshaJ2EuIBoBdXv18opL4u_Vuw2bAQ",authDomain:"reservar-cb70d.firebaseapp.com",projectId:"reservar-cb70d",storageBucket:"reservar-cb70d.appspot.com"};firebase.initializeApp(firebaseConfig);const auth=firebase.auth();const db=firebase.firestore();const st=firebase.storage();const $=id=>document.getElementById(id);
+const toast=m=>{let t=$('toast');t.textContent=m;t.classList.remove('hidden');setTimeout(()=>t.classList.add('hidden'),3000)};const errEs=c=>{c=c.toLowerCase();if(c.includes('invalid-credential'))return'Correo o pass incorrectos';if(c.includes('email-already'))return'Email ya existe';if(c.includes('weak-password'))return'Pass min 6';return c};const toMin=h=>{let[a,b]=h.split(':').map(Number);return a*60+b};
+let cfgLocal=null,servicios=[],horaElegida=null,localElegidoId=null;
+function goScreen(n){document.querySelectorAll('.bottomNav button').forEach(b=>b.classList.toggle('active',b.dataset.screen===n));document.querySelectorAll('.screen').forEach(s=>s.classList.toggle('active',s.id==='s-'+n));}
+document.querySelectorAll('.bottomNav button').forEach(b=>b.addEventListener('click',()=>goScreen(b.dataset.screen)));
+auth.onAuthStateChanged(async u=>{if(u){$('authBox').classList.add('hidden');$('app').classList.remove('hidden');$('topbar').classList.remove('hidden');$('bottomNav').classList.remove('hidden');let cli=await db.collection('clientes').doc(u.uid).get();let d=cli.data()||{};let nombre=d.nombre||u.email.split('@')[0];let ini=nombre.slice(0,2).toUpperCase();$('avatarTop').textContent=ini;$('perfilInicial').textContent=ini;$('perfilEmail').textContent=u.email;$('saludo').textContent=`Hola ${nombre}, que tengas un maravilloso día ✨`;$('perfilNombre').textContent=nombre;$('pNom').value=d.nombre||'';$('pWsp').value=d.whatsapp||'';$('pDir').value=d.direccion||'';$('pMail').value=d.email||u.email;let g=await db.collection('config').doc('global').get();if(g.exists&&g.data().solicitarDNI)$('boxDni').classList.remove('hidden');cargarLocales();cargarMisReservas();}else{$('app').classList.add('hidden');$('authBox').classList.remove('hidden');$('topbar').classList.add('hidden');$('bottomNav').classList.add('hidden');}});
+$('loginBtn').onclick=async()=>{try{await auth.signInWithEmailAndPassword($('email').value.trim(),$('pass').value)}catch(e){$('loginMsg').textContent=errEs(e.message)}};$('goReg').onclick=()=>{$('loginFields').classList.add('hidden');$('regFields').classList.remove('hidden');$('authTitle').textContent='Crear cuenta'};$('backLog').onclick=()=>{$('regFields').classList.add('hidden');$('loginFields').classList.remove('hidden');$('authTitle').textContent='Iniciar sesión'};$('regBtn').onclick=async()=>{try{let cr=await auth.createUserWithEmailAndPassword($('rEmail').value.trim(),$('rPass').value);await db.collection('clientes').doc(cr.user.uid).set({nombre:$('rNom').value.trim(),whatsapp:$('rWsp')
+.value.trim(),direccion:$('rDir').value.trim(),email:$('rEmail').value.trim(),creado:Date.now()})}catch(e){$('regMsg').textContent=errEs(e.message)}};$('forgotBtn').onclick=async()=>{let em=$('email').value.trim();if(!em)return $('loginMsg').textContent='Escribe tu email';await auth.sendPasswordResetEmail(em);$('loginMsg').style.color='#86efac';$('loginMsg').textContent='Mail enviado 📧'};$('btnLogout').onclick=()=>auth.signOut();
+async function cargarLocales(){let sel=$('rLocal');sel.innerHTML='<option>Cargando...</option>';let snap=await db.collection('config').get();sel.innerHTML='';snap.forEach(d=>{if(d.id=='global')return;let c=d.data();let o=document.createElement('option');o.value=d.id;o.textContent=(c.localNombre||'Local');o.dataset.tel=c.tel||'';o.dataset.ap=c.apertura||'09:00';o.dataset.ci=c.cierre||'18:00';sel.appendChild(o)});if(sel.options.length){sel.selectedIndex=0;onLocalChange()}sel.addEventListener('change',onLocalChange)}
+async function onLocalChange(){let opt=$('rLocal').options[$('rLocal').selectedIndex];if(!opt)return;localElegidoId=opt.value;cfgLocal={tel:opt.dataset.tel,apertura:opt.dataset.ap,cierre:opt.dataset.ci};$('btnWA').href=cfgLocal.tel?`https://wa.me/${cfgLocal.tel.replace(/\D/g,'')}`:'#';let snap=await db.collection('servicios').where('localId','==',localElegidoId).where('activo','==',true).get();servicios=[];let selS=$('rServicio');selS.innerHTML='';snap.forEach(d=>{servicios.push({...d.data(),id:d.id});let o=document.createElement('option');o.value=d.data().nombre;o.textContent=d.data().nombre+' - $'+d.data().precio+' ('+d.data().duracion+'m)';o.dataset.dur=d.data().duracion;o.dataset.id=d.id;o.dataset.pr=d.data().precio;selS.appendChild(o)});$('destacados').innerHTML=servicios.slice(0,3).map(s=>`<div class=item><div>${s.nombre} ⭐</div><div>$${s.precio}</div></div>`).join('')||'<div class=item>Sin servicios</div>';generarSlotsUI()}
+ async function generarSlotsUI(){let fecha=$('rFecha').value;let servOpt=$('rServicio').options[$('rServicio').selectedIndex];if(!fecha||!servOpt||!cfgLocal){$('slots').innerHTML='<span style="font-size:12px">Elegí fecha y servicio</span>';return}let dur=Number(servOpt.dataset.dur||60);let snap=await db.collection('reservas').where('localId','==',localElegidoId).where('fecha','==',fecha).where('estado','!=','cancelada').get();let reservas=snap.docs.map(d=>d.data());$('slots').innerHTML='';let ac=toMin(cfgLocal.apertura),fin=toMin(cfgLocal.cierre);while(ac+dur<=fin){let hora=`${String(Math.floor(ac/60)).padStart(2,'0')}:${String(ac%60).padStart(2,'0')}`;let oc=reservas.some(r=>{let s=toMin(r.hora),e=s+Number(r.duracion||60);return ac<e&&ac+dur>s});let b=document.createElement('button');b.className='slot'+(oc?' ocupado':'');b.textContent=hora;if(!oc)b.addEventListener('click',()=>{horaElegida=hora;document.querySelectorAll('.slot').forEach(x=>x.classList.remove('active'));b.classList.add('active');$('slotInfo').textContent=`Elegiste ${hora}`});$('slots').appendChild(b);ac+=dur}}
+$('rFecha').addEventListener('change',generarSlotsUI);$('rServicio').addEventListener('change',generarSlotsUI);
+$('btnReservar').addEventListener('click',async()=>{if(!localElegidoId||!horaElegida||!$('rFecha').value)return toast('Elegí fecha y hora');let servOpt=$('rServicio').options[$('rServicio').selectedIndex];let dur=Number(servOpt.dataset.dur||60);let chk=await db.collection('reservas').where('localId','==',localElegidoId).where('fecha','==',$('rFecha').value).where('estado','!=','cancelada').get();for(let d of chk.docs){let r=d.data();let s=toMin(r.hora),e=s+Number(r.duracion||60),ns=toMin(horaElegida),ne=ns+dur;if(ns<e&&ne>s)return toast('Ocupado, elegí otro')}let g=await db.collection('config').doc('global').get();if(g.exists&&g.data().solicitarDNI){let cli=await db.collection('clientes').doc(auth.currentUser.uid).get();let tiene=cli.data()?.dniUrl;if($('fDni').files[0]){let up=await st.ref('dni/'+auth.currentUser.uid+'.jpg').put($('fDni').files[0]);let url=await up.ref.getDownloadURL();await db.collection('clientes').doc(auth.currentUser.uid).update({dniUrl:url});tiene=url}if(!tiene)return toast('Este local solicita DNI')}await db.collection('reservas').add({localId:localElegidoId,clienteUid:auth.currentUser.uid,cliente:auth.currentUser.email,clienteEmail:auth.currentUser.email,servicioId:servOpt.dataset.id,servicio:servOpt.value,fecha:$('rFecha').value,hora:horaElegida,fechaHora:$('rFecha').value+'T'+horaElegida,duracion:dur,precio:Number(servOpt.dataset.pr||0),estado:'confirmada',origen:'cliente',ts:Date.now(),creado:firebase.firestore.FieldValue.serverTimestamp()});toast('¡Reserva OK '+horaElegida+'!');horaElegida=null;cargarMisReservas();generarSlotsUI();goScreen('reservas')});
+async function cargarMisReservas(){let snap=await db.collection('reservas').where('clienteUid','==',auth.currentUser.uid).orderBy('creado','desc').get();$('listaReservas').innerHTML=snap.docs.map(d=>{let r=d.data();return `<li class=item><div><b>${r.servicio}</b><div style="font-size:12px">${r.fecha} ${r.hora} $${r.precio} - ${r.estado}</div></div></li>`}).join('')||'<li class=item>Sin reservas</li>'}
+$('btnSavePerf').onclick=async()=>{await db.collection('clientes').doc(auth.currentUser.uid).update({nombre:$('pNom').value.trim(),whatsapp:$('pWsp').value.trim(),direccion:$('pDir').value.trim()});toast('Guardado ✅')};$('btnSoporte').onclick=async()=>{let m=$('soporteMsg').value.trim();if(!m)return toast('Escribí algo');await db.collection('soporte').add({email:auth.currentUser.email,msg:m,ts:Date.now()});$('soporteMsg').value='';toast('Enviado ✅')};
+</script></body></html>
