@@ -1,8 +1,8 @@
 <!doctype html>
-<html lang=es>
+<html lang="es">
 <head>
-<meta charset=UTF-8>
-<meta name=viewport content="width=device-width,initial-scale=1">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>reservAR</title>
 <style>
 :root{--stroke:#ffffff1e;--panel:#ffffff10}
@@ -14,7 +14,6 @@ body{background:linear-gradient(180deg,#6a11cb 0%,#5a14c0 45%,#1e084a 100%) no-r
 .topbar{position:sticky;top:0;z-index:20;display:flex;justify-content:space-between;align-items:center;padding:10px 12px;background:rgba(16,4,38,.96);border-bottom:1px solid var(--stroke)}
 .logo{font-weight:900;font-size:20px;line-height:.9}
 .logo span{display:block;font-weight:400;font-size:10px;color:#cbbbe6;margin-top:2px}
-.right{display:flex;gap:6px;align-items:center}
 .pill{padding:6px 10px;border-radius:999px;border:1px solid #ffffff28;background:#ffffff15;font-size:11px}
 .avatar{width:36px;height:36px;border-radius:999px;background:#ffffff22;display:flex;align-items:center;justify-content:center;font-weight:900}
 .auth{max-width:420px;margin:0 auto;background:transparent;border:0;padding:12px 16px 20px;min-height:100dvh}
@@ -22,196 +21,133 @@ body{background:linear-gradient(180deg,#6a11cb 0%,#5a14c0 45%,#1e084a 100%) no-r
 .authLogo span{display:block;font-weight:400;font-size:11px;color:#cbbbe6;margin-top:4px}
 #authTitle{font-size:20px;font-weight:900;margin:0 0 12px 2px}
 .auth input{width:100%;padding:14px;border-radius:14px;border:1px solid #ffffff22;background:#ffffff12;color:#fff;margin-bottom:10px;font-size:14px;outline:none}
-.greeting{font-size:26px;font-weight:900;line-height:1.1;margin:8px 2px 10px}
-.searchBox{display:flex;align-items:center;gap:6px;background:#00000033;border:1px solid #ffffff22;border-radius:14px;padding:2px 10px}
-.searchBox input{flex:1;background:transparent;border:0;padding:12px 6px;color:#fff;outline:none}
-.card{background:var(--panel);border:1px solid var(--stroke);border-radius:16px;padding:14px 12px;margin-bottom:10px}
-.card label{display:block;font-size:11px;opacity:.8;margin:10px 0 5px;font-weight:700}
-.card select,.card input[type=date]{width:100%;padding:14px;border-radius:12px;border:1px solid #ffffff33;background:#00000044;color:#fff;margin-bottom:10px;font-size:14px;outline:none}
-#s-perfil input,#s-perfil textarea{width:100%;padding:14px;border-radius:12px;border:1px solid #ffffff33;background:#00000033;color:#fff;margin-bottom:10px;font-size:14px;outline:none}
-#s-perfil textarea{min-height:80px;resize:none}
 .btn{background:#a855f7;border:0;color:#fff;padding:.75rem 1rem;border-radius:12px;font-weight:800;cursor:pointer}
 .btn.ghost{background:transparent;border:1px solid var(--stroke)}
 .btn.full{width:100%}
-#btnSoporte{position:fixed;right:18px;bottom:88px;z-index:999;width:56px;height:56px;border-radius:50%;border:none;cursor:pointer;background:linear-gradient(135deg,#a855f7,#ff5ab3);box-shadow:0 8px 24px #0006;font-size:24px;color:#fff;display:none}
-#btnSoporte.show{display:block!important}
-#panelSoporte{position:fixed;right:18px;bottom:150px;z-index:1000;width:330px;max-width:92vw;background:#1f0736;border:1px solid #ffffff44;border-radius:16px;padding:14px;box-shadow:0 12px 32px #000a}
 </style>
-<script src='https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js'></script>
-<script src='https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js'></script>
-<script src='https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js'></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
 </head>
 <body>
-<div id=topbar class="topbar hidden">
-<div class=logo>reservAR<span>tu lugar tu momento</span></div>
-<div class=right>
-<div class=pill>✨ Panel Cliente</div>
-<div id=avatarTop class=avatar>JD</div>
+<div id="topbar" class="topbar hidden">
+<div class="logo">reservAR<span>tu lugar tu momento</span></div>
+<div style="display:flex;gap:6px;align-items:center"><div class="pill">✨ Panel Cliente</div><div id="avatarTop" class="avatar">JD</div></div>
+</div>
+<div id="authBox" class="auth">
+<div class="authLogo">reservAR<span>tu lugar tu momento</span></div>
+<h2 id="authTitle">Iniciar sesión</h2>
+<div id="loginFields">
+<input id="email" placeholder="tu@correo.com" autocomplete="email">
+<input id="pass" type="password" placeholder="Contraseña">
+<p id="loginMsg" style="color:#fca5a5;font-size:12px;min-height:14px;margin:4px 0"></p>
+<button id="loginBtn" class="btn full" style="padding:14px;border-radius:14px">Entrar</button>
+<button id="forgotBtn" style="background:0;border:0;width:100%;color:#cfc9e6;text-decoration:underline;margin-top:8px;font-size:12px">¿Olvidaste tu contraseña?</button>
+<div style="text-align:center;margin-top:12px;font-size:12px">¿No tenés cuenta? <b id="goReg" style="color:#f472b6;cursor:pointer">Crear cuenta</b></div>
+</div>
+<div id="regFields" class="hidden">
+<input id="rNom" placeholder="Nombre y apellido">
+<input id="rWsp" placeholder="WhatsApp">
+<input id="rDir" placeholder="Dirección">
+<input id="rEmail" placeholder="tu@correo.com">
+<input id="rPass" type="password" placeholder="Contraseña min 6">
+<p id="regMsg" style="color:#fca5a5;font-size:12px;margin:4px 0"></p>
+<button id="regBtn" class="btn full" style="padding:14px;border-radius:14px">Crear cuenta</button>
+<div style="text-align:center;margin-top:12px;font-size:12px"><b id="backLog" style="color:#d7b8ff;cursor:pointer">Volver a entrar</b></div>
 </div>
 </div>
-<div id=authBox class=auth>
-<div class=authLogo>reservAR<span>tu lugar tu momento</span></div>
-<h2 id=authTitle>Iniciar sesión</h2>
-<div id=loginFields>
-<input id=email placeholder="tu@correo.com">
-<input id=pass type=password placeholder="Contraseña">
-<p id=loginMsg style="color:#fca5a5;font-size:12px;min-height:14px;margin:4px 0"></p>
-<button id=loginBtn class="btn full" style="padding:14px;border-radius:14px">Entrar</button>
-<button id=forgotBtn style="background:0;border:0;width:100%;color:#cfc9e6;text-decoration:underline;margin-top:8px;font-size:12px">¿Olvidaste tu contraseña?</button>
-<div style="text-align:center;margin-top:12px;font-size:12px">¿No tenés cuenta? <b id=goReg style="color:#f472b6;cursor:pointer">Crear cuenta</b></div>
+<div id="app" class="wrap hidden">
+<h1 id="saludo" class="greeting" style="font-size:26px;font-weight:900;line-height:1.1;margin:8px 2px 10px">Hola, que tengas<br>un maravilloso día ✨</h1>
+<div style="display:flex;align-items:center;gap:6px;background:#00000033;border:1px solid #ffffff22;border-radius:14px;padding:2px 10px">
+<span>🔍</span><input id="searchLocal" placeholder="Buscar locales, masajes, uñas, spa" style="flex:1;background:transparent;border:0;padding:12px 6px;color:#fff;outline:none"><span>⚙️</span>
 </div>
-<div id=regFields class=hidden>
-<input id=rNom placeholder="Nombre y apellido">
-<input id=rWsp placeholder="WhatsApp">
-<input id=rDir placeholder="Dirección">
-<input id=rEmail placeholder="tu@correo.com">
-<input id=rPass type=password placeholder="Contraseña min 6">
-<p id=regMsg style="color:#fca5a5;font-size:12px;margin:4px 0"></p>
-<button id=regBtn class="btn full
- <div id=app class="wrap hidden">
-<h1 id=saludo class=greeting>Hola, que tengas<br>un maravilloso día ✨</h1>
-<div class=searchBox><span>🔍</span><input id=searchLocal placeholder="Buscar locales, masajes, uñas, spa"><span>⚙️</span></div>
 <div style="display:flex;justify-content:space-between;margin:10px 2px 6px"><h3 style="margin:0;font-size:18px;font-weight:800">⭐ Destacados</h3><a href="#" style="color:#d7b8ff;font-size:12px;text-decoration:none">Ver todos ></a></div>
-<div id=destacados></div>
-<div class=card>
+<div id="destacados"></div>
+<div style="background:var(--panel);border:1px solid var(--stroke);border-radius:16px;padding:14px 12px;margin-bottom:10px">
 <h3 style="margin:4px 0 8px">Reservar turno</h3>
-<label>Local</label><select id=rLocal></select>
-<label>Servicio</label><select id=rServicio></select>
-<label>Fecha</label><input id=rFecha type=date>
+<label style="display:block;font-size:11px;opacity:.8;margin:10px 0 5px;font-weight:700">Local</label><select id="rLocal" style="width:100%;padding:14px;border-radius:12px;border:1px solid #ffffff33;background:#00000044;color:#fff"></select>
+<label style="display:block;font-size:11px;opacity:.8;margin:10px 0 5px;font-weight:700">Servicio</label><select id="rServicio" style="width:100%;padding:14px;border-radius:12px;border:1px solid #ffffff33;background:#00000044;color:#fff"></select>
+<label style="display:block;font-size:11px;opacity:.8;margin:10px 0 5px;font-weight:700">Fecha</label><input id="rFecha" type="date" style="width:100%;padding:14px;border-radius:12px;border:1px solid #ffffff33;background:#00000044;color:#fff">
 <div style="margin:8px 0">
 <p style="font-size:11px;color:#cfc9e6;margin:4px 0">Horarios - tocá uno libre</p>
-<div id=slots style="display:flex;gap:6px;flex-wrap:wrap"></div>
-<div id=slotInfo style="font-size:11px;color:#fde68a;margin-top:4px"></div>
+<div id="slots" style="display:flex;gap:6px;flex-wrap:wrap"></div>
+<div id="slotInfo" style="font-size:11px;color:#fde68a;margin-top:4px"></div>
 </div>
-<div id=boxDni class=hidden style="border:1px dashed #ffffff40;border-radius:10px;padding:8px;margin-top:6px"><small style="font-size:11px">Este local solicita DNI</small><input id=fDni type=file accept="image/*"></div>
-<button id=btnReservar class="btn full" style="margin-top:8px">Confirmar reserva</button>
-<a id=btnWA href="#" target=_blank class="btn ghost full" style="display:block;text-align:center;margin-top:6px;text-decoration:none;font-size:13px">💬 WhatsApp del local</a>
+<button id="btnReservar" class="btn full" style="margin-top:8px">Confirmar reserva</button>
+<a id="btnWA" href="#" target="_blank" class="btn ghost full" style="display:block;text-align:center;margin-top:6px;text-decoration:none;font-size:13px">💬 WhatsApp del local</a>
 </div>
 </div>
-<div id=s-reservas class="wrap hidden"><div class=card><h3>Mis reservas</h3><ul id=listaReservas style="list-style:none;padding:0"></ul></div></div>
-<div id=s-favoritos class="wrap hidden"><div class=card><h3>❤️ Favoritos</h3><div id=listaFavs></div></div></div>
-<div id=s-perfil class="wrap hidden">
-<div class=card><h3 id=perfilNombre>Perfil</h3><p id=perfilEmail style="font-size:12px;opacity:.7;margin-bottom:8px"></p>
-<label>Nombre</label><input id=pNom placeholder="Nombre">
-<label>WhatsApp</label><input id=pWsp placeholder="WhatsApp">
-<label>Dirección</label><input id=pDir placeholder="Dirección">
-<label>Email</label><input id=pMail disabled style="opacity:.5">
-<button id=btnSavePerf class="btn full" style="margin-top:8px">Guardar cambios</button>
+ <div id="s-reservas" class="wrap hidden"><div style="background:var(--panel);border:1px solid var(--stroke);border-radius:16px;padding:14px 12px"><h3>Mis reservas</h3><ul id="listaReservas" style="list-style:none;padding:0"></ul></div></div>
+<div id="s-favoritos" class="wrap hidden"><div style="background:var(--panel);border:1px solid var(--stroke);border-radius:16px;padding:14px 12px"><h3>❤️ Favoritos</h3><div id="listaFavs">Próximamente</div></div></div>
+<div id="s-perfil" class="wrap hidden">
+<div style="background:var(--panel);border:1px solid var(--stroke);border-radius:16px;padding:14px 12px;margin-bottom:10px"><h3 id="perfilNombre">Perfil</h3><p id="perfilEmail" style="font-size:12px;opacity:.7;margin-bottom:8px"></p>
+<label style="font-size:11px">Nombre</label><input id="pNom" style="width:100%;padding:14px;border-radius:12px;border:1px solid #ffffff33;background:#00000033;color:#fff;margin-bottom:10px">
+<label style="font-size:11px">WhatsApp</label><input id="pWsp" style="width:100%;padding:14px;border-radius:12px;border:1px solid #ffffff33;background:#00000033;color:#fff;margin-bottom:10px">
+<label style="font-size:11px">Dirección</label><input id="pDir" style="width:100%;padding:14px;border-radius:12px;border:1px solid #ffffff33;background:#00000033;color:#fff;margin-bottom:10px">
+<input id="pMail" disabled style="width:100%;padding:14px;border-radius:12px;opacity:.5">
+<button id="btnSavePerf" class="btn full" style="margin-top:8px">Guardar cambios</button>
 </div>
-<div class=card><h3 style="font-size:14px">💬 Soporte Perfil</h3>
-<textarea id=soporteMsg placeholder="Contanos..."></textarea>
-<button id=btnSoportePerfil class="btn full" style="margin-top:6px">Enviar</button>
+<div style="background:var(--panel);border:1px solid var(--stroke);border-radius:16px;padding:14px 12px"><h3 style="font-size:14px">💬 Soporte</h3><textarea id="soporteMsg" placeholder="Contanos..." style="width:100%;padding:14px;border-radius:12px;background:#00000033;color:#fff;min-height:80px"></textarea><button id="btnSoportePerfil" class="btn full" style="margin-top:6px">Enviar</button></div>
+<div style="background:var(--panel);border:1px solid var(--stroke);border-radius:16px;padding:14px 12px;margin-top:10px"><button id="btnLogout" class="btn ghost full">Salir</button></div>
 </div>
-<div class=card><button id=btnLogout class="btn ghost full">Salir</button></div>
+<div id="bottomNav" class="hidden" style="position:fixed;left:0;right:0;bottom:0;z-index:30;background:rgba(22,7,48,.98);border-top:1px solid #ffffff24;display:flex;justify-content:space-around;padding:6px 0 8px">
+<button class="active" data-screen="inicio" style="background:transparent;border:0;color:#fff;font-size:10px">🏠<br>Inicio</button>
+<button data-screen="reservas" style="background:transparent;border:0;color:#bda8e0;font-size:10px">📅<br>Reservas</button>
+<button data-screen="favoritos" style="background:transparent;border:0;color:#bda8e0;font-size:10px">❤️<br>Favs</button>
+<button data-screen="perfil" style="background:transparent;border:0;color:#bda8e0;font-size:10px">👤<br>Perfil</button>
 </div>
-<div id=bottomNav class="bottomNav hidden" style="position:fixed;left:0;right:0;bottom:0;z-index:30;background:rgba(22,7,48,.98);border-top:1px solid #ffffff24;display:flex;justify-content:space-around;padding:6px 0 8px">
-<button class=active data-screen=inicio style="background:transparent;border:0;color:#fff;font-size:10px">🏠<br>Inicio</button>
-<button data-screen=reservas style="background:transparent;border:0;color:#bda8e0;font-size:10px">📅<br>Reservas</button>
-<button data-screen=favoritos style="background:transparent;border:0;color:#bda8e0;font-size:10px">❤️<br>Favs</button>
-<button data-screen=perfil style="background:transparent;border:0;color:#bda8e0;font-size:10px">👤<br>Perfil</button>
-</div>
-<div id=toast class="toast hidden" style="position:fixed;bottom:85px;left:50%;transform:translateX(-50%);background:#1f0736;border:1px solid #ffffff33;padding:10px 14px;border-radius:10px;z-index:9999;font-size:13px"></div>
-<script>
+<div id="toast" class="hidden" style="position:fixed;bottom:85px;left:50%;transform:translateX(-50%);background:#1f0736;border:1px solid #ffffff33;padding:10px 14px;border-radius:10px;z-index:9999;font-size:13px"></div>
+ <script>
 const firebaseConfig={apiKey:"AIzaSyC57wshaJ2EuIBoBdXv18opL4u_Vuw2bAQ",authDomain:"reservar-cb70d.firebaseapp.com",projectId:"reservar-cb70d"};
 firebase.initializeApp(firebaseConfig);
 const auth=firebase.auth(),db=firebase.firestore(),$=id=>document.getElementById(id);
 const toast=m=>{let t=$('toast');t.textContent=m;t.classList.remove('hidden');setTimeout(()=>t.classList.add('hidden'),3000)};
 const toMin=h=>{let[a,b]=h.split(':').map(Number);return a*60+b};
-const errEs=c=>{c=c.toLowerCase();if(c.includes('invalid-credential'))return'Correo o pass mal';if(c.includes('email-already'))return'Ya existe';if(c.includes('weak-password'))return'Pass min 6';return c};
+const errEs=c=>{c=c.toLowerCase();if(c.includes('invalid-credential')||c.includes('wrong-password')||c.includes('user-not-found'))return'Correo o pass mal';if(c.includes('email-already'))return'Ya existe';if(c.includes('weak-password'))return'Pass min 6';return c};
 let cfgLocal=null,localElegidoId=null,horaElegida=null;
-function goScreen(n){document.querySelectorAll('.bottomNav button').forEach(b=>b.classList.toggle('active',b.dataset.screen===n));$('app').classList.toggle('hidden',n!=='inicio');$('s-reservas').classList.toggle('hidden',n!=='reservas');$('s-favoritos').classList.toggle('hidden',n!=='favoritos');$('s-perfil').classList.toggle('hidden',n!=='perfil');}
-document.querySelectorAll('.bottomNav button').forEach(b=>b.addEventListener('click',()=>goScreen(b.dataset.screen)));
-$('loginBtn').onclick=async()=>{try{await auth.signInWithEmailAndPassword($('email').value.trim(),$('pass').value)}catch(e){$('loginMsg').textContent=errEs(e.message)}};
+function goScreen(n){document.querySelectorAll('#bottomNav button').forEach(b=>b.classList.toggle('active',b.dataset.screen===n));$('app').classList.toggle('hidden',n!=='inicio');$('s-reservas').classList.toggle('hidden',n!=='reservas');$('s-favoritos').classList.toggle('hidden',n!=='favoritos');$('s-perfil').classList.toggle('hidden',n!=='perfil');}
+document.querySelectorAll('#bottomNav button').forEach(b=>b.addEventListener('click',()=>goScreen(b.dataset.screen)));
+$('loginBtn').onclick=async()=>{let em=$('email').value.trim().toLowerCase(),ps=$('pass').value.trim();$('loginMsg').textContent='Entrando...';try{await auth.signInWithEmailAndPassword(em,ps)}catch(e){console.log(e.code);$('loginMsg').textContent=errEs(e.message)}};
 $('goReg').onclick=()=>{$('loginFields').classList.add('hidden');$('regFields').classList.remove('hidden');$('authTitle').textContent='Crear cuenta'};
 $('backLog').onclick=()=>{$('regFields').classList.add('hidden');$('loginFields').classList.remove('hidden');$('authTitle').textContent='Iniciar sesión'};
-$('regBtn').onclick=async()=>{try{let cr=await auth.createUserWithEmailAndPassword($('rEmail').value.trim(),$('rPass').value);await db.collection('clientes').doc(cr.user.uid).set({nombre:$('rNom').value.trim(),whatsapp:$('rWsp').value.trim(),direccion:$('rDir').value.trim(),email:$('rEmail').value.trim(),creado:Date.now()})}catch(e){$('regMsg').textContent=errEs(e.message)}};
-$('forgotBtn').onclick=async()=>{let em=$('email').value.trim();if(!em)return $('loginMsg').textContent='Escribe tu email';await auth.sendPasswordResetEmail(em);$('loginMsg').style.color='#86efac';$('loginMsg').textContent='Mail enviado 📧'};
+$('regBtn').onclick=async()=>{try{let cr=await auth.createUserWithEmailAndPassword($('rEmail').value.trim().toLowerCase(),$('rPass').value.trim());await db.collection('clientes').doc(cr.user.uid).set({nombre:$('rNom').value.trim(),whatsapp:$('rWsp').value.trim(),direccion:$('rDir').value.trim(),email:$('rEmail').value.trim().toLowerCase(),creado:Date.now()})}catch(e){$('regMsg').textContent=errEs(e.message)}};
+$('forgotBtn').onclick=async()=>{let em=$('email').value.trim();if(!em)return $('loginMsg').textContent='Escribí tu email';await auth.sendPasswordResetEmail(em);$('loginMsg').style.color='#86efac';$('loginMsg').textContent='Mail enviado 📧'};
 $('btnLogout').onclick=()=>auth.signOut();
 auth.onAuthStateChanged(async u=>{
- if(u){
-  $('authBox').classList.add('hidden');$('app').classList.remove('hidden');$('topbar').classList.remove('hidden');$('bottomNav').classList.remove('hidden');
-  let cli=await db.collection('clientes').doc(u.uid).get();let d=cli.data()||{};
-  let nombre=d.nombre||u.email.split('@')[0];
-  $('saludo').innerHTML=`Hola, ${nombre}, que tengas<br>un maravilloso día ✨`;
-  $('avatarTop').textContent=nombre.slice(0,2).toUpperCase();
-  $('perfilNombre').textContent=nombre;$('perfilEmail').textContent=u.email;
-  $('pNom').value=d.nombre||'';$('pWsp').value=d.whatsapp||'';$('pDir').value=d.direccion||'';$('pMail').value=d.email||u.email;
-  cargarLocales();cargarMisReservas();
- }else{
-  $('app').classList.add('hidden');$('s-reservas').classList.add('hidden');$('s-favoritos').classList.add('hidden');$('s-perfil').classList.add('hidden');
-  $('authBox').classList.remove('hidden');$('topbar').classList.add('hidden');$('bottomNav').classList.add('hidden');
- }
- const b=$('btnSoporte'); if(b){ if(!u){ b.classList.add('show'); } else { b.classList.remove('show'); $('panelSoporte')?.classList.add('hidden'); } }
+if(u){
+$('authBox').classList.add('hidden');$('app').classList.remove('hidden');$('topbar').classList.remove('hidden');$('bottomNav').classList.remove('hidden');
+let cli=await db.collection('clientes').doc(u.uid).get();let d=cli.data()||{};let nombre=d.nombre||u.email.split('@')[0];
+$('saludo').innerHTML=`Hola, ${nombre}, que tengas<br>un maravilloso día ✨`;$('avatarTop').textContent=nombre.slice(0,2).toUpperCase();$('perfilNombre').textContent=nombre;$('perfilEmail').textContent=u.email;
+$('pNom').value=d.nombre||'';$('pWsp').value=d.whatsapp||'';$('pDir').value=d.direccion||'';$('pMail').value=d.email||u.email;
+cargarLocales();cargarMisReservas();
+}else{
+$('app').classList.add('hidden');$('s-reservas').classList.add('hidden');$('s-favoritos').classList.add('hidden');$('s-perfil').classList.add('hidden');
+$('authBox').classList.remove('hidden');$('topbar').classList.add('hidden');$('bottomNav').classList.add('hidden');
+}
 });
-async function cargarLocales(){
- let sel=$('rLocal');sel.innerHTML='<option>Cargando...</option>';
- let snap=await db.collection('config').get();let localesData=[];
- snap.forEach(d=>{if(d.id=='global')return;localesData.push({id:d.id,...d.data()})});
- $('destacados').innerHTML=localesData.map(l=>{
-  let foto=l.foto||`https://picsum.photos/seed/${l.id}/200`;
-  return `<div style="display:flex;gap:10px;background:#ffffff10;border:1px solid #ffffff18;border-radius:14px;padding:8px;margin-bottom:8px" onclick="document.getElementById('rLocal').value='${l.id}';document.getElementById('rLocal').dispatchEvent(new Event('change'))"><img src="${foto}" style="width:68px;height:68px;border-radius:10px;object-fit:cover"><div><b>${l.localNombre||'Local'}</b><div style="font-size:12px;opacity:.8">⏱ 60min</div></div></div>`
- }).join('');
- sel.innerHTML='';localesData.forEach(l=>{let o=document.createElement('option');o.value=l.id;o.textContent=l.localNombre||'Local';o.dataset.tel=l.tel||'';o.dataset.ap=l.apertura||'09:00';o.dataset.ci=l.cierre||'18:00';sel.appendChild(o)});
- if(sel.options.length){sel.selectedIndex=0;onLocalChange()}
- sel.addEventListener('change',onLocalChange)
-}
-async function onLocalChange(){
- let opt=$('rLocal').options[$('rLocal').selectedIndex];if(!opt)return;
- localElegidoId=opt.value;cfgLocal={tel:opt.dataset.tel,apertura:opt.dataset.ap||'09:00',cierre:opt.dataset.ci||'18:00'};
- $('btnWA').href=cfgLocal.tel?`https://wa.me/${cfgLocal.tel.replace(/\D/g,'')}`:'#';
- let snap=await db.collection('servicios').where('localId','==',localElegidoId).where('activo','==',true).get();
- let selS=$('rServicio');selS.innerHTML='';
- snap.forEach(d=>{let s=d.data();let o=document.createElement('option');o.value=s.nombre;o.textContent=s.nombre+' - $'+s.precio;o.dataset.dur=s.duracion;o.dataset.pr=s.precio;selS.appendChild(o)});
- if(!selS.options.length){selS.innerHTML='<option value="">Sin servicios activos</option>';$('slots').innerHTML='<span style="font-size:11px;color:#fca5a5">Este local no tiene servicios activos - crealo en Firestore con activo=true</span>';return}
- generarSlotsUI()
-}
-async function generarSlotsUI(){
- let fecha=$('rFecha').value,opt=$('rServicio').options[$('rServicio').selectedIndex];
- if(!fecha||!opt||!opt.value){$('slots').innerHTML='<span style="font-size:11px">Elegí fecha y servicio</span>';return}
- let dur=Number(opt.dataset.dur||30);
- let snap=await db.collection('reservas').where('localId','==',localElegidoId).where('fecha','==',fecha).where('estado','!=','cancelada').get();
- let res=snap.docs.map(d=>d.data());
- $('slots').innerHTML='';let ac=toMin(cfgLocal.apertura),fin=toMin(cfgLocal.cierre);
- while(ac+dur<=fin){
-  let h=`${String(Math.floor(ac/60)).padStart(2,'0')}:${String(ac%60).padStart(2,'0')}`;
-  let oc=res.some(r=>{let s=toMin(r.hora),e=s+Number(r.duracion||30);return ac<e&&ac+dur>s});
-  let b=document.createElement('button');
-  b.style.cssText='padding:9px 12px;border-radius:999px;border:1px solid #ffffff1e;background:'+(oc?'#00000022':'#ffffff12')+';color:#fff;font-size:13px;'+(oc?'opacity:.25;text-decoration:line-through':'');
-  b.textContent=h;
-  if(!oc)b.onclick=()=>{horaElegida=h;document.querySelectorAll('#slots button').forEach(x=>x.style.background='#ffffff12');b.style.background='#fff';b.style.color='#3a0f6e';$('slotInfo').textContent='Elegiste '+h};
-  $('slots').appendChild(b);ac+=dur
- }
-}
-$('rFecha').addEventListener('change',generarSlotsUI);
-$('rServicio').addEventListener('change',generarSlotsUI);
-$('btnReservar').onclick=async()=>{
- if(!localElegidoId||!horaElegida||!$('rFecha').value)return toast('Elegí fecha y hora');
- let opt=$('rServicio').options[$('rServicio').selectedIndex];let dur=Number(opt.dataset.dur||30);
- let chk=await db.collection('reservas').where('localId','==',localElegidoId).where('fecha','==',$('rFecha').value).where('estado','!=','cancelada').get();
- for(let d of chk.docs){let r=d.data(),s=toMin(r.hora),e=s+Number(r.duracion||30),ns=toMin(horaElegida),ne=ns+dur;if(ns<e&&ne>s)return toast('Ocupado')}
- await db.collection('reservas').add({localId:localElegidoId,clienteUid:auth.currentUser.uid,cliente:auth.currentUser.email,servicio:opt.value,fecha:$('rFecha').value,hora:horaElegida,fechaHora:$('rFecha').value+'T'+horaElegida,duracion:dur,precio:Number(opt.dataset.pr||0),estado:'confirmada',ts:Date.now(),creado:firebase.firestore.FieldValue.serverTimestamp()});
- toast('¡Reserva OK '+horaElegida+'!');horaElegida=null;cargarMisReservas();generarSlotsUI();goScreen('reservas')
-};
-async function cargarMisReservas(){
- let snap=await db.collection('reservas').where('clienteUid','==',auth.currentUser.uid).orderBy('creado','desc').get();
- $('listaReservas').innerHTML=snap.docs.map(d=>{let r=d.data();return `<li style="display:flex;justify-content:space-between;padding:10px;border:1px solid #ffffff1e;border-radius:12px;background:#ffffff0f;margin-bottom:6px"><div><b style="font-size:13px">${r.servicio}</b><div style="font-size:11px">${r.fecha} ${r.hora}</div></div></li>`}).join('')||'<li>Sin reservas</li>'
-}
+async function cargarLocales(){let sel=$('rLocal');sel.innerHTML='<option>Cargando...</option>';let snap=await db.collection('config').get();let localesData=[];snap.forEach(d=>{if(d.id=='global')return;localesData.push({id:d.id,...d.data()})});
+$('destacados').innerHTML=localesData.map(l=>{let foto=l.foto||`https://picsum.photos/seed/${l.id}/200`;return `<div style="display:flex;gap:10px;background:#ffffff10;border:1px solid #ffffff18;border-radius:14px;padding:8px;margin-bottom:8px" onclick="document.getElementById('rLocal').value='${l.id}';document.getElementById('rLocal').dispatchEvent(new Event('change'))"><img src="${foto}" style="width:68px;height:68px;border-radius:10px;object-fit:cover"><div><b>${l.localNombre||'Local'}</b></div></div>`}).join('');
+sel.innerHTML='';localesData.forEach(l=>{let o=document.createElement('option');o.value=l.id;o.textContent=l.localNombre||'Local';o.dataset.tel=l.tel||'';o.dataset.ap=l.apertura||'09:00';o.dataset.ci=l.cierre||'18:00';sel.appendChild(o)});
+if(sel.options.length){sel.selectedIndex=0;onLocalChange()}sel.onchange=onLocalChange}
+async function onLocalChange(){let opt=$('rLocal').options[$('rLocal').selectedIndex];if(!opt)return;localElegidoId=opt.value;cfgLocal={tel:opt.dataset.tel,apertura:opt.dataset.ap||'09:00',cierre:opt.dataset.ci||'18:00'};$('btnWA').href=cfgLocal.tel?`https://wa.me/${cfgLocal.tel.replace(/\D/g,'')}`:'#';
+let snap=await db.collection('servicios').where('localId','==',localElegidoId).where('activo','==',true).get();let selS=$('rServicio');selS.innerHTML='';snap.forEach(d=>{let s=d.data();let o=document.createElement('option');o.value=s.nombre;o.textContent=s.nombre+' - $'+s.precio;o.dataset.dur=s.duracion;o.dataset.pr=s.precio;selS.appendChild(o)});
+if(!selS.options.length){selS.innerHTML='<option>Sin servicios</option>';$('slots').innerHTML='';return}generarSlotsUI()}
+async function generarSlotsUI(){let fecha=$('rFecha').value,opt=$('rServicio').options[$('rServicio').selectedIndex];if(!fecha||!opt||!opt.value){$('slots').innerHTML='<span style="font-size:11px">Elegí fecha y servicio</span>';return}
+let dur=Number(opt.dataset.dur||30);let snap=await db.collection('reservas').where('localId','==',localElegidoId).where('fecha','==',fecha).where('estado','!=','cancelada').get();let res=snap.docs.map(d=>d.data());
+$('slots').innerHTML='';let ac=toMin(cfgLocal.apertura),fin=toMin(cfgLocal.cierre);
+while(ac+dur<=fin){let h=`${String(Math.floor(ac/60)).padStart(2,'0')}:${String(ac%60).padStart(2,'0')}`;let oc=res.some(r=>{let s=toMin(r.hora),e=s+Number(r.duracion||30);return ac<e&&ac+dur>s});let b=document.createElement('button');
+b.style.cssText='padding:9px 12px;border-radius:999px;border:1px solid #ffffff1e;background:'+(oc?'#00000022':'#ffffff12')+';color:#fff;font-size:13px;'+(oc?'opacity:.25':'');b.textContent=h;
+if(!oc)b.onclick=()=>{horaElegida=h;document.querySelectorAll('#slots button').forEach(x=>{x.style.background='#ffffff12';x.style.color='#fff'});b.style.background='#fff';b.style.color='#3a0f6e';$('slotInfo').textContent='Elegiste '+h};
+$('slots').appendChild(b);ac+=dur}}
+$('rFecha').addEventListener('change',generarSlotsUI);$('rServicio').addEventListener('change',generarSlotsUI);
+$('btnReservar').onclick=async()=>{if(!localElegidoId||!horaElegida||!$('rFecha').value)return toast('Elegí fecha y hora');let opt=$('rServicio').options[$('rServicio').selectedIndex];let dur=Number(opt.dataset.dur||30);
+let chk=await db.collection('reservas').where('localId','==',localElegidoId).where('fecha','==',$('rFecha').value).where('estado','!=','cancelada').get();
+for(let d of chk.docs){let r=d.data(),s=toMin(r.hora),e=s+Number(r.duracion||30),ns=toMin(horaElegida),ne=ns+dur;if(ns<e&&ne>s)return toast('Ocupado')}
+await db.collection('reservas').add({localId:localElegidoId,clienteUid:auth.currentUser.uid,cliente:auth.currentUser.email,servicio:opt.value,fecha:$('rFecha').value,hora:horaElegida,duracion:dur,precio:Number(opt.dataset.pr||0),estado:'confirmada',ts:Date.now(),creado:firebase.firestore.FieldValue.serverTimestamp()});
+toast('¡Reserva OK '+horaElegida+'!');horaElegida=null;cargarMisReservas();generarSlotsUI();goScreen('reservas')};
+async function cargarMisReservas(){let snap=await db.collection('reservas').where('clienteUid','==',auth.currentUser.uid).orderBy('creado','desc').get();$('listaReservas').innerHTML=snap.docs.map(d=>{let r=d.data();return `<li style="display:flex;justify-content:space-between;padding:10px;border:1px solid #ffffff1e;border-radius:12px;background:#ffffff0f;margin-bottom:6px"><div><b style="font-size:13px">${r.servicio}</b><div style="font-size:11px">${r.fecha} ${r.hora}</div></div></li>`}).join('')||'<li>Sin reservas</li>'}
 $('btnSavePerf').onclick=async()=>{await db.collection('clientes').doc(auth.currentUser.uid).update({nombre:$('pNom').value.trim(),whatsapp:$('pWsp').value.trim(),direccion:$('pDir').value.trim()});toast('Guardado ✅')};
-const btnSoporte=$('btnSoporte'), panelSoporte=$('panelSoporte');
-if(btnSoporte) btnSoporte.onclick=()=>panelSoporte.classList.toggle('hidden');
-$('btnCerrarSoporte').onclick=()=>panelSoporte.classList.add('hidden');
-$('btnEnviarSoporte').onclick=async()=>{
- const tipo=$('sopTipo').value, msg=$('sopMsg').value.trim(), email=$('sopEmail').value.trim(), st=$('sopStatus');
- if(!msg||!email){ st.textContent='Falta mensaje y email'; return; }
- st.textContent='Enviando...';
- try{ await db.collection('soporte').add({tipo,mensaje:msg,email,fecha:firebase.firestore.FieldValue.serverTimestamp(),estado:'pendiente'}); st.textContent='¡Enviado!'; $('sopMsg').value=''; }
- catch(e){ st.textContent='Error: '+e.message; }
-};
-$('btnSoportePerfil').onclick=async()=>{
- let m=$('soporteMsg').value.trim();if(!m)return toast('Escribí algo');
- await db.collection('soporte').add({email:auth.currentUser.email,msg:m,ts:Date.now(),origen:'perfil'});
- $('soporteMsg').value='';toast('Enviado ✅')
-};
+$('btnSoportePerfil').onclick=async()=>{let m=$('soporteMsg').value.trim();if(!m)return toast('Escribí algo');await db.collection('soporte').add({email:auth.currentUser.email,msg:m,ts:Date.now()});$('soporteMsg').value='';toast('Enviado ✅')};
 (()=>{let t=new Date();t.setDate(t.getDate()+1);let f=$('rFecha');if(f)f.valueAsDate=t;})();
 </script>
 </body>
