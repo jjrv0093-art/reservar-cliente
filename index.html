@@ -21,7 +21,7 @@ body{background:linear-gradient(180deg,#6a11cb 0%,#5a14c0 45%,#1e084a 100%) no-r
 .authLogo span{display:block;font-weight:400;font-size:11px;color:#cbbbe6;margin-top:4px}
 #authTitle{font-size:20px;font-weight:900;margin:0 0 12px 2px}
 .auth input{width:100%;padding:14px;border-radius:14px;border:1px solid #ffffff22;background:#ffffff12;color:#fff;margin-bottom:10px;font-size:14px;outline:none}
-.btn{background:#a855f7;border:0;color:#fff;padding:.75rem 1rem;border-radius:12px;font-weight:800;cursor:pointer}
+.btn{background:#a855f7;border:0;color:#fff;padding:14px;border-radius:12px;font-weight:800;cursor:pointer}
 .btn.ghost{background:transparent;border:1px solid var(--stroke)}
 .btn.full{width:100%}
 </style>
@@ -32,7 +32,10 @@ body{background:linear-gradient(180deg,#6a11cb 0%,#5a14c0 45%,#1e084a 100%) no-r
 <body>
 <div id="topbar" class="topbar hidden">
 <div class="logo">reservAR<span>tu lugar tu momento</span></div>
-<div style="display:flex;gap:6px;align-items:center"><div class="pill">✨ Panel Cliente</div><div id="avatarTop" class="avatar">JD</div></div>
+<div style="display:flex;gap:6px;align-items:center">
+<div class="pill">✨ Panel Cliente</div>
+<div id="avatarTop" class="avatar">JD</div>
+</div>
 </div>
 <div id="authBox" class="auth">
 <div class="authLogo">reservAR<span>tu lugar tu momento</span></div>
@@ -41,7 +44,7 @@ body{background:linear-gradient(180deg,#6a11cb 0%,#5a14c0 45%,#1e084a 100%) no-r
 <input id="email" placeholder="tu@correo.com" autocomplete="email">
 <input id="pass" type="password" placeholder="Contraseña">
 <p id="loginMsg" style="color:#fca5a5;font-size:12px;min-height:14px;margin:4px 0"></p>
-<button id="loginBtn" class="btn full" style="padding:14px;border-radius:14px">Entrar</button>
+<button id="loginBtn" class="btn full">Entrar</button>
 <button id="forgotBtn" style="background:0;border:0;width:100%;color:#cfc9e6;text-decoration:underline;margin-top:8px;font-size:12px">¿Olvidaste tu contraseña?</button>
 <div style="text-align:center;margin-top:12px;font-size:12px">¿No tenés cuenta? <b id="goReg" style="color:#f472b6;cursor:pointer">Crear cuenta</b></div>
 </div>
@@ -52,22 +55,30 @@ body{background:linear-gradient(180deg,#6a11cb 0%,#5a14c0 45%,#1e084a 100%) no-r
 <input id="rEmail" placeholder="tu@correo.com">
 <input id="rPass" type="password" placeholder="Contraseña min 6">
 <p id="regMsg" style="color:#fca5a5;font-size:12px;margin:4px 0"></p>
-<button id="regBtn" class="btn full" style="padding:14px;border-radius:14px">Crear cuenta</button>
+<button id="regBtn" class="btn full">Crear cuenta</button>
 <div style="text-align:center;margin-top:12px;font-size:12px"><b id="backLog" style="color:#d7b8ff;cursor:pointer">Volver a entrar</b></div>
 </div>
 </div>
-<div id="app" class="wrap hidden">
-<h1 id="saludo" class="greeting" style="font-size:26px;font-weight:900;line-height:1.1;margin:8px 2px 10px">Hola, que tengas<br>un maravilloso día ✨</h1>
+ <div id="app" class="wrap hidden">
+<h1 id="saludo" style="font-size:26px;font-weight:900;line-height:1.1;margin:8px 2px 10px">Hola, que tengas<br>un maravilloso día ✨</h1>
 <div style="display:flex;align-items:center;gap:6px;background:#00000033;border:1px solid #ffffff22;border-radius:14px;padding:2px 10px">
-<span>🔍</span><input id="searchLocal" placeholder="Buscar locales, masajes, uñas, spa" style="flex:1;background:transparent;border:0;padding:12px 6px;color:#fff;outline:none"><span>⚙️</span>
+<span>🔍</span>
+<input id="searchLocal" placeholder="Buscar locales, masajes, uñas, spa" style="flex:1;background:transparent;border:0;padding:12px 6px;color:#fff;outline:none">
+<span>⚙️</span>
 </div>
-<div style="display:flex;justify-content:space-between;margin:10px 2px 6px"><h3 style="margin:0;font-size:18px;font-weight:800">⭐ Destacados</h3><a href="#" style="color:#d7b8ff;font-size:12px;text-decoration:none">Ver todos ></a></div>
+<div style="display:flex;justify-content:space-between;margin:10px 2px 6px">
+<h3 style="margin:0;font-size:18px;font-weight:800">⭐ Destacados</h3>
+<a href="#" style="color:#d7b8ff;font-size:12px;text-decoration:none">Ver todos ></a>
+</div>
 <div id="destacados"></div>
 <div style="background:var(--panel);border:1px solid var(--stroke);border-radius:16px;padding:14px 12px;margin-bottom:10px">
 <h3 style="margin:4px 0 8px">Reservar turno</h3>
-<label style="display:block;font-size:11px;opacity:.8;margin:10px 0 5px;font-weight:700">Local</label><select id="rLocal" style="width:100%;padding:14px;border-radius:12px;border:1px solid #ffffff33;background:#00000044;color:#fff"></select>
-<label style="display:block;font-size:11px;opacity:.8;margin:10px 0 5px;font-weight:700">Servicio</label><select id="rServicio" style="width:100%;padding:14px;border-radius:12px;border:1px solid #ffffff33;background:#00000044;color:#fff"></select>
-<label style="display:block;font-size:11px;opacity:.8;margin:10px 0 5px;font-weight:700">Fecha</label><input id="rFecha" type="date" style="width:100%;padding:14px;border-radius:12px;border:1px solid #ffffff33;background:#00000044;color:#fff">
+<label style="display:block;font-size:11px;opacity:.8;margin:10px 0 5px;font-weight:700">Local</label>
+<select id="rLocal" style="width:100%;padding:14px;border-radius:12px;border:1px solid #ffffff33;background:#00000044;color:#fff"></select>
+<label style="display:block;font-size:11px;opacity:.8;margin:10px 0 5px;font-weight:700">Servicio</label>
+<select id="rServicio" style="width:100%;padding:14px;border-radius:12px;border:1px solid #ffffff33;background:#00000044;color:#fff"></select>
+<label style="display:block;font-size:11px;opacity:.8;margin:10px 0 5px;font-weight:700">Fecha</label>
+<input id="rFecha" type="date" style="width:100%;padding:14px;border-radius:12px;border:1px solid #ffffff33;background:#00000044;color:#fff">
 <div style="margin:8px 0">
 <p style="font-size:11px;color:#cfc9e6;margin:4px 0">Horarios - tocá uno libre</p>
 <div id="slots" style="display:flex;gap:6px;flex-wrap:wrap"></div>
@@ -77,78 +88,101 @@ body{background:linear-gradient(180deg,#6a11cb 0%,#5a14c0 45%,#1e084a 100%) no-r
 <a id="btnWA" href="#" target="_blank" class="btn ghost full" style="display:block;text-align:center;margin-top:6px;text-decoration:none;font-size:13px">💬 WhatsApp del local</a>
 </div>
 </div>
- <div id="s-reservas" class="wrap hidden"><div style="background:var(--panel);border:1px solid var(--stroke);border-radius:16px;padding:14px 12px"><h3>Mis reservas</h3><ul id="listaReservas" style="list-style:none;padding:0"></ul></div></div>
-<div id="s-favoritos" class="wrap hidden"><div style="background:var(--panel);border:1px solid var(--stroke);border-radius:16px;padding:14px 12px"><h3>❤️ Favoritos</h3><div id="listaFavs">Próximamente</div></div></div>
+ <div id="s-reservas" class="wrap hidden">
+<div style="background:var(--panel);border:1px solid var(--stroke);border-radius:16px;padding:14px 12px">
+<h3>Mis reservas</h3>
+<ul id="listaReservas" style="list-style:none;padding:0"></ul>
+</div>
+</div>
+<div id="s-favoritos" class="wrap hidden">
+<div style="background:var(--panel);border:1px solid var(--stroke);border-radius:16px;padding:14px 12px">
+<h3>❤️ Favoritos</h3>
+<div id="listaFavs">Próximamente</div>
+</div>
+</div>
 <div id="s-perfil" class="wrap hidden">
-<div style="background:var(--panel);border:1px solid var(--stroke);border-radius:16px;padding:14px 12px;margin-bottom:10px"><h3 id="perfilNombre">Perfil</h3><p id="perfilEmail" style="font-size:12px;opacity:.7;margin-bottom:8px"></p>
-<label style="font-size:11px">Nombre</label><input id="pNom" style="width:100%;padding:14px;border-radius:12px;border:1px solid #ffffff33;background:#00000033;color:#fff;margin-bottom:10px">
-<label style="font-size:11px">WhatsApp</label><input id="pWsp" style="width:100%;padding:14px;border-radius:12px;border:1px solid #ffffff33;background:#00000033;color:#fff;margin-bottom:10px">
-<label style="font-size:11px">Dirección</label><input id="pDir" style="width:100%;padding:14px;border-radius:12px;border:1px solid #ffffff33;background:#00000033;color:#fff;margin-bottom:10px">
-<input id="pMail" disabled style="width:100%;padding:14px;border-radius:12px;opacity:.5">
+<div style="background:var(--panel);border:1px solid var(--stroke);border-radius:16px;padding:14px 12px;margin-bottom:10px">
+<h3 id="perfilNombre">Perfil</h3>
+<p id="perfilEmail" style="font-size:12px;opacity:.7;margin-bottom:8px"></p>
+<label style="font-size:11px">Nombre</label>
+<input id="pNom" style="width:100%;padding:14px;border-radius:12px;border:1px solid #ffffff33;background:#00000033;color:#fff;margin-bottom:10px">
+<label style="font-size:11px">WhatsApp</label>
+<input id="pWsp" style="width:100%;padding:14px;border-radius:12px;border:1px solid #ffffff33;background:#00000033;color:#fff;margin-bottom:10px">
+<label style="font-size:11px">Dirección</label>
+<input id="pDir" style="width:100%;padding:14px;border-radius:12px;border:1px solid #ffffff33;background:#00000033;color:#fff;margin-bottom:10px">
+<input id="pMail" disabled style="width:100%;padding:14px;border-radius:12px;opacity:.5;background:#00000033;color:#fff;border:1px solid #ffffff33">
 <button id="btnSavePerf" class="btn full" style="margin-top:8px">Guardar cambios</button>
 </div>
-<div style="background:var(--panel);border:1px solid var(--stroke);border-radius:16px;padding:14px 12px"><h3 style="font-size:14px">💬 Soporte</h3><textarea id="soporteMsg" placeholder="Contanos..." style="width:100%;padding:14px;border-radius:12px;background:#00000033;color:#fff;min-height:80px"></textarea><button id="btnSoportePerfil" class="btn full" style="margin-top:6px">Enviar</button></div>
-<div style="background:var(--panel);border:1px solid var(--stroke);border-radius:16px;padding:14px 12px;margin-top:10px"><button id="btnLogout" class="btn ghost full">Salir</button></div>
+<div style="background:var(--panel);border:1px solid var(--stroke);border-radius:16px;padding:14px 12px">
+<h3 style="font-size:14px">💬 Soporte</h3>
+<textarea id="soporteMsg" placeholder="Contanos..." style="width:100%;padding:14px;border-radius:12px;background:#00000033;color:#fff;min-height:80px;border:1px solid #ffffff33"></textarea>
+<button id="btnSoportePerfil" class="btn full" style="margin-top:6px">Enviar</button>
+</div>
+<div style="background:var(--panel);border:1px solid var(--stroke);border-radius:16px;padding:14px 12px;margin-top:10px">
+<button id="btnLogout" class="btn ghost full">Salir</button>
+</div>
 </div>
 <div id="bottomNav" class="hidden" style="position:fixed;left:0;right:0;bottom:0;z-index:30;background:rgba(22,7,48,.98);border-top:1px solid #ffffff24;display:flex;justify-content:space-around;padding:6px 0 8px">
-<button class="active" data-screen="inicio" style="background:transparent;border:0;color:#fff;font-size:10px">🏠<br>Inicio</button>
-<button data-screen="reservas" style="background:transparent;border:0;color:#bda8e0;font-size:10px">📅<br>Reservas</button>
-<button data-screen="favoritos" style="background:transparent;border:0;color:#bda8e0;font-size:10px">❤️<br>Favs</button>
-<button data-screen="perfil" style="background:transparent;border:0;color:#bda8e0;font-size:10px">👤<br>Perfil</button>
+<button data-screen="inicio" class="navBtn" style="background:transparent;border:0;color:#fff;font-size:10px">🏠<br>Inicio</button>
+<button data-screen="reservas" class="navBtn" style="background:transparent;border:0;color:#bda8e0;font-size:10px">📅<br>Reservas</button>
+<button data-screen="favoritos" class="navBtn" style="background:transparent;border:0;color:#bda8e0;font-size:10px">❤️<br>Favs</button>
+<button data-screen="perfil" class="navBtn" style="background:transparent;border:0;color:#bda8e0;font-size:10px">👤<br>Perfil</button>
 </div>
 <div id="toast" class="hidden" style="position:fixed;bottom:85px;left:50%;transform:translateX(-50%);background:#1f0736;border:1px solid #ffffff33;padding:10px 14px;border-radius:10px;z-index:9999;font-size:13px"></div>
  <script>
 const firebaseConfig={apiKey:"AIzaSyC57wshaJ2EuIBoBdXv18opL4u_Vuw2bAQ",authDomain:"reservar-cb70d.firebaseapp.com",projectId:"reservar-cb70d"};
 firebase.initializeApp(firebaseConfig);
 const auth=firebase.auth(),db=firebase.firestore(),$=id=>document.getElementById(id);
-const toast=m=>{let t=$('toast');t.textContent=m;t.classList.remove('hidden');setTimeout(()=>t.classList.add('hidden'),3000)};
+const toast=m=>{let t=$('toast');t.textContent=m;t.classList.remove('hidden');setTimeout(()=>t.classList.add('hidden'),2500)};
 const toMin=h=>{let[a,b]=h.split(':').map(Number);return a*60+b};
-const errEs=c=>{c=c.toLowerCase();if(c.includes('invalid-credential')||c.includes('wrong-password')||c.includes('user-not-found'))return'Correo o pass mal';if(c.includes('email-already'))return'Ya existe';if(c.includes('weak-password'))return'Pass min 6';return c};
-let cfgLocal=null,localElegidoId=null,horaElegida=null;
-function goScreen(n){document.querySelectorAll('#bottomNav button').forEach(b=>b.classList.toggle('active',b.dataset.screen===n));$('app').classList.toggle('hidden',n!=='inicio');$('s-reservas').classList.toggle('hidden',n!=='reservas');$('s-favoritos').classList.toggle('hidden',n!=='favoritos');$('s-perfil').classList.toggle('hidden',n!=='perfil');}
-document.querySelectorAll('#bottomNav button').forEach(b=>b.addEventListener('click',()=>goScreen(b.dataset.screen)));
-$('loginBtn').onclick=async()=>{let em=$('email').value.trim().toLowerCase(),ps=$('pass').value.trim();$('loginMsg').textContent='Entrando...';try{await auth.signInWithEmailAndPassword(em,ps)}catch(e){console.log(e.code);$('loginMsg').textContent=errEs(e.message)}};
-$('goReg').onclick=()=>{$('loginFields').classList.add('hidden');$('regFields').classList.remove('hidden');$('authTitle').textContent='Crear cuenta'};
-$('backLog').onclick=()=>{$('regFields').classList.add('hidden');$('loginFields').classList.remove('hidden');$('authTitle').textContent='Iniciar sesión'};
-$('regBtn').onclick=async()=>{try{let cr=await auth.createUserWithEmailAndPassword($('rEmail').value.trim().toLowerCase(),$('rPass').value.trim());await db.collection('clientes').doc(cr.user.uid).set({nombre:$('rNom').value.trim(),whatsapp:$('rWsp').value.trim(),direccion:$('rDir').value.trim(),email:$('rEmail').value.trim().toLowerCase(),creado:Date.now()})}catch(e){$('regMsg').textContent=errEs(e.message)}};
-$('forgotBtn').onclick=async()=>{let em=$('email').value.trim();if(!em)return $('loginMsg').textContent='Escribí tu email';await auth.sendPasswordResetEmail(em);$('loginMsg').style.color='#86efac';$('loginMsg').textContent='Mail enviado 📧'};
+const errEs=c=>{c=(c||'').toLowerCase();if(c.includes('invalid-credential')||c.includes('wrong-password')||c.includes('user-not-found'))return'Correo o contraseña incorrectos';if(c.includes('email-already'))return'Este correo ya existe';if(c.includes('weak-password'))return'Contraseña mínimo 6 caracteres';return c};
+let cfgLocal=null,localElegidoId=null,horaElegida=null,localesCache=[];
+function goScreen(n){document.querySelectorAll('.navBtn').forEach(b=>b.style.color=b.dataset.screen===n?'#fff':'#bda8e0');$('app').classList.toggle('hidden',n!=='inicio');$('s-reservas').classList.toggle('hidden',n!=='reservas');$('s-favoritos').classList.toggle('hidden',n!=='favoritos');$('s-perfil').classList.toggle('hidden',n!=='perfil');}
+document.querySelectorAll('.navBtn').forEach(b=>b.addEventListener('click',()=>goScreen(b.dataset.screen)));
+$('loginBtn').onclick=async()=>{let em=$('email').value.trim().toLowerCase(),ps=$('pass').value.trim();if(!em||!ps)return $('loginMsg').textContent='Completá los datos';$('loginMsg').textContent='Entrando...';try{await auth.signInWithEmailAndPassword(em,ps)}catch(e){$('loginMsg').textContent=errEs(e.message)}};
+$('goReg').onclick=()=>{$('loginFields').classList.add('hidden');$('regFields').classList.remove('hidden');$('authTitle').textContent='Crear cuenta';$('loginMsg').textContent=''};
+$('backLog').onclick=()=>{$('regFields').classList.add('hidden');$('loginFields').classList.remove('hidden');$('authTitle').textContent='Iniciar sesión';$('regMsg').textContent=''};
+$('regBtn').onclick=async()=>{let em=$('rEmail').value.trim().toLowerCase(),ps=$('rPass').value.trim();if(ps.length<6)return $('regMsg').textContent='Pass min 6';try{let cr=await auth.createUserWithEmailAndPassword(em,ps);await db.collection('clientes').doc(cr.user.uid).set({nombre:$('rNom').value.trim(),whatsapp:$('rWsp').value.trim(),direccion:$('rDir').value.trim(),email:em,creado:Date.now()})}catch(e){$('regMsg').textContent=errEs(e.message)}};
+$('forgotBtn').onclick=async()=>{let em=$('email').value.trim().toLowerCase();if(!em)return $('loginMsg').textContent='Escribí tu email';await auth.sendPasswordResetEmail(em);$('loginMsg').style.color='#86efac';$('loginMsg').textContent='Mail enviado 📧'};
 $('btnLogout').onclick=()=>auth.signOut();
+$('searchLocal').addEventListener('input',e=>{let q=e.target.value.toLowerCase();document.querySelectorAll('#destacados>div').forEach(d=>{d.style.display=d.textContent.toLowerCase().includes(q)?'flex':'none'})});
+$('rFecha').addEventListener('change',()=>generarSlotsUI());
+$('rServicio').addEventListener('change',()=>generarSlotsUI());
+$('rLocal').addEventListener('change',()=>onLocalChange());
 auth.onAuthStateChanged(async u=>{
-if(u){
+if(!u){$('app').classList.add('hidden');$('s-reservas').classList.add('hidden');$('s-favoritos').classList.add('hidden');$('s-perfil').classList.add('hidden');$('authBox').classList.remove('hidden');$('topbar').classList.add('hidden');$('bottomNav').classList.add('hidden');return;}
 $('authBox').classList.add('hidden');$('app').classList.remove('hidden');$('topbar').classList.remove('hidden');$('bottomNav').classList.remove('hidden');
 let cli=await db.collection('clientes').doc(u.uid).get();let d=cli.data()||{};let nombre=d.nombre||u.email.split('@')[0];
 $('saludo').innerHTML=`Hola, ${nombre}, que tengas<br>un maravilloso día ✨`;$('avatarTop').textContent=nombre.slice(0,2).toUpperCase();$('perfilNombre').textContent=nombre;$('perfilEmail').textContent=u.email;
 $('pNom').value=d.nombre||'';$('pWsp').value=d.whatsapp||'';$('pDir').value=d.direccion||'';$('pMail').value=d.email||u.email;
-cargarLocales();cargarMisReservas();
-}else{
-$('app').classList.add('hidden');$('s-reservas').classList.add('hidden');$('s-favoritos').classList.add('hidden');$('s-perfil').classList.add('hidden');
-$('authBox').classList.remove('hidden');$('topbar').classList.add('hidden');$('bottomNav').classList.add('hidden');
-}
+cargarLocales();cargarMisReservas();goScreen('inicio');
 });
-async function cargarLocales(){let sel=$('rLocal');sel.innerHTML='<option>Cargando...</option>';let snap=await db.collection('config').get();let localesData=[];snap.forEach(d=>{if(d.id=='global')return;localesData.push({id:d.id,...d.data()})});
-$('destacados').innerHTML=localesData.map(l=>{let foto=l.foto||`https://picsum.photos/seed/${l.id}/200`;return `<div style="display:flex;gap:10px;background:#ffffff10;border:1px solid #ffffff18;border-radius:14px;padding:8px;margin-bottom:8px" onclick="document.getElementById('rLocal').value='${l.id}';document.getElementById('rLocal').dispatchEvent(new Event('change'))"><img src="${foto}" style="width:68px;height:68px;border-radius:10px;object-fit:cover"><div><b>${l.localNombre||'Local'}</b></div></div>`}).join('');
-sel.innerHTML='';localesData.forEach(l=>{let o=document.createElement('option');o.value=l.id;o.textContent=l.localNombre||'Local';o.dataset.tel=l.tel||'';o.dataset.ap=l.apertura||'09:00';o.dataset.ci=l.cierre||'18:00';sel.appendChild(o)});
-if(sel.options.length){sel.selectedIndex=0;onLocalChange()}sel.onchange=onLocalChange}
+async function cargarLocales(){let sel=$('rLocal');sel.innerHTML='<option>Cargando...</option>';let snap=await db.collection('config').get();localesCache=[];snap.forEach(doc=>{if(doc.id==='global')return;localesCache.push({id:doc.id,...doc.data()})});
+$('destacados').innerHTML=localesCache.map(l=>{let foto=l.foto||`https://picsum.photos/seed/${l.id}/200`;return `<div data-nombre="${(l.localNombre||'').toLowerCase()}" style="display:flex;gap:10px;background:#ffffff10;border:1px solid #ffffff18;border-radius:14px;padding:8px;margin-bottom:8px;cursor:pointer" onclick="document.getElementById('rLocal').value='${l.id}';document.getElementById('rLocal').dispatchEvent(new Event('change'))"><img src="${foto}" style="width:68px;height:68px;border-radius:10px;object-fit:cover"><div><b>${l.localNombre||'Local'}</b><div style="font-size:11px;opacity:.7">${l.direccion||''}</div></div></div>`}).join('');
+sel.innerHTML='';localesCache.forEach(l=>{let o=document.createElement('option');o.value=l.id;o.textContent=l.localNombre||'Local';o.dataset.tel=l.tel||'';o.dataset.ap=l.apertura||'09:00';o.dataset.ci=l.cierre||'18:00';sel.appendChild(o)});
+if(sel.options.length){sel.selectedIndex=0;onLocalChange();}}
 async function onLocalChange(){let opt=$('rLocal').options[$('rLocal').selectedIndex];if(!opt)return;localElegidoId=opt.value;cfgLocal={tel:opt.dataset.tel,apertura:opt.dataset.ap||'09:00',cierre:opt.dataset.ci||'18:00'};$('btnWA').href=cfgLocal.tel?`https://wa.me/${cfgLocal.tel.replace(/\D/g,'')}`:'#';
-let snap=await db.collection('servicios').where('localId','==',localElegidoId).where('activo','==',true).get();let selS=$('rServicio');selS.innerHTML='';snap.forEach(d=>{let s=d.data();let o=document.createElement('option');o.value=s.nombre;o.textContent=s.nombre+' - $'+s.precio;o.dataset.dur=s.duracion;o.dataset.pr=s.precio;selS.appendChild(o)});
-if(!selS.options.length){selS.innerHTML='<option>Sin servicios</option>';$('slots').innerHTML='';return}generarSlotsUI()}
-async function generarSlotsUI(){let fecha=$('rFecha').value,opt=$('rServicio').options[$('rServicio').selectedIndex];if(!fecha||!opt||!opt.value){$('slots').innerHTML='<span style="font-size:11px">Elegí fecha y servicio</span>';return}
+let snap=await db.collection('servicios').where('localId','==',localElegidoId).where('activo','==',true).get();let selS=$('rServicio');selS.innerHTML='';snap.forEach(d=>{let s=d.data();let o=document.createElement('option');o.value=s.nombre;o.textContent=`${s.nombre} - $${s.precio}`;o.dataset.dur=s.duracion;o.dataset.pr=s.precio;selS.appendChild(o)});
+if(!selS.options.length){selS.innerHTML='<option>Sin servicios</option>';$('slots').innerHTML='';return;}generarSlotsUI();}
+async function generarSlotsUI(){let fecha=$('rFecha').value;let selS=$('rServicio');let opt=selS.options[selS.selectedIndex];if(!fecha||!opt||!opt.value){$('slots').innerHTML='<span style="font-size:11px;opacity:.7">Elegí fecha y servicio</span>';return;}
 let dur=Number(opt.dataset.dur||30);let snap=await db.collection('reservas').where('localId','==',localElegidoId).where('fecha','==',fecha).where('estado','!=','cancelada').get();let res=snap.docs.map(d=>d.data());
-$('slots').innerHTML='';let ac=toMin(cfgLocal.apertura),fin=toMin(cfgLocal.cierre);
+$('slots').innerHTML='';let ac=toMin(cfgLocal.apertura),fin=toMin(cfgLocal.cierre);let hay=false;
 while(ac+dur<=fin){let h=`${String(Math.floor(ac/60)).padStart(2,'0')}:${String(ac%60).padStart(2,'0')}`;let oc=res.some(r=>{let s=toMin(r.hora),e=s+Number(r.duracion||30);return ac<e&&ac+dur>s});let b=document.createElement('button');
-b.style.cssText='padding:9px 12px;border-radius:999px;border:1px solid #ffffff1e;background:'+(oc?'#00000022':'#ffffff12')+';color:#fff;font-size:13px;'+(oc?'opacity:.25':'');b.textContent=h;
-if(!oc)b.onclick=()=>{horaElegida=h;document.querySelectorAll('#slots button').forEach(x=>{x.style.background='#ffffff12';x.style.color='#fff'});b.style.background='#fff';b.style.color='#3a0f6e';$('slotInfo').textContent='Elegiste '+h};
-$('slots').appendChild(b);ac+=dur}}
-$('rFecha').addEventListener('change',generarSlotsUI);$('rServicio').addEventListener('change',generarSlotsUI);
+b.style.cssText=`padding:9px 12px;border-radius:999px;border:1px solid #ffffff1e;background:${oc?'#00000022':'#ffffff12'};color:#fff;font-size:13px;cursor:${oc?'not-allowed':'pointer'};${oc?'opacity:.25':''}`;b.textContent=h;
+if(!oc){hay=true;b.onclick=()=>{horaElegida=h;document.querySelectorAll('#slots button').forEach(x=>{x.style.background='#ffffff12';x.style.color='#fff'});b.style.background='#fff';b.style.color='#3a0f6e';$('slotInfo').textContent='Elegiste '+h;};}
+$('slots').appendChild(b);ac+=dur;}if(!hay){$('slots').innerHTML='<span style="font-size:11px">Sin horarios libres ese día</span>';}}
 $('btnReservar').onclick=async()=>{if(!localElegidoId||!horaElegida||!$('rFecha').value)return toast('Elegí fecha y hora');let opt=$('rServicio').options[$('rServicio').selectedIndex];let dur=Number(opt.dataset.dur||30);
 let chk=await db.collection('reservas').where('localId','==',localElegidoId).where('fecha','==',$('rFecha').value).where('estado','!=','cancelada').get();
-for(let d of chk.docs){let r=d.data(),s=toMin(r.hora),e=s+Number(r.duracion||30),ns=toMin(horaElegida),ne=ns+dur;if(ns<e&&ne>s)return toast('Ocupado')}
+for(let d of chk.docs){let r=d.data(),s=toMin(r.hora),e=s+Number(r.duracion||30),ns=toMin(horaElegida),ne=ns+dur;if(ns<e&&ne>s)return toast('Horario ocupado, elegí otro');}
 await db.collection('reservas').add({localId:localElegidoId,clienteUid:auth.currentUser.uid,cliente:auth.currentUser.email,servicio:opt.value,fecha:$('rFecha').value,hora:horaElegida,duracion:dur,precio:Number(opt.dataset.pr||0),estado:'confirmada',ts:Date.now(),creado:firebase.firestore.FieldValue.serverTimestamp()});
-toast('¡Reserva OK '+horaElegida+'!');horaElegida=null;cargarMisReservas();generarSlotsUI();goScreen('reservas')};
-async function cargarMisReservas(){let snap=await db.collection('reservas').where('clienteUid','==',auth.currentUser.uid).orderBy('creado','desc').get();$('listaReservas').innerHTML=snap.docs.map(d=>{let r=d.data();return `<li style="display:flex;justify-content:space-between;padding:10px;border:1px solid #ffffff1e;border-radius:12px;background:#ffffff0f;margin-bottom:6px"><div><b style="font-size:13px">${r.servicio}</b><div style="font-size:11px">${r.fecha} ${r.hora}</div></div></li>`}).join('')||'<li>Sin reservas</li>'}
-$('btnSavePerf').onclick=async()=>{await db.collection('clientes').doc(auth.currentUser.uid).update({nombre:$('pNom').value.trim(),whatsapp:$('pWsp').value.trim(),direccion:$('pDir').value.trim()});toast('Guardado ✅')};
-$('btnSoportePerfil').onclick=async()=>{let m=$('soporteMsg').value.trim();if(!m)return toast('Escribí algo');await db.collection('soporte').add({email:auth.currentUser.email,msg:m,ts:Date.now()});$('soporteMsg').value='';toast('Enviado ✅')};
+toast('¡Reserva OK '+horaElegida+'!');horaElegida=null;$('slotInfo').textContent='';cargarMisReservas();generarSlotsUI();goScreen('reservas');};
+async function cargarMisReservas(){let snap=await db.collection('reservas').where('clienteUid','==',auth.currentUser.uid).orderBy('creado','desc').limit(30).get();$('listaReservas').innerHTML=snap.docs.map(d=>{let r=d.data();return `<li style="display:flex;justify-content:space-between;padding:10px;border:1px solid #ffffff1e;border-radius:12px;background:#ffffff0f;margin-bottom:6px"><div><b style="font-size:13px">${r.servicio}</b><div style="font-size:11px;opacity:.7">${r.fecha} ${r.hora} - ${r.estado}</div></div><div style="font-size:11px">$${r.precio||0}</div></li>`}).join('')||'<li>Sin reservas</li>';}
+$('btnSavePerf').onclick=async()=>{await db.collection('clientes').doc(auth.currentUser.uid).update({nombre:$('pNom').value.trim(),whatsapp:$('pWsp').value.trim(),direccion:$('pDir').value.trim()});toast('Guardado ✅');$('saludo').innerHTML=`Hola, ${$('pNom').value.trim()}, que tengas<br>un maravilloso día ✨`;};
+$('btnSoportePerfil').onclick=async()=>{let m=$('soporteMsg').value.trim();if(!m)return toast('Escribí algo');await db.collection('soporte').add({email:auth.currentUser.email,msg:m,ts:Date.now()});$('soporteMsg').value='';toast('Enviado ✅');};
 (()=>{let t=new Date();t.setDate(t.getDate()+1);let f=$('rFecha');if(f)f.valueAsDate=t;})();
 </script>
 </body>
 </html>
+ 
+ 
+ 
