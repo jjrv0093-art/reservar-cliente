@@ -1,19 +1,11 @@
-<!doctype html>
-<html lang="es">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>reservAR</title>
-<style>
-:root{--stroke:#ffffff1e;--panel:#ffffff10}
-*{box-sizing:border-box}
+<!doctype html><html lang="es"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1"><title>reservAR</title>
+<style>:root{--stroke:#ffffff1e;--panel:#ffffff10}*{box-sizing:border-box}
 html,body{margin:0;min-height:100%;font-family:system-ui;color:#fff;background:#4f10a8}
 body{background:linear-gradient(180deg,#6a11cb 0%,#5a14c0 45%,#1e084a 100%) no-repeat}
-.hidden{display:none!important}
-.wrap{max-width:520px;margin:0 auto;padding:8px 10px 90px}
+.hidden{display:none!important}.wrap{max-width:520px;margin:0 auto;padding:8px 10px 90px}
 .topbar{position:sticky;top:0;z-index:20;display:flex;justify-content:space-between;align-items:center;padding:10px 12px;background:rgba(16,4,38,.96);border-bottom:1px solid var(--stroke)}
-.logo{font-weight:900;font-size:20px;line-height:.9}
-.logo span{display:block;font-weight:400;font-size:10px;color:#cbbbe6;margin-top:2px}
+.logo{font-weight:900;font-size:20px;line-height:.9}.logo span{display:block;font-weight:400;font-size:10px;color:#cbbbe6;margin-top:2px}
 .pill{padding:6px 10px;border-radius:999px;border:1px solid #ffffff28;background:#ffffff15;font-size:11px}
 .avatar{width:36px;height:36px;border-radius:999px;background:#ffffff22;display:flex;align-items:center;justify-content:center;font-weight:900}
 .auth{max-width:420px;margin:0 auto;background:transparent;border:0;padding:12px 16px 20px;min-height:100dvh}
@@ -22,23 +14,15 @@ body{background:linear-gradient(180deg,#6a11cb 0%,#5a14c0 45%,#1e084a 100%) no-r
 #authTitle{font-size:20px;font-weight:900;margin:0 0 12px 2px}
 .auth input{width:100%;padding:14px;border-radius:14px;border:1px solid #ffffff22;background:#ffffff12;color:#fff;margin-bottom:10px;font-size:14px;outline:none}
 .btn{background:#a855f7;border:0;color:#fff;padding:14px;border-radius:12px;font-weight:800;cursor:pointer}
-.btn.ghost{background:transparent;border:1px solid var(--stroke)}
-.btn.full{width:100%}
+.btn.ghost{background:transparent;border:1px solid var(--stroke)}.btn.full{width:100%}
 </style>
 <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
-</head>
-<body>
-<div id="topbar" class="topbar hidden">
-<div class="logo">reservAR<span>tu lugar tu momento</span></div>
-<div style="display:flex;gap:6px;align-items:center">
-<div class="pill">✨ Panel Cliente</div>
-<div id="avatarTop" class="avatar">JD</div>
-</div>
-</div>
-<div id="authBox" class="auth">
-<div class="authLogo">reservAR<span>tu lugar tu momento</span></div>
+</head><body>
+<div id="topbar" class="topbar hidden"><div class="logo">reservAR<span>tu lugar tu momento</span></div>
+<div style="display:flex;gap:6px;align-items:center"><div class="pill">✨ Panel Cliente</div><div id="avatarTop" class="avatar">JD</div></div></div>
+<div id="authBox" class="auth"><div class="authLogo">reservAR<span>tu lugar tu momento</span></div>
 <h2 id="authTitle">Iniciar sesión</h2>
 <div id="loginFields">
 <input id="email" placeholder="tu@correo.com" autocomplete="email">
@@ -46,27 +30,28 @@ body{background:linear-gradient(180deg,#6a11cb 0%,#5a14c0 45%,#1e084a 100%) no-r
 <p id="loginMsg" style="color:#fca5a5;font-size:12px;min-height:14px;margin:4px 0"></p>
 <button id="loginBtn" class="btn full">Entrar</button>
 <button id="forgotBtn" style="background:0;border:0;width:100%;color:#cfc9e6;text-decoration:underline;margin-top:8px;font-size:12px">¿Olvidaste tu contraseña?</button>
-<div style="text-align:center;margin-top:12px;font-size:12px">¿No tenés cuenta? <b id="goReg" style="color:#f472b6;cursor:pointer">Crear cuenta</b></div>
-</div>
+<div style="text-align:center;margin-top:12px;font-size:12px">¿No tenés cuenta? <b id="goReg" style="color:#f472b6;cursor:pointer">Crear cuenta</b></div></div>
 <div id="regFields" class="hidden">
-<input id="rNom" placeholder="Nombre y apellido">
-<input id="rWsp" placeholder="WhatsApp">
-<input id="rDir" placeholder="Dirección">
-<input id="rEmail" placeholder="tu@correo.com">
+<input id="rNom" placeholder="Nombre y apellido"><input id="rWsp" placeholder="WhatsApp">
+<input id="rDir" placeholder="Dirección"><input id="rEmail" placeholder="tu@correo.com">
 <input id="rPass" type="password" placeholder="Contraseña min 6">
 <p id="regMsg" style="color:#fca5a5;font-size:12px;margin:4px 0"></p>
 <button id="regBtn" class="btn full">Crear cuenta</button>
-<div style="text-align:center;margin-top:12px;font-size:12px"><b id="backLog" style="color:#d7b8ff;cursor:pointer">Volver a entrar</b></div>
-</div>
-</div>
+<div style="text-align:center;margin-top:12px;font-size:12px"><b id="backLog" style="color:#d7b8ff;cursor:pointer">Volver a entrar</b></div></div></div>
 <div id="app" class="wrap hidden">
-<h1 id="saludo" style="font-size:26px;font-weight:900;line-height:1.1;margin:8px 2px 10px">Hola
- <label style="display:block;font-size:11px;opacity:.8;margin:10px 0 5px;font-weight:700">Servicio</label>
+<h1 id="saludo" style="font-size:26px;font-weight:900;line-height:1.1;margin:8px 2px 10px">Hola ✨</h1>
+<div style="background:var(--panel);border:1px solid var(--stroke);border-radius:16px;padding:12px">
+<input id="searchLocal" placeholder="🔍 Buscar local..." style="width:100%;padding:12px;border-radius:12px;border:1px solid #ffffff33;background:#00000033;color:#fff;margin-bottom:10px">
+<div id="destacados"></div>
+<label style="display:block;font-size:11px;opacity:.8;margin:10px 0 5px;font-weight:700">Elegí local</label>
+<select id="rLocal" style="width:100%;padding:14px;border-radius:12px;border:1px solid #ffffff33;background:#00000044;color:#fff"></select>
+<div id="avisoBloqueo" class="hidden" style="margin-top:8px;background:#ef444433;border:1px solid #ef444455;border-radius:12px;padding:10px;font-size:12px"></div>
+<label style="display:block;font-size:11px;opacity:.8;margin:10px 0 5px;font-weight:700">Servicio</label>
 <select id="rServicio" style="width:100%;padding:14px;border-radius:12px;border:1px solid #ffffff33;background:#00000044;color:#fff"></select>
 <label style="display:block;font-size:11px;opacity:.8;margin:10px 0 5px;font-weight:700">Fecha</label>
 <input id="rFecha" type="date" style="width:100%;padding:14px;border-radius:12px;border:1px solid #ffffff33;background:#00000044;color:#fff">
 <div style="margin:8px 0">
-<p style="font-size:11px;color:#cfc9e6;margin:4px 0">Horarios - tocá uno libre</p>
+<p style="font-size:11px;color:#cfc9e6;margin:4px 0">Horarios - cupo solo lectura (lo maneja el local)</p>
 <div id="slots" style="display:flex;gap:6px;flex-wrap:wrap"></div>
 <div id="slotInfo" style="font-size:11px;color:#fde68a;margin-top:4px"></div>
 </div>
@@ -78,187 +63,67 @@ body{background:linear-gradient(180deg,#6a11cb 0%,#5a14c0 45%,#1e084a 100%) no-r
 </div>
 <button id="btnReservar" class="btn full" style="margin-top:8px">Confirmar reserva</button>
 <a id="btnWA" href="#" target="_blank" class="btn ghost full" style="display:block;text-align:center;margin-top:6px;text-decoration:none;font-size:13px">💬 WhatsApp del local</a>
-</div>
-</div>
-<div id="s-reservas" class="wrap hidden">
-<div style="background:var(--panel);border:1px solid var(--stroke);border-radius:16px;padding:14px 12px">
-<h3>Mis reservas</h3>
-<ul id="listaReservas" style="list-style:none;padding:0"></ul>
-</div>
-</div>
-<div id="s-favoritos" class="wrap hidden">
-<div style="background:var(--panel);border:1px solid var(--stroke);border-radius:16px;padding:14px 12px">
-<h3>❤️ Favoritos</h3>
-<div id="listaFavs">Próximamente</div>
-</div>
-</div>
+</div></div>
+<div id="s-reservas" class="wrap hidden"><div style="background:var(--panel);border:1px solid var(--stroke);border-radius:16px;padding:14px 12px"><h3>Mis reservas - trazable por horario/ID</h3><ul id="listaReservas" style="list-style:none;padding:0"></ul></div></div>
+<div id="s-favoritos" class="wrap hidden"><div style="background:var(--panel);border:1px solid var(--stroke);border-radius:16px;padding:14px 12px"><h3>❤️ Favoritos</h3><div id="listaFavs">Próximamente</div></div></div>
 <div id="s-perfil" class="wrap hidden">
 <div style="background:var(--panel);border:1px solid var(--stroke);border-radius:16px;padding:14px 12px;margin-bottom:10px">
-<h3 id="perfilNombre">Perfil</h3>
-<p id="perfilEmail" style="font-size:12px;opacity:.7;margin-bottom:8px"></p>
-<label style="font-size:11px">Nombre</label>
-<input id="pNom" style="width:100%;padding:14px;border-radius:12px;border:1px solid #ffffff33;background:#00000033;color:#fff;margin-bottom:10px">
-<label style="font-size:11px">WhatsApp</label>
-<input id="pWsp" style="width:100%;padding:14px;border-radius:12px;border:1px solid #ffffff33;background:#00000033;color:#fff;margin-bottom:10px">
-<label style="font-size:11px">Dirección</label>
-<input id="pDir" style="width:100%;padding:14px;border-radius:12px;border:1px solid #ffffff33;background:#00000033;color:#fff;margin-bottom:10px">
+<h3 id="perfilNombre">Perfil</h3><p id="perfilEmail" style="font-size:12px;opacity:.7;margin-bottom:8px"></p>
+<label style="font-size:11px">Nombre</label><input id="pNom" style="width:100%;padding:14px;border-radius:12px;border:1px solid #ffffff33;background:#00000033;color:#fff;margin-bottom:10px">
+<label style="font-size:11px">WhatsApp</label><input id="pWsp" style="width:100%;padding:14px;border-radius:12px;border:1px solid #ffffff33;background:#00000033;color:#fff;margin-bottom:10px">
+<label style="font-size:11px">Dirección</label><input id="pDir" style="width:100%;padding:14px;border-radius:12px;border:1px solid #ffffff33;background:#00000033;color:#fff;margin-bottom:10px">
 <input id="pMail" disabled style="width:100%;padding:14px;border-radius:12px;opacity:.5;background:#00000033;color:#fff;border:1px solid #ffffff33">
-<button id="btnSavePerf" class="btn full" style="margin-top:8px">Guardar cambios</button>
-</div>
+<button id="btnSavePerf" class="btn full" style="margin-top:8px">Guardar cambios</button></div>
 <div style="background:var(--panel);border:1px solid var(--stroke);border-radius:16px;padding:14px 12px">
-<h3 style="font-size:14px">💬 Soporte</h3>
-<textarea id="soporteMsg" placeholder="Contanos..." style="width:100%;padding:14px;border-radius:12px;background:#00000033;color:#fff;min-height:80px;border:1px solid #ffffff33"></textarea>
-<button id="btnSoportePerfil" class="btn full" style="margin-top:6px">Enviar</button>
-</div>
-<div style="background:var(--panel);border:1px solid var(--stroke);border-radius:16px;padding:14px 12px;margin-top:10px">
-<button id="btnLogout" class="btn ghost full">Salir</button>
-</div>
-</div>
+<h3 style="font-size:14px">💬 Soporte trazable</h3>
+<p style="font-size:10px;color:#d9ccff">Se envía con horario + local + ID + captura para ADM</p>
+<textarea id="soporteMsg" placeholder="Contanos que pasó... incluye fecha y hora del problema" style="width:100%;padding:14px;border-radius:12px;background:#00000033;color:#fff;min-height:80px;border:1px solid #ffffff33"></textarea>
+<input id="soporteFile" type="file" accept="image/*" style="width:100%;margin-top:8px;color:#fff;font-size:11px">
+<div id="soportePreview" style="margin-top:6px"></div>
+<button id="btnSoportePerfil" class="btn full" style="margin-top:6px">Enviar con captura</button></div>
+<div style="background:var(--panel);border:1px solid var(--stroke);border-radius:16px;padding:14px 12px;margin-top:10px"><button id="btnLogout" class="btn ghost full">Salir</button></div></div>
 <div id="bottomNav" class="hidden" style="position:fixed;left:0;right:0;bottom:0;z-index:30;background:rgba(22,7,48,.98);border-top:1px solid #ffffff24;display:flex;justify-content:space-around;padding:6px 0 8px">
 <button data-screen="inicio" class="navBtn" style="background:transparent;border:0;color:#fff;font-size:10px">🏠<br>Inicio</button>
 <button data-screen="reservas" class="navBtn" style="background:transparent;border:0;color:#bda8e0;font-size:10px">📅<br>Reservas</button>
 <button data-screen="favoritos" class="navBtn" style="background:transparent;border:0;color:#bda8e0;font-size:10px">❤️<br>Favs</button>
-<button data-screen="perfil" class="navBtn" style="background:transparent;border:0;color:#bda8e0;font-size:10px">👤<br>Perfil</button>
-</div>
+<button data-screen="perfil" class="navBtn" style="background:transparent;border:0;color:#bda8e0;font-size:10px">👤<br>Perfil</button></div>
 <div id="toast" class="hidden" style="position:fixed;bottom:85px;left:50%;transform:translateX(-50%);background:#1f0736;border:1px solid #ffffff33;padding:10px 14px;border-radius:10px;z-index:9999;font-size:13px"></div>
 <script>
 const firebaseConfig={apiKey:"AIzaSyC57wshaJ2EuIBoBdXv18opL4u_Vuw2bAQ",authDomain:"reservar-cb70d.firebaseapp.com",projectId:"reservar-cb70d"};
-firebase.initializeApp(firebaseConfig);
-const auth=firebase.auth(),db=firebase.firestore(),$=id=>document.getElementById(id);
-const toast=m=>{let t=$('toast');t.textContent=m;t.classList.remove('hidden');setTimeout(()=>t.classList.add('hidden'),2500)};
-const toMin=h=>{let[a,b]=h.split(':').map(Number);return a*60+b};
-const errEs=c=>{c=(c||'').toLowerCase();if(c.includes('invalid-credential')||c.includes('wrong-password')||c.includes('user-not-found'))return'Correo o contraseña incorrectos';if(c.includes('email-already'))return'Este correo ya existe';if(c.includes('weak-password'))return'Contraseña mínimo 6 caracteres';return c};
-let cfgLocal=null,localElegidoId=null,horaElegida=null,localesCache=[],pideSenaActiva=false,montoSenaAct=0;
+firebase.initializeApp(firebaseConfig);const auth=firebase.auth(),db=firebase.firestore(),$=id=>document.getElementById(id);
+const toast=m=>{let t=$('toast');t.textContent=m;t.classList.remove('hidden');setTimeout(()=>t.classList.add('hidden'),2500);};
+const toMin=h=>{let[a,b]=h.split(':').map(Number);return a*60+b;};
+const errEs=c=>{c=(c||'').toLowerCase();if(c.includes('invalid-credential')||c.includes('wrong-password')||c.includes('user-not-found'))return'Correo o contraseña incorrectos';if(c.includes('email-already'))return'Este correo ya existe';if(c.includes('weak-password'))return'Contraseña mínimo 6';return c;};
+let cfgLocal=null,localElegidoId=null,horaElegida=null,localesCache=[],pideSenaActiva=false,montoSenaAct=0,horariosCache={},capturaSoporteBase64='';
 function goScreen(n){document.querySelectorAll('.navBtn').forEach(b=>b.style.color=b.dataset.screen===n?'#fff':'#bda8e0');$('app').classList.toggle('hidden',n!=='inicio');$('s-reservas').classList.toggle('hidden',n!=='reservas');$('s-favoritos').classList.toggle('hidden',n!=='favoritos');$('s-perfil').classList.toggle('hidden',n!=='perfil');}
-document.querySelectorAll
- ('.navBtn').forEach(b=>b.addEventListener('click',()=>goScreen(b.dataset.screen)));
-$('loginBtn').onclick=async()=>{let em=$('email').value.trim().toLowerCase(),ps=$('pass').value.trim();if(!em||!ps)return $('loginMsg').textContent='Completá los datos';$('loginMsg').textContent='Entrando...';try{await auth.signInWithEmailAndPassword(em,ps)}catch(e){$('loginMsg').textContent=errEs(e.message)}};
-$('goReg').onclick=()=>{$('loginFields').classList.add('hidden');$('regFields').classList.remove('hidden');$('authTitle').textContent='Crear cuenta';$('loginMsg').textContent=''};
-$('backLog').onclick=()=>{$('regFields').classList.add('hidden');$('loginFields').classList.remove('hidden');$('authTitle').textContent='Iniciar sesión';$('regMsg').textContent=''};
- $('regBtn').onclick=async()=>{let em=$('rEmail').value.trim().toLowerCase(),ps=$('rPass').value.trim();if(ps.length<6)return $('regMsg').textContent='Pass min 6';try{let cr=await auth.createUserWithEmailAndPassword(em,ps);await db.collection('clientes').doc(cr.user.uid).set({nombre:$('rNom').value.trim(),whatsapp:$('rWsp').value.trim(),direccion:$('rDir').value.trim(),email:em,creado:Date.now()})}catch(e){$('regMsg').textContent=errEs(e.message)}};
-$('forgotBtn').onclick=async()=>{let em=$('email').value.trim().toLowerCase();if(!em)return $('loginMsg').textContent='Escribí tu email';await auth.sendPasswordResetEmail(em);$('loginMsg').style.color='#86efac';$('loginMsg').textContent='Mail enviado 📧'};
+document.querySelectorAll('.navBtn').forEach(b=>b.addEventListener('click',()=>goScreen(b.dataset.screen)));
+$('loginBtn').onclick=async()=>{let em=$('email').value.trim().toLowerCase(),ps=$('pass').value.trim();if(!em||!ps)return $('loginMsg').textContent='Completá datos';$('loginMsg').textContent='Entrando...';try{await auth.signInWithEmailAndPassword(em,ps)}catch(e){$('loginMsg').textContent=errEs(e.message)}};
+$('goReg').onclick=()=>{$('loginFields').classList.add('hidden');$('regFields').classList.remove('hidden');$('authTitle').textContent='Crear cuenta';};
+$('backLog').onclick=()=>{$('regFields').classList.add('hidden');$('loginFields').classList.remove('hidden');$('authTitle').textContent='Iniciar sesión';};
+$('regBtn').onclick=async()=>{let em=$('rEmail').value.trim().toLowerCase(),ps=$('rPass').value.trim();if(ps.length<6)return $('regMsg').textContent='Pass min 6';try{let cr=await auth.createUserWithEmailAndPassword(em,ps);await db.collection('clientes').doc(cr.user.uid).set({nombre:$('rNom').value.trim(),whatsapp:$('rWsp').value.trim(),direccion:$('rDir').value.trim(),email:em,creado:Date.now()})}catch(e){$('regMsg').textContent=errEs(e.message)}};
+$('forgotBtn').onclick=async()=>{let em=$('email').value.trim().toLowerCase();if(!em)return $('loginMsg').textContent='Escribí tu email';await auth.sendPasswordResetEmail(em);$('loginMsg').style.color='#86efac';$('loginMsg').textContent='Mail enviado 📧';};
 $('btnLogout').onclick=()=>auth.signOut();
-$('searchLocal').addEventListener('input',e=>{let q=e.target.value.toLowerCase();document.querySelectorAll('#destacados>div').forEach(d=>{d.style.display=d.textContent.toLowerCase().includes(q)?'flex':'none'})});
-$('rFecha').addEventListener('change',()=>{checkSena();generarSlotsUI();});
-$('rServicio').addEventListener('change',()=>{checkSena();generarSlotsUI();});
+$('searchLocal').addEventListener('input',e=>{let q=e.target.value.toLowerCase();document.querySelectorAll('#destacados>div').forEach(d=>{d.style.display=d.textContent.toLowerCase().includes(q)?'flex':'none'});});
+$('rFecha').addEventListener('change',()=>{checkSena();generarSlotsUI();});$('rServicio').addEventListener('change',()=>{checkSena();generarSlotsUI();});
 $('rLocal').addEventListener('change',()=>onLocalChange());
-auth.onAuthStateChanged(async u=>{
-if(!u){$('app').classList.add('hidden');$('s-reservas').classList.add('hidden');$('s-favoritos').classList.add('hidden');$('s-perfil').classList.add('hidden');$('authBox').classList.remove('hidden');$('topbar').classList.add('hidden');$('bottomNav').classList.add('hidden');return;}
+auth.onAuthStateChanged(async u=>{if(!u){$('app').classList.add('hidden');$('s-reservas').classList.add('hidden');$('s-favoritos').classList.add('hidden');$('s-perfil').classList.add('hidden');$('authBox').classList.remove('hidden');$('topbar').classList.add('hidden');$('bottomNav').classList.add('hidden');return;}
 $('authBox').classList.add('hidden');$('app').classList.remove('hidden');$('topbar').classList.remove('hidden');$('bottomNav').classList.remove('hidden');
-let cli=await db.collection('clientes').doc(u.uid).get();let d=cli.data()||{};let nombre=d.nombre||u.email.split('@')[0];
-$('saludo').innerHTML=`Hola, ${nombre}, que tengas<br>un maravilloso día ✨`;$('avatarTop').textContent=nombre.slice(0,2).toUpperCase();$('perfilNombre').textContent=nombre;$('perfilEmail').textContent=u.email;
-$('pNom').value=d.nombre||'';$('pWsp').value=d.whatsapp||'';$('pDir').value=d.direccion||'';$('pMail').value=d.email||u.email;
-cargarLocales();cargarMisReservas();goScreen('inicio');
-});
-function checkBloqueo(l){
-if(l.planActivo===false)return'Este local está vencido, no toma reservas';
-if(l.visible===false)return'Este local está pausado por el dueño';
-if(l.reservasPausadas===true)return'Este local pausó las reservas temporalmente';
-if(l.planVence){let v=l.planVence.toDate?l.planVence.toDate():new Date(l.planVence);if(v<Date.now())return'Plan vencido';}
-return null;
-}
-async function cargarLocales(){
-let sel=$('rLocal');sel.innerHTML='<option>Cargando...</option>';
-let snap=await db.collection('config').get();localesCache=[];
-snap.forEach(doc=>{if(doc.id==='global')return;localesCache.push({id:doc.id,...doc.data()})});
-localesCache=localesCache.filter(l=>!checkBloqueo(l));
-$('destacados').innerHTML=localesCache.map(l=>{
-let foto=l.foto||`https://picsum.photos/seed/${l.id}/200`;
-return `<div data-nombre="${(l.localNombre||'').toLowerCase()}" style="display:flex;gap:10px;background:#ffffff10;border:1px solid #ffffff18;border-radius:14px;padding:8px;margin-bottom:8px;cursor:pointer" onclick="document.getElementById('rLocal').value='${l.id}';document.getElementById('rLocal').dispatchEvent(new Event('change'))"><img src="${foto}" style="width:68px;height:68px;border-radius:10px;object-fit:cover"><div><b>${l.localNombre||'Local'}</b><div style="font-size:11px;opacity:.7">${l.direccion||''}</div></div></div>`}).join('');
-sel.innerHTML='';localesCache.forEach(l=>{let o=document.createElement('option');o.value=l.id;o.textContent=l.localNombre||'Local';sel.appendChild(o)});
-if(sel.options.length){sel.selectedIndex=0;onLocalChange();}else{sel.innerHTML='<option>Sin locales disponibles</option>';}
-}
-async function onLocalChange(){
-let id=$('rLocal').value;if(!id)return;localElegidoId=id;
-let L=localesCache.find(x=>x.id===id);if(!L)return;
-cfgLocal=L;
-let bloq=checkBloqueo(L);
-$('avisoBloqueo').classList.toggle('hidden',!bloq);
-if(bloq){$('avisoBloqueo').textContent='⚠️ '+bloq;$('btnReservar').disabled=true;return;}else{$('btnReservar').disabled=false;}
-$('btnWA').href=L.tel?`https://wa.me/${L.tel.replace(/\D/g,'')}`:'#';
-let diasAnt=Number(L.diasAnticipacion||30);
-let hoy=new Date();hoy.setHours(0,0,0,0);
-let max=new Date();max.setDate(hoy.getDate()+diasAnt);
-$('rFecha').min=hoy.toISOString().split('T')[0];
-$('rFecha').max=max.toISOString().split('T')[0];
-if(!$('rFecha').value){let t=new Date();t.setDate(t.getDate()+1);$('rFecha').valueAsDate=t;}
-let snap=await db.collection('servicios').where('localId','==',localElegidoId).where('activo','==',true).get();
-let selS=$('rServicio');selS.innerHTML='';snap.forEach(d=>{let s=d.data();let o=document.createElement('option');o.value=s.nombre;o.textContent=`${s.nombre} - $${s.precio}`;o.dataset.dur=s.duracion;o.dataset.pr=s.precio;selS.appendChild(o)});
-if(!selS.options.length){selS.innerHTML='<option>Sin servicios</option>';$('slots').innerHTML='';return;}
-checkSena();generarSlotsUI();
-}
-function checkSena(){
-if(!cfgLocal){pideSenaActiva=false;return;}
-let fecha=$('rFecha').value;if(!fecha){$('boxSena').classList.add('hidden');return;}
-let pide=cfgLocal.pideSena===true||cfgLocal.senaActiva===true;
-let desde=Number(cfgLocal.senaDesdeDias||cfgLocal.senaAplicaDesdeDias||0);
-let hoy=new Date();hoy.setHours(0,0,0,0);
-let fSel=new Date(fecha+'T12:00:00');let diff=Math.ceil((fSel-hoy)/(1000*60*60*24));
-let aplica=pide && diff>=desde;
-if(aplica){
-let tipo=cfgLocal.senaTipo||'fijo';let valor=Number(cfgLocal.senaValor||0);
-let opt=$('rServicio').options[$('rServicio').selectedIndex];
-let precio=Number(opt?.dataset.pr||0);
-let monto=tipo==='porcentaje'?Math.round(precio*valor/100):valor;
-pideSenaActiva=true;montoSenaAct=monto;
-$('boxSena').classList.remove('hidden');
-$('txtSena').textContent=`Este turno requiere seña de $${monto} para confirmar`;
-$('txtAlias').textContent=`Alias: ${cfgLocal.cobAlias||cfgLocal.alias||'Consultar al local'} - Mandá comprobante`;
-$('inpDni').classList.toggle('hidden',!cfgLocal.pideDni);
-}else{pideSenaActiva=false;montoSenaAct=0;$('boxSena').classList.add('hidden');}
-}
-async function generarSlotsUI(){
-let fecha=$('rFecha').value;let selS=$('rServicio');let opt=selS.options[selS.selectedIndex];
-if(!fecha||!opt||!opt.value){$('slots').innerHTML='<span style="font-size:11px;opacity:.7">Elegí fecha y servicio</span>';return;}
-let dur=Number(opt.dataset.dur||30);
-let snap=await db.collection('reservas').where('localId','==',localElegidoId).where('fecha','==',fecha).where('estado','!=','cancelada').get();
-let res=snap.docs.map(d=>d.data());
-$('slots').innerHTML='';
-let ap=cfgLocal.apertura||cfgLocal.horarioApertura||'09:00';
-let ci=cfgLocal.cierre||cfgLocal.horarioCierre||'18:00';
-let ac=toMin(ap),fin=toMin(ci);let hay=false;
-while(ac+dur<=fin){
-let h=`${String(Math.floor(ac/60)).padStart(2,'0')}:${String(ac%60).padStart(2,'0')}`;
-let oc=res.some(r=>{let s=toMin(r.hora),e=s+Number(r.duracion||30);return ac<e&&ac+dur>s});
-let b=document.createElement('button');
-b.style.cssText=`padding:9px 12px;border-radius:999px;border:1px solid #ffffff1e;background:${oc?'#00000022':'#ffffff12'};color:#fff;font-size:13px;cursor:${oc?'not-allowed':'pointer'};${oc?'opacity:.25':''}`;
-b.textContent=h;
-if(!oc){hay=true;b.onclick=()=>{horaElegida=h;document.querySelectorAll('#slots button').forEach(x=>{x.style.background='#ffffff12';x.style.color='#fff'});b.style.background='#fff';b.style.color='#3a0f6e';$('slotInfo').textContent='Elegiste '+h;};}
-$('slots').appendChild(b);ac+=dur;
-}
-if(!hay){$('slots').innerHTML='<span style="font-size:11px">Sin horarios libres ese día</span>';}
-}
-$('btnReservar').onclick=async()=>{
-if(!localElegidoId||!horaElegida||!$('rFecha').value)return toast('Elegí fecha y hora');
-let opt=$('rServicio').options[$('rServicio').selectedIndex];let dur=Number(opt.dataset.dur||30);
-if(cfgLocal.pideDni &&!$('inpDni').value.trim())return toast('DNI obligatorio para este local');
-if(pideSenaActiva &&!$('inpComp').value.trim())return toast('Cargá el comprobante de seña');
-let chk=await db.collection('reservas').where('localId','==',localElegidoId).where('fecha','==',$('rFecha').value).where('estado','!=','cancelada').get();
-for(let d of chk.docs){let r=d.data(),s=toMin(r.hora),e=s+Number(r.duracion||30),ns=toMin(horaElegida),ne=ns+dur;if(ns<e&&ne>s)return toast('Horario ocupado, elegí otro');}
-let estado=pideSenaActiva?'pendiente_sena':'confirmada';
-await db.collection('reservas').add({
-localId:localElegidoId,clienteUid:auth.currentUser.uid,cliente:auth.currentUser.email,
-servicio:opt.value,fecha:$('rFecha').value,hora:horaElegida,duracion:dur,precio:Number(opt.dataset.pr||0),
-estado:estado,senaMonto:pideSenaActiva?montoSenaAct:0,senaAlias:cfgLocal.cobAlias||'',dni:$('inpDni').value.trim(),comprobante:$('inpComp').value.trim(),
-ts:Date.now(),creado:firebase.firestore.FieldValue.serverTimestamp()
-});
-toast(pideSenaActiva?'¡Reserva enviada! Esperá aprobación de seña':'¡Reserva OK '+horaElegida+'!');
-if(pideSenaActiva && cfgLocal.tel){
-let txt=`Hola! Soy ${auth.currentUser.email} reserve ${opt.value} el ${$('rFecha').value} ${horaElegida}. Seña $${montoSenaAct} DNI ${$('inpDni').value.trim()} Comp: ${$('inpComp').value.trim()}`;
-window.open(`https://wa.me/${cfgLocal.tel.replace(/\D/g,'')}?text=${encodeURIComponent(txt)}`,'_blank');
-}
-horaElegida=null;$('slotInfo').textContent='';cargarMisReservas();generarSlotsUI();goScreen('reservas');
-};
-async function cargarMisReservas(){
-let snap=await db.collection('reservas').where('clienteUid','==',auth.currentUser.uid).orderBy('creado','desc').limit(30).get();
-$('listaReservas').innerHTML=snap.docs.map(d=>{
-let r=d.data();
-let col=r.estado==='pendiente_sena'?'#fde68a':'#fff';
-return `<li style="display:flex;justify-content:space-between;padding:10px;border:1px solid #ffffff1e;border-radius:12px;background:#ffffff0f;margin-bottom:6px"><div><b style="font-size:13px">${r.servicio}</b><div style="font-size:11px;opacity:.7">${r.fecha} ${r.hora} - <b style="color:${col}">${r.estado}</b>${r.senaMonto?' - seña $'+r.senaMonto:''}</div></div><div style="font-size:11px">$${r.precio||0}</div></li>`}).join('')||'<li>Sin reservas</li>';
-}
-$('btnSavePerf').onclick=async()=>{await db.collection('clientes').doc(auth.currentUser.uid).update({nombre:$('pNom').value.trim(),whatsapp:$('pWsp').value.trim(),direccion:$('pDir').value.trim()});toast('Guardado ✅');$('saludo').innerHTML=`Hola, ${$('pNom').value.trim()}, que tengas<br>un maravilloso día ✨`;};
-$('btnSoportePerfil').onclick=async()=>{let m=$('soporteMsg').value.trim();if(!m)return toast('Escribí algo');await db.collection('soporte').add({email:auth.currentUser.email,msg:m,ts:Date.now()});$('soporteMsg').value='';toast('Enviado ✅');};
-(()=>{let t=new Date();t.setDate(t.getDate()+1);let f=$('rFecha');if(f)f.valueAsDate=t;})();
+let cli=await db.collection('clientes').doc(u.uid).get();let d=cli.data()||{};let nombre=d.nombre||u.email.split('@')[0];$('saludo').innerHTML=`Hola, ${nombre}, que tengas<br>un maravilloso día ✨`;$('avatarTop').textContent=nombre.slice(0,2).toUpperCase();$('perfilNombre').textContent=nombre;$('perfilEmail').textContent=u.email;$('pNom').value=d.nombre||'';$('pWsp').value=d.whatsapp||'';$('pDir').value=d.direccion||'';$('pMail').value=d.email||u.email;cargarLocales();cargarMisReservas();goScreen('inicio');});
+function checkBloqueo(l){if(l.planActivo===false)return'Este local está vencido';if(l.visible===false)return'Local pausado por dueño';if(l.reservasPausadas===true)return'Pausó reservas';if(l.planVence){try{let v=l.planVence.toDate?l.planVence.toDate():new Date(l.planVence.seconds?l.planVence.seconds*1000:l.planVence);if(v<Date.now())return'Plan vencido';}catch(e){}}return null;}
+async function cargarLocales(){let sel=$('rLocal');sel.innerHTML='<option>Cargando...</option>';let snap=await db.collection('config').get();localesCache=[];snap.forEach(doc=>{if(['global','cobros','planes','adm','branding'].includes(doc.id))return;localesCache.push({id:doc.id,...doc.data()})});localesCache=localesCache.filter(l=>!checkBloqueo(l));$('destacados').innerHTML=localesCache.map(l=>{let foto=l.foto||`https://picsum.photos/seed/${l.id}/200`;return `<div data-nombre="${(l.localNombre||'').toLowerCase()}" style="display:flex;gap:10px;background:#ffffff10;border:1px solid #ffffff18;border-radius:14px;padding:8px;margin-bottom:8px;cursor:pointer" onclick="document.getElementById('rLocal').value='${l.id}';document.getElementById('rLocal').dispatchEvent(new Event('change'))"><img src="${foto}" style="width:68px;height:68px;border-radius:10px;object-fit:cover"><div><b>${l.localNombre||'Local'}</b><div style="font-size:11px;opacity:.7">${l.direccion||''}</div></div></div>`}).join('');sel.innerHTML='';localesCache.forEach(l=>{let o=document.createElement('option');o.value=l.id;o.textContent=l.localNombre||'Local';sel.appendChild(o)});if(sel.options.length){sel.selectedIndex=0;onLocalChange();}else{sel.innerHTML='<option>Sin locales</option>';}}
 </script>
-</body>
-</html>
+<script>
+async function onLocalChange(){let id=$('rLocal').value;if(!id)return;localElegidoId=id;let L=localesCache.find(x=>x.id===id);if(!L)return;cfgLocal=L;let bloq=checkBloqueo(L);$('avisoBloqueo').classList.toggle('hidden',!bloq);if(bloq){$('avisoBloqueo').textContent='⚠️ '+bloq;$('btnReservar').disabled=true;return;}else{$('btnReservar').disabled=false;}$('btnWA').href=L.tel?`https://wa.me/${L.tel.replace(/\D/g,'')}`:'#';let diasAnt=Number(L.diasAnticipacion||30);let hoy=new Date();hoy.setHours(0,0,0,0);let max=new Date();max.setDate(hoy.getDate()+diasAnt);$('rFecha').min=hoy.toISOString().split('T')[0];$('rFecha').max=max.toISOString().split('T')[0];if(!$('rFecha').value){let t=new Date();t.setDate(t.getDate()+1);$('rFecha').valueAsDate=t;}
+try{let hSnap=await db.collection('config').doc(id).collection('horarios').get();horariosCache={};hSnap.forEach(d=>{horariosCache[d.id]=d.data()});}catch(e){horariosCache={};}
+let snap=await db.collection('servicios').where('localId','==',localElegidoId).where('activo','==',true).get();let selS=$('rServicio');selS.innerHTML='';snap.forEach(d=>{let s=d.data();let o=document.createElement('option');o.value=s.nombre;o.textContent=`${s.nombre} - $${s.precio}`;o.dataset.dur=s.duracion;o.dataset.pr=s.precio;selS.appendChild(o)});if(!selS.options.length){selS.innerHTML='<option>Sin servicios</option>';$('slots').innerHTML='';return;}checkSena();generarSlotsUI();}
+function checkSena(){if(!cfgLocal){pideSenaActiva=false;return;}let fecha=$('rFecha').value;if(!fecha){$('boxSena').classList.add('hidden');return;}let pide=cfgLocal.pideSena===true||cfgLocal.senaActiva===true;let desde=Number(cfgLocal.senaDesdeDias||cfgLocal.senaAplicaDesdeDias||0);let hoy=new Date();hoy.setHours(0,0,0,0);let fSel=new Date(fecha+'T12:00:00');let diff=Math.ceil((fSel-hoy)/86400000);let aplica=pide&&diff>=desde;if(aplica){let tipo=cfgLocal.senaTipo||'fijo';let valor=Number(cfgLocal.senaValor||0);let opt=$('rServicio').options[$('rServicio').selectedIndex];let precio=Number(opt?.dataset.pr||0);let monto=tipo==='porcentaje'?Math.round(precio*valor/100):valor;pideSenaActiva=true;montoSenaAct=monto;$('boxSena').classList.remove('hidden');$('txtSena').textContent=`Este turno requiere seña de $${monto} para confirmar`;$('txtAlias').textContent=`Alias: ${cfgLocal.cobAlias||cfgLocal.alias||'Consultar local'} - Mandá comprobante`;$('inpDni').classList.toggle('hidden',!cfgLocal.pideDni);}else{pideSenaActiva=false;montoSenaAct=0;$('boxSena').classList.add('hidden');}}
+async function generarSlotsUI(){let fecha=$('rFecha').value;let selS=$('rServicio');let opt=selS.options[selS.selectedIndex];if(!fecha||!opt||!opt.value){$('slots').innerHTML='<span style="font-size:11px;opacity:.7">Elegí fecha y servicio</span>';return;}let dur=Number(opt.dataset.dur||30);let snap=await db.collection('reservas').where('localId','==',localElegidoId).where('fecha','==',fecha).where('estado','!=','cancelada').get();let res=snap.docs.map(d=>d.data());$('slots').innerHTML='';let ap=cfgLocal.apertura||cfgLocal.horarioApertura||'09:00';let ci=cfgLocal.cierre||cfgLocal.horarioCierre||'18:00';let ac=toMin(ap),fin=toMin(ci);let hay=false;while(ac+dur<=fin){let h=`${String(Math.floor(ac/60)).padStart(2,'0')}:${String(ac%60).padStart(2,'0')}`;let cfgH=horariosCache[h]||{};let cupoMax=Number(cfgH.cupoMax||cfgH.cupo||cfgLocal.cupoPorDefecto||1);if(cfgH.activo===false)cupoMax=0;let ocupadas=res.filter(r=>r.hora===h).length;let libres=cupoMax-ocupadas;let lleno=libres<=0;let oc=lleno||cupoMax===0;let b=document.createElement('button');b.style.cssText=`padding:9px 12px;border-radius:999px;border:1px solid #ffffff1e;background:${oc?'#00000022':'#ffffff12'};color:#fff;font-size:12px;cursor:${oc?'not-allowed':'pointer'};${oc?'opacity:.35':''}`;b.textContent=`${h} (${ocupadas}/${cupoMax})`;if(!oc){hay=true;b.onclick=()=>{horaElegida=h;document.querySelectorAll('#slots button').forEach(x=>{x.style.background='#ffffff12';x.style.color='#fff';});b.style.background='#fff';b.style.color='#3a0f6e';$('slotInfo').textContent='Elegiste '+h+' cupo '+ocupadas+'/'+cupoMax+' - solo lectura';};}$('slots').appendChild(b);ac+=dur;}if(!hay){$('slots').innerHTML='<span style="font-size:11px">Sin cupos libres ese día - local maneja cupo</span>';}}
+</script>
+<script>
+$('btnReservar').onclick=async()=>{if(!localElegidoId||!horaElegida||!$('rFecha').value)return toast('Elegí fecha y hora');let opt=$('rServicio').options[$('rServicio').selectedIndex];let dur=Number(opt.dataset.dur||30);if(cfgLocal.pideDni&&!$('inpDni').value.trim())return toast('DNI obligatorio');if(pideSenaActiva&&!$('inpComp').value.trim())return toast('Cargá comprobante seña');let chk=await db.collection('reservas').where('localId','==',localElegidoId).where('fecha','==',$('rFecha').value).where('hora','==',horaElegida).where('estado','!=','cancelada').get();let cupoCfg=horariosCache[horaElegida]||{};let cupoMax=Number(cupoCfg.cupoMax||cfgLocal.cupoPorDefecto||1);if(chk.size>=cupoMax)return toast('Sin cupo, ya está lleno '+chk.size+'/'+cupoMax);let estado=pideSenaActiva?'pendiente_sena':'confirmada';let ref=await db.collection('reservas').add({localId:localElegidoId,uidLocal:localElegidoId,nombreLocal:cfgLocal.localNombre||cfgLocal.nombre||'Local',clienteUid:auth.currentUser.uid,cliente:auth.currentUser.email,clienteNombre:$('pNom').value||auth.currentUser.email,servicio:opt.value,fecha:$('rFecha').value,hora:horaElegida,fechaHora:$('rFecha').value+' '+horaElegida,duracion:dur,precio:Number(opt.dataset.pr||0),estado:estado,senaMonto:pideSenaActiva?montoSenaAct:0,senaAlias:cfgLocal.cobAlias||'',dni:$('inpDni').value.trim(),comprobante:$('inpComp').value.trim(),ts:Date.now(),creado:firebase.firestore.FieldValue.serverTimestamp()});toast(pideSenaActiva?'¡Reserva enviada! Esperá aprobación seña':'¡Reserva OK '+horaElegida+'!');if(pideSenaActiva&&cfgLocal.tel){let txt=`Hola! Soy ${auth.currentUser.email} reserve ${opt.value} el ${$('rFecha').value} ${horaElegida}. Seña $${montoSenaAct} DNI ${$('inpDni').value.trim()} Comp: ${$('inpComp').value.trim()}`;window.open(`https://wa.me/${cfgLocal.tel.replace(/\D/g,'')}?text=${encodeURIComponent(txt)}`,'_blank');}horaElegida=null;$('slotInfo').textContent='';cargarMisReservas();generarSlotsUI();goScreen('reservas');};
+async function cargarMisReservas(){let snap=await db.collection('reservas').where('clienteUid','==',auth.currentUser.uid).orderBy('creado','desc').limit(30).get();$('listaReservas').innerHTML=snap.docs.map(d=>{let r=d.data();let col=r.estado==='pendiente_sena'?'#fde68a':'#fff';return `<li style="display:flex;justify-content:space-between;padding:10px;border:1px solid #ffffff1e;border-radius:12px;background:#ffffff0f;margin-bottom:6px"><div><b style="font-size:13px">${r.servicio}</b><div style="font-size:11px;opacity:.7">${r.fecha} ${r.hora} - ${r.nombreLocal||''} - <b style="color:${col}">${r.estado}</b> - ID:${d.id.slice(0,6)}${r.senaMonto?' - seña $'+r.senaMonto:''}</div></div><div style="font-size:11px">$${r.precio||0}</div></li>`}).join('')||'<li>Sin reservas</li>';}
+$('btnSavePerf').onclick=async()=>{await db.collection('clientes').doc(auth.currentUser.uid).update({nombre:$('pNom').value.trim(),whatsapp:$('pWsp').value.trim(),direccion:$('pDir').value.trim()});toast('Guardado ✅');$('saludo').innerHTML=`Hola, ${$('pNom').value.trim()}, que tengas<br>un maravilloso día ✨`;};
+$('soporteFile').onchange=e=>{let f=e.target.files[0];if(!f)return;let r=new FileReader();r.onload=ev=>{capturaSoporteBase64=ev.target.result;$('soportePreview').innerHTML=`<img src="${capturaSoporteBase64}" style="max-width:180px;border-radius:10px;border:1px solid #fff3"><div style="font-size:10px;color:#86efac">Captura lista ✅</div>`;};r.readAsDataURL(f);};
+$('btnSoportePerfil').onclick=async()=>{let m=$('soporteMsg').value.trim();if(!m)return toast('Escribí algo');if(!cfgLocal)return toast('Elegí un local primero');let cliDoc=await db.collection('clientes').doc(auth.currentUser.uid).get();let cli=cliDoc.data()||{};let fechaHoy=new Date().toLocaleDateString('es-AR');let horaHoy=new Date().toLocaleTimeString('es-AR');await db.collection('soporte').add({origen:'cliente',uidCliente:auth.currentUser.uid,uidLocal:localElegidoId,nombreLocal:cfgLocal.localNombre||'Local',nombreCliente:cli.nombre||$('pNom').value||auth.currentUser.email,email:auth.currentUser.email,clienteNombre:cli.nombre||auth.currentUser.email,mensaje:m,msg:m,imagen:capturaSoporteBase64||'',fecha:fechaHoy,hora:horaHoy,fechaHora:fechaHoy+' '+horaHoy,idReserva:'',tipo:'consulta_cliente',ts:Date.now(),creado:firebase.firestore.FieldValue.serverTimestamp()});$('soporteMsg').value='';$('soporteFile').value='';$('soportePreview').innerHTML='';capturaSoporteBase64='';toast('Soporte enviado trazable ✅');};
+(()=>{let t=new Date();t.setDate(t.getDate()+1);let f=$('rFecha');if(f)f.valueAsDate=t;})();
+</script></body></html>
