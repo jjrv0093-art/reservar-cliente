@@ -29,6 +29,9 @@ body{background:linear-gradient(180deg,#6a11cb 0%,#5a14c0 45%,#1e084a 100%) no-r
 .searchBox input{flex:1;background:transparent;border:0;padding:12px 6px;color:#fff;outline:none}
 .card{background:var(--panel);border:1px solid var(--stroke);border-radius:16px;padding:10px 12px;margin-bottom:8px}
 .btn{background:#a855f7;border:0;color:#fff;padding:.65rem 1rem;border-radius:12px;font-weight:800;cursor:pointer}.btn.ghost{background:transparent;border:1px solid var(--stroke)}.btn.full{width:100%}
+#btnSoporte{position:fixed;right:18px;bottom:18px;z-index:999;width:56px;height:56px;border-radius:50%;border:none;cursor:pointer;background:linear-gradient(135deg,#a855f7,#ff5ab3);box-shadow:0 8px 24px #0006;font-size:24px;color:#fff;display:none}
+#btnSoporte.show{display:block!important}
+#panelSoporte{position:fixed;right:18px;bottom:88px;z-index:1000;width:330px;max-width:92vw;background:#1f0736;border:1px solid #ffffff44;border-radius:16px;padding:14px;box-shadow:0 12px 32px #000a}
 </style>
 <script src='https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js'></script>
 <script src='https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js'></script>
