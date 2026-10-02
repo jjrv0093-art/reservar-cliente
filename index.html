@@ -1,27 +1,960 @@
-<!doctype html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>reservAR</title><style>:root{--stroke:#ffffff1e;--panel:#ffffff10}*{box-sizing:border-box}html,body{margin:0;min-height:100%;font-family:system-ui;color:#fff;background:#4f10a8}body{background:linear-gradient(180deg,#6a11cb 0%,#5a14c0 45%,#1e084a 100%) no-repeat}.hidden{display:none!important}.wrap{max-width:520px;margin:0 auto;padding:8px 10px 100px}.topbar{position:sticky;top:0;z-index:20;display:flex;justify-content:space-between;align-items:center;padding:10px 12px;background:rgba(16,4,38,.96);border-bottom:1px solid var(--stroke)}.logo{font-weight:900;font-size:20px;line-height:.9}.logo span{display:block;font-weight:400;font-size:10px;color:#cbbbe6;margin-top:2px}.pill{padding:6px 10px;border-radius:999px;border:1px solid #ffffff28;background:#ffffff15;font-size:11px}.avatar{width:36px;height:36px;border-radius:999px;background:#ffffff22;display:flex;align-items:center;justify-content:center;font-weight:900;overflow:hidden}.avatar img{width:100%;height:100%;object-fit:cover}.auth{max-width:420px;margin:0 auto;background:transparent;border:0;padding:42px 16px 0;min-height:100dvh;display:flex;flex-direction:column;justify-content:flex-start}.authLogo{font-weight:900;font-size:30px;text-align:left;margin:6px 0 28px 2px;line-height:.9}.authLogo span{display:block;font-weight:400;font-size:11px;color:#cbbbe6;margin-top:6px;margin-left:1px}#authTitle{font-size:22px;font-weight:900;margin:0 0 14px 2px}.auth input{width:100%;padding:14px;border-radius:14px;border:1px solid #ffffff22;background:#ffffff12;color:#fff;margin-bottom:10px;font-size:14px;outline:none}.btn{background:#a855f7;border:0;color:#fff;padding:14px;border-radius:12px;font-weight:800;cursor:pointer}.btn.ghost{background:transparent;border:1px solid var(--stroke)}.btn.full{width:100%}.navBtn{display:flex;flex-direction:column;align-items:center;justify-content:center;min-width:64px;min-height:48px}.navBtn i{font-size:20px;line-height:1;font-style:normal}</style><script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script></head><body>
-<div id="topbar" class="topbar hidden"><div class="logo">reservAR<span>tu lugar tu momento</span></div><div style="display:flex;gap:8px;align-items:center"><div class="pill">✨ Panel Cliente</div><div id="avatarTop" class="avatar">JD</div></div></div>
-<div id="authBox" class="auth"><div class="authLogo">reservAR<span>tu lugar tu momento</span></div><h2 id="authTitle">Iniciar sesión</h2><div id="loginFields"><input id="email" placeholder="tu@correo.com" autocomplete="email"><input id="pass" type="password" placeholder="Contraseña"><p id="loginMsg" style="color:#fca5a5;font-size:12px;min-height:14px;margin:4px 0"></p><button id="loginBtn" class="btn full">Entrar</button><button id="forgotBtn" style="background:0;border:0;width:100%;color:#cfc9e6;text-decoration:underline;margin-top:10px;font-size:12px">¿Olvidaste tu contraseña?</button><div style="text-align:center;margin-top:14px;font-size:12px">¿No tenés cuenta? <b id="goReg" style="color:#f472b6;cursor:pointer">Crear cuenta</b></div></div><div id="regFields" class="hidden"><input id="rNom" placeholder="Nombre y apellido"><input id="rWsp" placeholder="WhatsApp"><input id="rDir" placeholder="Dirección"><input id="rEmail" placeholder="tu@correo.com"><input id="rPass" type="password" placeholder="Contraseña min 6"><p id="regMsg" style="color:#fca5a5;font-size:12px;margin:4px 0"></p><button id="regBtn" class="btn full">Crear cuenta</button><div style="text-align:center;margin-top:12px;font-size:12px"><b id="backLog" style="color:#d7b8ff;cursor:pointer">Volver a entrar</b></div></div></div>
-<div id="app" class="wrap hidden"><h1 id="saludo" style="font-size:26px;font-weight:900;line-height:1.1;margin:8px 2px 10px">Hola ✨</h1><div style="background:var(--panel);border:1px solid var(--stroke);border-radius:16px;padding:12px"><input id="searchLocal" placeholder="🔍 Buscar local..." style="width:100%;padding:12px;border-radius:12px;border:1px solid #ffffff33;background:#00000033;color:#fff;margin-bottom:10px"><div id="destacados"></div><label style="display:block;font-size:11px;opacity:.8;margin:10px 0 5px;font-weight:700">Elegí local</label><select id="rLocal" style="width:100%;padding:14px;border-radius:12px;border:1px solid #ffffff33;background:#00000044;color:#fff"></select><div id="avisoBloqueo" class="hidden" style="margin-top:8px;background:#ef444433;border:1px solid #ef444455;border-radius:12px;padding:10px;font-size:12px"></div><div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px"><label style="font-size:11px;opacity:.8;font-weight:700">Servicio</label><button id="btnFav" style="background:#ffffff14;border:1px solid #ffffff22;border-radius:999px;padding:4px 10px;color:#fff;font-size:11px">🤍 Fav</button></div><select id="rServicio" style="width:100%;padding:14px;border-radius:12px;border:1px solid #ffffff33;background:#00000044;color:#fff;margin-top:5px"></select><label style="display:block;font-size:11px;opacity:.8;margin:10px 0 5px;font-weight:700">Fecha</label><input id="rFecha" type="date" style="width:100%;padding:14px;border-radius:12px;border:1px solid #ffffff33;background:#00000044;color:#fff"><div style="margin:8px 0"><div id="slots" style="display:flex;gap:6px;flex-wrap:wrap"></div><div id="slotInfo" style="font-size:11px;color:#fde68a;margin-top:4px"></div></div><div id="boxDni" class="hidden" style="background:#ffffff10;border:1px solid #ffffff22;border-radius:12px;padding:10px;margin-top:8px"><div style="font-size:12px;font-weight:700">Este local solicita DNI</div><input id="inpDni" placeholder="DNI" style="width:100%;margin-top:8px;padding:12px;border-radius:10px;border:1px solid #ffffff33;background:#00000044;color:#fff"></div><div id="boxSena" class="hidden" style="background:#fde68a22;border:1px solid #fde68a55;border-radius:12px;padding:10px;margin-top:8px"><div id="txtSena" style="font-size:12px;color:#fde68a;font-weight:700"></div><div id="txtAlias" style="font-size:11px;color:#fff;margin-top:4px"></div><input id="inpComp" placeholder="Link comprobante o últimos 4 dígitos" style="width:100%;margin-top:6px;padding:12px;border-radius:10px;border:1px solid #ffffff33;background:#00000044;color:#fff"></div><button id="btnReservar" class="btn full" style="margin-top:10px">Confirmar reserva</button><a id="btnWA" href="#" target="_blank" class="btn ghost full" style="display:block;text-align:center;margin-top:6px;text-decoration:none;font-size:13px">💬 WhatsApp del local</a></div></div>
-<div id="s-reservas" class="wrap hidden"><div style="background:var(--panel);border:1px solid var(--stroke);border-radius:16px;padding:14px 12px"><h3>Mis reservas</h3><ul id="listaReservas" style="list-style:none;padding:0"></ul></div></div>
-<div id="s-favoritos" class="wrap hidden"><div style="background:var(--panel);border:1px solid var(--stroke);border-radius:16px;padding:14px 12px"><h3>❤️ Favoritos</h3><div id="listaFavs" style="display:flex;flex-direction:column;gap:8px"></div></div></div>
-<div id="s-perfil" class="wrap hidden"><div style="background:var(--panel);border:1px solid var(--stroke);border-radius:16px;padding:14px 12px;margin-bottom:10px"><h3 id="perfilNombre">Perfil</h3><p id="perfilEmail" style="font-size:12px;opacity:.9;margin-bottom:10px;word-break:break-all"></p><div style="display:flex;gap:12px;align-items:center;margin-bottom:12px"><div id="perfilFotoBox" style="width:72px;height:72px;border-radius:999px;background:#ffffff22;display:flex;align-items:center;justify-content:center;overflow:hidden;font-weight:900;font-size:20px">JD</div><label style="background:#ffffff18;border:1px solid #ffffff28;border-radius:10px;padding:8px 12px;font-size:11px;cursor:pointer">📷 Cambiar foto<input id="perfilFotoFile" type="file" accept="image/*" style="display:none"></label></div><label style="font-size:11px">Nombre</label><input id="pNom" style="width:100%;padding:14px;border-radius:12px;border:1px solid #ffffff33;background:#00000033;color:#fff;margin-bottom:10px"><label style="font-size:11px">WhatsApp</label><input id="pWsp" style="width:100%;padding:14px;border-radius:12px;border:1px solid #ffffff33;background:#00000033;color:#fff;margin-bottom:10px"><label style="font-size:11px">Dirección</label><input id="pDir" style="width:100%;padding:14px;border-radius:12px;border:1px solid #ffffff33;background:#00000033;color:#fff;margin-bottom:10px"><label style="font-size:11px">Email (cuenta)</label><input id="pMail" disabled style="width:100%;padding:14px;border-radius:12px;background:#ffffff15;color:#fff;border:1px solid #ffffff33;opacity:1"><button id="btnSavePerf" class="btn full" style="margin-top:10px">Guardar cambios</button></div><div style="background:var(--panel);border:1px solid var(--stroke);border-radius:16px;padding:14px 12px"><h3 style="font-size:14px;margin:0 0 10px">💬 Soporte</h3><label style="font-size:11px;opacity:.8">Local</label><select id="soporteLocal" style="width:100%;padding:14px;border-radius:12px;border:1px solid #ffffff33;background:#00000044;color:#fff;margin-bottom:8px"><option value="">Elegí local</option></select><label style="font-size:11px;opacity:.8">Reserva relacionada</label><select id="soporteReserva" style="width:100%;padding:14px;border-radius:12px;border:1px solid #ffffff33;background:#00000044;color:#fff;margin-bottom:8px"><option value="">Sin reserva / consulta general</option></select><div style="display:flex;gap:8px"><div style="flex:1"><label style="font-size:11px;opacity:.8">Fecha</label><input id="soporteFecha" type="date" style="width:100%;padding:14px;border-radius:12px;border:1px solid #ffffff33;background:#00000044;color:#fff"></div><div style="flex:1"><label style="font-size:11px;opacity:.8">Hora</label><input id="soporteHora" type="time" style="width:100%;padding:14px;border-radius:12px;border:1px solid #ffffff33;background:#00000044;color:#fff"></div></div><textarea id="soporteMsg" placeholder="Contanos que pasó..." style="width:100%;padding:14px;border-radius:12px;background:#00000033;color:#fff;min-height:80px;border:1px solid #ffffff33;margin-top:8px"></textarea><label style="display:block;margin-top:8px;background:#a855f7;border-radius:12px;padding:12px;text-align:center;font-weight:700;font-size:12px;cursor:pointer">📎 Seleccionar archivo<input id="soporteFile" type="file" accept="image/*" style="display:none"></label><div id="soportePreview" style="margin-top:6px"></div><button id="btnSoportePerfil" class="btn full" style="margin-top:8px;background:#fff;color:#3a0f6e">Enviar a Soporte</button></div><div style="background:var(--panel);border:1px solid var(--stroke);border-radius:16px;padding:14px 12px;margin-top:10px"><button id="btnLogout" class="btn ghost full">Salir</button></div></div>
-<div id="bottomNav" class="hidden" style="position:fixed;left:0;right:0;bottom:0;z-index:30;background:rgba(22,7,48,.98);border-top:1px solid #ffffff24;display:flex;justify-content:space-around;padding:8px 0 10px"><button data-screen="inicio" class="navBtn" style="background:transparent;border:0;color:#fff"><i>🏠</i><span style="font-size:12px;font-weight:700;margin-top:2px">Inicio</span></button><button data-screen="reservas" class="navBtn" style="background:transparent;border:0;color:#bda8e0"><i>📅</i><span style="font-size:12px;font-weight:700;margin-top:2px">Reservas</span></button><button data-screen="favoritos" class="navBtn" style="background:transparent;border:0;color:#bda8e0"><i>❤️</i><span style="font-size:12px;font-weight:700;margin-top:2px">Favoritos</span></button><button data-screen="perfil" class="navBtn" style="background:transparent;border:0;color:#bda8e0"><i>👤</i><span style="font-size:12px;font-weight:700;margin-top:2px">Perfil</span></button></div><div id="toast" class="hidden" style="position:fixed;bottom:95px;left:50%;transform:translateX(-50%);background:#1f0736;border:1px solid #ffffff33;padding:10px 14px;border-radius:10px;z-index:9999;font-size:13px"></div>
-<script>const firebaseConfig={apiKey:"AIzaSyC57wshaJ2EuIBoBdXv18opL4u_Vuw2bAQ",authDomain:"reservar-cb70d.firebaseapp.com",projectId:"reservar-cb70d"};firebase.initializeApp(firebaseConfig);const auth=firebase.auth();const db=firebase.firestore();const $=id=>document.getElementById(id);const toast=m=>{let t=$('toast');t.textContent=m;t.classList.remove('hidden');setTimeout(()=>t.classList.add('hidden'),2500);};const toMin=h=>{let a=h.split(':').map(Number);return a[0]*60+a[1];};const errEs=c=>{c=(c||'').toLowerCase();if(c.includes('invalid-credential')||c.includes('wrong-password')||c.includes('user-not-found'))return 'Correo o contraseña incorrectos';if(c.includes('email-already'))return 'Este correo ya existe';if(c.includes('weak-password'))return 'Contraseña mínimo 6';return c;};let cfgLocal=null;let localElegidoId=null;let horaElegida=null;let localesCache=[];let reservasCache=[];let pideSenaActiva=false;let montoSenaAct=0;let horariosCache={};let pausasFechasCache={};let capturaSoporteBase64='';let perfilFotoBase64='';let favsCache=[];function goScreen(n){document.querySelectorAll('.navBtn').forEach(b=>{b.style.color=b.dataset.screen===n?'#fff':'#bda8e0';});$('app').classList.toggle('hidden',n!=='inicio');$('s-reservas').classList.toggle('hidden',n!=='reservas');$('s-favoritos').classList.toggle('hidden',n!=='favoritos');$('s-perfil').classList.toggle('hidden',n!=='perfil');}document.querySelectorAll('.navBtn').forEach(b=>{b.addEventListener('click',()=>goScreen(b.dataset.screen));});$('loginBtn').onclick=async()=>{let em=$('email').value.trim().toLowerCase();let ps=$('pass').value.trim();if(!em||!ps){$('loginMsg').textContent='Completá datos';return;}$('loginMsg').textContent='Entrando...';try{await auth.signInWithEmailAndPassword(em,ps);}catch(e){$('loginMsg').textContent=errEs(e.message);}};$('goReg').onclick=()=>{$('loginFields').classList.add('hidden');$('regFields').classList.remove('hidden');$('authTitle').textContent='Crear cuenta';};$('backLog').onclick=()=>{$('regFields').classList.add('hidden');$('loginFields').classList.remove('hidden');$('authTitle').textContent='Iniciar sesión';};$('regBtn').onclick=async()=>{let em=$('rEmail').value.trim().toLowerCase();let ps=$('rPass').value.trim();if(ps.length<6){$('regMsg').textContent='Pass min 6';return;}try{let cr=await auth.createUserWithEmailAndPassword(em,ps);await db.collection('clientes').doc(cr.user.uid).set({nombre:$('rNom').value.trim(),whatsapp:$('rWsp').value.trim(),direccion:$('rDir').value.trim(),email:em,creado:Date.now()});}catch(e){$('regMsg').textContent=errEs(e.message);}};$('forgotBtn').onclick=async()=>{let em=$('email').value.trim().toLowerCase();if(!em){$('loginMsg').textContent='Escribí tu email';return;}await auth.sendPasswordResetEmail(em);$('loginMsg').style.color='#86efac';$('loginMsg').textContent='Mail enviado 📧';};$('btnLogout').onclick=()=>auth.signOut();$('searchLocal').addEventListener('input',e=>{let q=e.target.value.toLowerCase();document.querySelectorAll('#destacados>div').forEach(d=>{d.style.display=d.textContent.toLowerCase().includes(q)?'flex':'none';});});$('rFecha').addEventListener('change',()=>{checkDni();checkSena();generarSlotsUI();});$('rServicio').addEventListener('change',()=>{checkDni();checkSena();generarSlotsUI();});$('rLocal').addEventListener('change',()=>onLocalChange());$('soporteLocal').addEventListener('change',()=>cargarReservasEnSoporte());function esVencido(l){if(!l.planVence)return false;try{let v=l.planVence.toDate?l.planVence.toDate():new Date(l.planVence.seconds?l.planVence.seconds*1000:l.planVence);return v<Date.now();}catch(e){return false;}}function esBloqueadoOVencido(l){if(l.bloqueado===true)return true;if(l.planActivo===false)return true;if(esVencido(l))return true;return false;}function checkBloqueoParaReserva(l){if(l.bloqueado===true)return 'Local bloqueado';if(l.planActivo===false)return 'Local vencido';if(esVencido(l))return 'Plan vencido';if(l.visible===false)return 'Local pausado por el dueño';return null;}function checkBloqueoTotal(l){let b=checkBloqueoParaReserva(l);if(b)return b;if(l.reservasPausadas===true)return 'Pausó reservas temporalmente';let f=$('rFecha').value;if(f&&pausasFechasCache[f])return 'Pausado para este día '+f;return null;}auth.onAuthStateChanged(async u=>{if(!u){$('app').classList.add('hidden');$('s-reservas').classList.add('hidden');$('s-favoritos').classList.add('hidden');$('s-perfil').classList.add('hidden');$('authBox').classList.remove('hidden');$('topbar').classList.add('hidden');$('bottomNav').classList.add('hidden');return;}$('authBox').classList.add('hidden');$('app').classList.remove('hidden');$('topbar').classList.remove('hidden');$('bottomNav').classList.remove('hidden');let cli=await db.collection('clientes').doc(u.uid).get();let d=cli.data()||{};let nombre=d.nombre||u.email.split('@')[0];$('saludo').innerHTML=`Hola, ${nombre}, que tengas<br>un maravilloso día ✨`;$('perfilNombre').textContent=nombre;$('perfilEmail').textContent=u.email;$('pNom').value=d.nombre||'';$('pWsp').value=d.whatsapp||'';$('pDir').value=d.direccion||'';$('pMail').value=d.email||u.email;perfilFotoBase64=d.foto||'';if(perfilFotoBase64){$('avatarTop').innerHTML=`<img src="${perfilFotoBase64}">`;$('perfilFotoBox').innerHTML=`<img src="${perfilFotoBase64}" style="width:100%;height:100%;object-fit:cover">`;}else{$('avatarTop').textContent=nombre.slice(0,2).toUpperCase();$('perfilFotoBox').textContent=nombre.slice(0,2).toUpperCase();}cargarLocales();cargarMisReservas();cargarFavoritos();goScreen('inicio');});</script><script>
-async function cargarLocales(){let sel=$('rLocal');sel.innerHTML='<option>Cargando...</option>';let snap=await db.collection('config').get();localesCache=[];snap.forEach(doc=>{if(['global','cobros','planes','adm','branding'].includes(doc.id)){return;}localesCache.push({id:doc.id,...doc.data()});});let visibles=localesCache.filter(l=>!esBloqueadoOVencido(l));$('destacados').innerHTML=visibles.map(l=>{let foto=l.foto||`https://picsum.photos/seed/${l.id}/200`;let paus=l.reservasPausadas===true?'<span style="background:#f59e0b;color:#000;font-size:9px;padding:2px 6px;border-radius:999px;margin-left:6px">PAUSADO</span>':'';return `<div data-nombre="${(l.localNombre||'').toLowerCase()}" style="display:flex;gap:10px;background:#ffffff10;border:1px solid #ffffff18;border-radius:14px;padding:8px;margin-bottom:8px;cursor:pointer" onclick="document.getElementById('rLocal').value='${l.id}';document.getElementById('rLocal').dispatchEvent(new Event('change'));window.scrollTo({top:0,behavior:'smooth'})"><img src="${foto}" style="width:68px;height:68px;border-radius:10px;object-fit:cover"><div><b>${l.localNombre||'Local'}${paus}</b><div style="font-size:11px;opacity:.7">${l.direccion||''}</div><div style="font-size:10px;opacity:.6">Ver servicios</div></div></div>`;}).join('')||'<div style="font-size:12px;opacity:.7">Sin locales activos</div>';sel.innerHTML='';let selSop=$('soporteLocal');selSop.innerHTML='<option value="">Elegí local</option>';visibles.forEach(l=>{let o=document.createElement('option');o.value=l.id;o.textContent=l.localNombre||'Local';sel.appendChild(o);let o2=o.cloneNode(true);selSop.appendChild(o2);});if(sel.options.length){sel.selectedIndex=0;onLocalChange();}else{sel.innerHTML='<option>Sin locales</option>';$('slots').innerHTML='';}}
-async function onLocalChange(){let id=$('rLocal').value;if(!id){return;}localElegidoId=id;let L=localesCache.find(x=>x.id===id);if(!L){return;}cfgLocal=L;try{let hSnap=await db.collection('config').doc(id).collection('horarios').get();horariosCache={};hSnap.forEach(d=>{horariosCache[d.id]=d.data();});}catch(e){horariosCache={};}try{let pSnap=await db.collection('config').doc(id).collection('pausasFechas').get();pausasFechasCache={};pSnap.forEach(d=>{pausasFechasCache[d.id]=true;});}catch(e){pausasFechasCache={};}let bloqTotal=checkBloqueoTotal(L);let bloqDuro=esBloqueadoOVencido(L);$('avisoBloqueo').classList.toggle('hidden',!bloqTotal);if(bloqTotal){$('avisoBloqueo').textContent='⚠️ '+bloqTotal;}if(bloqDuro){$('btnReservar').disabled=true;}else{$('btnReservar').disabled=false;}$('btnWA').href=L.tel?`https://wa.me/${L.tel.replace(/\D/g,'')}`:'#';actualizarBotonFav();let diasAnt=Number(L.diasAnticipacion||30);let hoy=new Date();hoy.setHours(0,0,0,0);let max=new Date();max.setDate(hoy.getDate()+diasAnt);$('rFecha').min=hoy.toISOString().split('T')[0];$('rFecha').max=max.toISOString().split('T')[0];if(!$('rFecha').value){let t=new Date();t.setDate(t.getDate()+1);$('rFecha').valueAsDate=t;}let snap=await db.collection('servicios').where('localId','==',localElegidoId).where('activo','==',true).get();let selS=$('rServicio');selS.innerHTML='';snap.forEach(d=>{let s=d.data();let o=document.createElement('option');o.value=s.nombre;o.textContent=`${s.nombre} - $${s.precio}`;o.dataset.dur=s.duracion;o.dataset.pr=s.precio;selS.appendChild(o);});if(!selS.options.length){selS.innerHTML='<option>Sin servicios</option>';$('slots').innerHTML='';return;}checkDni();checkSena();generarSlotsUI();$('soporteLocal').value=id;cargarReservasEnSoporte();}
-function checkDni(){if(!cfgLocal){$('boxDni').classList.add('hidden');return;}let pide=cfgLocal.pideDni===true;if(pide){$('boxDni').classList.remove('hidden');}else{$('boxDni').classList.add('hidden');$('inpDni').value='';}}
-function checkSena(){if(!cfgLocal){pideSenaActiva=false;return;}let fecha=$('rFecha').value;if(!fecha){$('boxSena').classList.add('hidden');pideSenaActiva=false;return;}let pide=cfgLocal.pideSena===true||cfgLocal.senaActiva===true;let desde=Number(cfgLocal.senaDesdeDias||cfgLocal.senaAplicaDesdeDias||0);let hoy=new Date();hoy.setHours(0,0,0,0);let fSel=new Date(fecha+'T12:00:00');let diff=Math.ceil((fSel-hoy)/86400000);let aplica=pide&&diff>=desde;if(aplica){let tipo=cfgLocal.senaTipo||'fijo';let valor=Number(cfgLocal.senaValor||0);let opt=$('rServicio').options[$('rServicio').selectedIndex];let precio=Number(opt?.dataset.pr||0);let monto=tipo==='porcentaje'?Math.round(precio*valor/100):valor;pideSenaActiva=true;montoSenaAct=monto;$('boxSena').classList.remove('hidden');$('txtSena').textContent=`Este turno requiere seña de $${monto}`;$('txtAlias').textContent=`Alias: ${cfgLocal.cobAlias||cfgLocal.alias||'Consultar'}`;}else{pideSenaActiva=false;montoSenaAct=0;$('boxSena').classList.add('hidden');$('inpComp').value='';}}
-async function generarSlotsUI(){let fecha=$('rFecha').value;let selS=$('rServicio');let opt=selS.options[selS.selectedIndex];if(!fecha||!opt||!opt.value){$('slots').innerHTML='<span style="font-size:11px;opacity:.7">Elegí fecha y servicio</span>';return;}if(pausasFechasCache[fecha]){$('slots').innerHTML=`<span style="font-size:12px;background:#f59e0b22;border:1px solid #f59e0b55;padding:6px 10px;border-radius:10px">📅 Pausado para ${fecha}, elegí otro día</span>`;$('avisoBloqueo').classList.remove('hidden');$('avisoBloqueo').textContent='⚠️ Pausado para este día '+fecha;return;}let dur=Number(opt.dataset.dur||30);let snap=await db.collection('reservas').where('localId','==',localElegidoId).where('fecha','==',fecha).get();let res=snap.docs.map(d=>d.data()).filter(r=>r.estado!=='cancelada');$('slots').innerHTML='';let ap=cfgLocal.apertura||'09:00';let ci=cfgLocal.cierre||'18:00';let ac=toMin(ap);let fin=toMin(ci);let hay=false;while(ac+dur<=fin){let h=`${String(Math.floor(ac/60)).padStart(2,'0')}:${String(ac%60).padStart(2,'0')}`;let cfgH=horariosCache[h]||{};let cupoMax=Number(cfgH.cupoMax||cfgLocal.cupoPorDefecto||1);if(cfgH.activo===false){cupoMax=0;}let ocupadas=res.filter(r=>r.hora===h).length;let libres=cupoMax-ocupadas;let pausadoHora=cfgH.activo===false||cupoMax===0;let oc=libres<=0||pausadoHora;let b=document.createElement('button');b.style.cssText=`padding:10px 14px;border-radius:999px;border:1px solid #ffffff1e;background:${oc?'#00000022':'#ffffff12'};color:#fff;font-size:12px;cursor:${oc?'not-allowed':'pointer'};${oc?'opacity:.4':''}`;b.textContent=pausadoHora?`${h} pausado`:`${h} (${ocupadas}/${cupoMax})`;if(!oc){hay=true;b.onclick=()=>{horaElegida=h;document.querySelectorAll('#slots button').forEach(x=>{x.style.background='#ffffff12';x.style.color='#fff';});b.style.background='#fff';b.style.color='#3a0f6e';$('slotInfo').textContent='Elegiste '+h;};}$('slots').appendChild(b);ac+=dur;}if(!hay){$('slots').innerHTML='<span style="font-size:11px">Sin cupos libres o pausado este día</span>';}let bloq=checkBloqueoTotal(cfgLocal);$('avisoBloqueo').classList.toggle('hidden',!bloq);if(bloq){$('avisoBloqueo').textContent='⚠️ '+bloq;}}
-$('btnReservar').onclick=async()=>{if(!localElegidoId||!horaElegida||!$('rFecha').value){toast('Elegí fecha y hora');return;}let opt=$('rServicio').options[$('rServicio').selectedIndex];let dur=Number(opt.dataset.dur||30);if(cfgLocal.pideDni===true&&!$('inpDni').value.trim()){toast('DNI obligatorio');return;}if(pideSenaActiva&&!$('inpComp').value.trim()){toast('Cargá comprobante');return;}if(checkBloqueoTotal(cfgLocal)){toast(checkBloqueoTotal(cfgLocal));return;}let snapChk=await db.collection('reservas').where('localId','==',localElegidoId).where('fecha','==',$('rFecha').value).where('hora','==',horaElegida).get();let activas=snapChk.docs.map(d=>d.data()).filter(r=>r.estado!=='cancelada');let cupoCfg=horariosCache[horaElegida]||{};let cupoMax=Number(cupoCfg.cupoMax||cfgLocal.cupoPorDefecto||1);if(cupoCfg.activo===false){toast('Horario pausado');return;}if(activas.length>=cupoMax){toast('Sin cupo '+activas.length+'/'+cupoMax);return;}let estado=pideSenaActiva?'pendiente_sena':'confirmada';await db.collection('reservas').add({localId:localElegidoId,uidLocal:localElegidoId,nombreLocal:cfgLocal.localNombre,clienteUid:auth.currentUser.uid,cliente:auth.currentUser.email,clienteNombre:$('pNom').value||auth.currentUser.email,servicio:opt.value,fecha:$('rFecha').value,hora:horaElegida,fechaHora:$('rFecha').value+' '+horaElegida,duracion:dur,precio:Number(opt.dataset.pr||0),estado,senaMonto:pideSenaActiva?montoSenaAct:0,dni:$('inpDni').value.trim(),comprobante:$('inpComp').value.trim(),ts:Date.now(),creado:firebase.firestore.FieldValue.serverTimestamp()});toast('¡Reserva OK!');cargarMisReservas();generarSlotsUI();goScreen('reservas');};
-function tsToNum(t){if(!t)return 0;if(t.toDate)return t.toDate().getTime();if(t.seconds)return t.seconds*1000;let d=new Date(t);return isNaN(d.getTime())?0:d.getTime();}
-async function cargarMisReservas(){let snap=await db.collection('reservas').where('clienteUid','==',auth.currentUser.uid).get();let docs=snap.docs.map(d=>({id:d.id,...d.data()})).filter(r=>r.estado!=='cancelada');docs.sort((a,b)=>tsToNum(b.ts||b.creado)-tsToNum(a.ts||a.creado));docs=docs.slice(0,30);reservasCache=docs;$('listaReservas').innerHTML=docs.map(r=>{let col=r.estado==='pendiente_sena'?'#fde68a':'#fff';return `<li style="display:flex;justify-content:space-between;padding:10px;border:1px solid #ffffff1e;border-radius:12px;background:#ffffff0f;margin-bottom:6px"><div><b style="font-size:13px">${r.servicio}</b><div style="font-size:11px;opacity:.7">${r.fecha} ${r.hora} - ${r.nombreLocal} - <b style="color:${col}">${r.estado}</b></div></div><div style="font-size:11px">$${r.precio||0}</div></li>`;}).join('')||'<li>Sin reservas</li>';cargarReservasEnSoporte();}
-function cargarReservasEnSoporte(){let sel=$('soporteReserva');if(!sel){return;}let localId=$('soporteLocal').value||localElegidoId;sel.innerHTML='<option value="">Sin reserva / consulta general</option>';reservasCache.filter(r=>{return!localId||r.localId===localId;}).forEach(r=>{let o=document.createElement('option');o.value=r.id;o.textContent=`${r.fecha} ${r.hora} - ${r.servicio} - ${r.estado}`;sel.appendChild(o);});}
-async function cargarFavoritos(){if(!auth.currentUser)return;let snap=await db.collection('favoritos').where('clienteUid','==',auth.currentUser.uid).get();favsCache=snap.docs.map(d=>d.data().localId);let lista=$('listaFavs');if(!favsCache.length){lista.innerHTML='<div style="font-size:12px;opacity:.7">Aún no tenés favoritos, tocá 🤍 en un local</div>';return;}lista.innerHTML=favsCache.map(id=>{let L=localesCache.find(x=>x.id===id);if(!L)return '';let foto=L.foto||`https://picsum.photos/seed/${L.id}/200`;return `<div style="display:flex;gap:10px;background:#ffffff10;border:1px solid #ffffff18;border-radius:14px;padding:8px;cursor:pointer" onclick="document.getElementById('rLocal').value='${L.id}';document.getElementById('rLocal').dispatchEvent(new Event('change'));goScreen('inicio')"><img src="${foto}" style="width:56px;height:56px;border-radius:10px;object-fit:cover"><div><b style="font-size:13px">${L.localNombre}</b><div style="font-size:11px;opacity:.7">${L.direccion||''}</div></div></div>`;}).join('');}
-function actualizarBotonFav(){let id=localElegidoId;let esFav=favsCache.includes(id);$('btnFav').textContent=esFav?'❤️ Fav':'🤍 Fav';}
-$('btnFav').onclick=async()=>{if(!localElegidoId)return;let uid=auth.currentUser.uid;let q=await db.collection('favoritos').where('clienteUid','==',uid).where('localId','==',localElegidoId).get();if(!q.empty){await q.docs[0].ref.delete();toast('Quitado de favs');}else{await db.collection('favoritos').add({clienteUid:uid,localId:localElegidoId,ts:Date.now()});toast('Agregado a favs ❤️');}cargarFavoritos();actualizarBotonFav();};
-$('perfilFotoFile').onchange=e=>{let f=e.target.files[0];if(!f)return;if(f.size>900000){toast('Foto max 900KB');return;}let r=new FileReader();r.onload=ev=>{perfilFotoBase64=ev.target.result;$('perfilFotoBox').innerHTML=`<img src="${perfilFotoBase64}" style="width:100%;height:100%;object-fit:cover">`;$('avatarTop').innerHTML=`<img src="${perfilFotoBase64}">`;};r.readAsDataURL(f);};
-$('btnSavePerf').onclick=async()=>{try{await db.collection('clientes').doc(auth.currentUser.uid).set({nombre:$('pNom').value.trim(),whatsapp:$('pWsp').value.trim(),direccion:$('pDir').value.trim(),foto:perfilFotoBase64||'',email:auth.currentUser.email},{merge:true});toast('Guardado ✅');$('saludo').innerHTML=`Hola, ${$('pNom').value.trim()} ✨`;$('perfilNombre').textContent=$('pNom').value.trim();if(perfilFotoBase64){$('avatarTop').innerHTML=`<img src="${perfilFotoBase64}">`;}else{$('avatarTop').textContent=$('pNom').value.trim().slice(0,2).toUpperCase();}}catch(e){toast('Error al guardar');}};
-$('soporteFile').onchange=e=>{let f=e.target.files[0];if(!f){return;}if(f.size>900000){toast('Imagen muy grande, max 900KB');e.target.value='';return;}let r=new FileReader();r.onload=ev=>{capturaSoporteBase64=ev.target.result;$('soportePreview').innerHTML=`<img src="${capturaSoporteBase64}" style="max-width:180px;border-radius:10px;border:1px solid #fff3"><div style="font-size:10px;color:#86efac">Archivo listo ✅</div>`;};r.readAsDataURL(f);};
-$('btnSoportePerfil').onclick=async()=>{let localId=$('soporteLocal').value;let reservaId=$('soporteReserva').value;let fechaProb=$('soporteFecha').value;let horaProb=$('soporteHora').value;let msg=$('soporteMsg').value.trim();if(!localId){toast('Elegí local');return;}if(!fechaProb){toast('Elegí fecha del problema');return;}if(!horaProb){toast('Elegí hora del problema');return;}if(!msg){toast('Escribí que pasó');return;}let L=localesCache.find(x=>x.id===localId)||cfgLocal||{};let cliDoc=await db.collection('clientes').doc(auth.currentUser.uid).get();let cli=cliDoc.data()||{};let ahora=new Date();let fechaEnv=ahora.toLocaleDateString('es-AR');let horaEnv=ahora.toLocaleTimeString('es-AR');let datosRes=reservasCache.find(r=>r.id===reservaId)||null;await db.collection('soporte').add({origen:'cliente',uidCliente:auth.currentUser.uid,idCliente:auth.currentUser.uid,nombreCliente:cli.nombre||$('pNom').value||auth.currentUser.email,emailCliente:auth.currentUser.email,whatsappCliente:cli.whatsapp||$('pWsp').value||'',direccionCliente:cli.direccion||$('pDir').value||'',perfilCompleto:cli,uidLocal:localId,idLocal:localId,nombreLocal:L.localNombre||'Local',direccionLocal:L.direccion||'',telLocal:L.tel||'',datosLocalCompleto:L,idReserva:reservaId||'',reservaId:reservaId||'',datosReservaCompleto:datosRes||null,fechaReserva:datosRes?datosRes.fecha:'',horaReserva:datosRes?datosRes.hora:'',fechaHoraReserva:datosRes?datosRes.fechaHora:'',estadoReserva:datosRes?datosRes.estado:'',fechaProblema:fechaProb,horaProblema:horaProb,fechaHoraProblema:fechaProb+' '+horaProb,fechaEnvio:fechaEnv,horaEnvio:horaEnv,fechaHoraEnvio:fechaEnv+' '+horaEnv,mensaje:msg,imagen:capturaSoporteBase64||'',ts:Date.now(),creado:firebase.firestore.FieldValue.serverTimestamp()});$('soporteMsg').value='';$('soporteFile').value='';$('soporteReserva').value='';$('soportePreview').innerHTML='';capturaSoporteBase64='';toast('Soporte enviado ✅');};
-(()=>{let t=new Date();t.setDate(t.getDate()+1);let f=$('rFecha');if(f){f.valueAsDate=t;}let fs=$('soporteFecha');if(fs){fs.valueAsDate=new Date();}let hs=$('soporteHora');if(hs){hs.value=new Date().toTimeString().slice(0,5);}})();
-</script></body></html>
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>reservAR</title>
+<style>
+:root{
+--stroke:#ffffff1e;
+--panel:#ffffff10
+}
+*{
+box-sizing:border-box
+}
+html,body{
+margin:0;
+min-height:100%;
+font-family:system-ui;
+color:#fff;
+background:#4f10a8
+}
+body{
+background:linear-gradient(180deg,#6a11cb 0%,#5a14c0 45%,#1e084a 100%) no-repeat
+}
+.hidden{
+display:none!important
+}
+.wrap{
+max-width:520px;
+margin:0 auto;
+padding:8px 10px 100px
+}
+.topbar{
+position:sticky;
+top:0;
+z-index:20;
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:10px 12px;
+background:rgba(16,4,38,.96);
+border-bottom:1px solid var(--stroke)
+}
+.logo{
+font-weight:900;
+font-size:20px;
+line-height:.9
+}
+.logo span{
+display:block;
+font-weight:400;
+font-size:10px;
+color:#cbbbe6;
+margin-top:2px
+}
+.pill{
+padding:6px 10px;
+border-radius:999px;
+border:1px solid #ffffff28;
+background:#ffffff15;
+font-size:11px
+}
+.avatar{
+width:36px;
+height:36px;
+border-radius:999px;
+background:#ffffff22;
+display:flex;
+align-items:center;
+justify-content:center;
+font-weight:900;
+overflow:hidden
+}
+.avatar img{
+width:100%;
+height:100%;
+object-fit:cover
+}
+.auth{
+max-width:420px;
+margin:0 auto;
+background:transparent;
+border:0;
+padding:42px 16px 0;
+min-height:100dvh;
+display:flex;
+flex-direction:column;
+justify-content:flex-start
+}
+.authLogo{
+font-weight:900;
+font-size:30px;
+text-align:left;
+margin:6px 0 28px 2px;
+line-height:.9
+}
+.authLogo span{
+display:block;
+font-weight:400;
+font-size:11px;
+color:#cbbbe6;
+margin-top:6px;
+margin-left:1px
+}
+#authTitle{
+font-size:22px;
+font-weight:900;
+margin:0 0 14px 2px
+}
+.auth input{
+width:100%;
+padding:14px;
+border-radius:14px;
+border:1px solid #ffffff22;
+background:#ffffff12;
+color:#fff;
+margin-bottom:10px;
+font-size:14px;
+outline:none
+}
+.btn{
+background:#a855f7;
+border:0;
+color:#fff;
+padding:14px;
+border-radius:12px;
+font-weight:800;
+cursor:pointer
+}
+.btn.ghost{
+background:transparent;
+border:1px solid var(--stroke)
+}
+.btn.full{
+width:100%
+}
+.navBtn{
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+min-width:64px;
+min-height:48px
+}
+.navBtn i{
+font-size:20px;
+line-height:1;
+font-style:normal
+}
+</style>
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
+</head>
+<body>
+<div id="topbar" class="topbar hidden">
+<div class="logo">reservAR<span>tu lugar tu momento</span></div>
+<div style="display:flex;gap:8px;align-items:center">
+<div class="pill">Panel Cliente</div>
+<div id="avatarTop" class="avatar">JD</div>
+</div>
+</div>
+<div id="authBox" class="auth">
+<div class="authLogo">reservAR<span>tu lugar tu momento</span></div>
+<h2 id="authTitle">Iniciar sesión</h2>
+<div id="loginFields">
+<input id="email" placeholder="tu@correo.com" autocomplete="email">
+<input id="pass" type="password" placeholder="Contraseña">
+<p id="loginMsg" style="color:#fca5a5;font-size:12px;min-height:14px;margin:4px 0"></p>
+<button id="loginBtn" class="btn full">Entrar</button>
+<button id="forgotBtn" style="background:0;border:0;width:100%;color:#cfc9e6;text-decoration:underline;margin-top:10px;font-size:12px">¿Olvidaste tu contraseña?</button>
+<div style="text-align:center;margin-top:14px;font-size:12px">¿No tenés cuenta? <b id="goReg" style="color:#f472b6;cursor:pointer">Crear cuenta</b></div>
+</div>
+<div id="regFields" class="hidden">
+<input id="rNom" placeholder="Nombre y apellido">
+<input id="rWsp" placeholder="WhatsApp">
+<input id="rDir" placeholder="Dirección">
+<input id="rEmail" placeholder="tu@correo.com">
+<input id="rPass" type="password" placeholder="Contraseña min 6">
+<p id="regMsg" style="color:#fca5a5;font-size:12px;margin:4px 0"></p>
+<button id="regBtn" class="btn full">Crear cuenta</button>
+<div style="text-align:center;margin-top:12px;font-size:12px"><b id="backLog" style="color:#d7b8ff;cursor:pointer">Volver a entrar</b></div>
+</div>
+</div>
+<div id="app" class="wrap hidden">
+<h1 id="saludo" style="font-size:26px;font-weight:900;line-height:1.1;margin:8px 2px 10px">Hola</h1>
+<div style="background:var(--panel);border:1px solid var(--stroke);border-radius:16px;padding:12px">
+<input id="searchLocal" placeholder="Buscar local..." style="width:100%;padding:12px;border-radius:12px;border:1px solid #ffffff33;background:#00000033;color:#fff;margin-bottom:10px">
+<div id="destacados"></div>
+<label style="display:block;font-size:11px;opacity:.8;margin:10px 0 5px;font-weight:700">Elegí local</label>
+<select id="rLocal" style="width:100%;padding:14px;border-radius:12px;border:1px solid #ffffff33;background:#00000044;color:#fff"></select>
+<div id="avisoBloqueo" class="hidden" style="margin-top:8px;background:#ef444433;border:1px solid #ef444455;border-radius:12px;padding:10px;font-size:12px"></div>
+<div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px">
+<label style="font-size:11px;opacity:.8;font-weight:700">Servicio</label>
+<button id="btnFav" style="background:#ffffff14;border:1px solid #ffffff22;border-radius:999px;padding:4px 10px;color:#fff;font-size:11px">Fav</button>
+</div>
+<select id="rServicio" style="width:100%;padding:14px;border-radius:12px;border:1px solid #ffffff33;background:#00000044;color:#fff;margin-top:5px"></select>
+<label style="display:block;font-size:11px;opacity:.8;margin:10px 0 5px;font-weight:700">Fecha</label>
+<input id="rFecha" type="date" style="width:100%;padding:14px;border-radius:12px;border:1px solid #ffffff33;background:#00000044;color:#fff">
+<div style="margin:8px 0">
+<div id="slots" style="display:flex;gap:6px;flex-wrap:wrap"></div>
+<div id="slotInfo" style="font-size:11px;color:#fde68a;margin-top:4px"></div>
+</div>
+<div id="boxDni" class="hidden" style="background:#ffffff10;border:1px solid #ffffff22;border-radius:12px;padding:10px;margin-top:8px">
+<div style="font-size:12px;font-weight:700">Este local solicita DNI</div>
+<input id="inpDni" placeholder="DNI" style="width:100%;margin-top:8px;padding:12px;border-radius:10px;border:1px solid #ffffff33;background:#00000044;color:#fff">
+</div>
+<div id="boxSena" class="hidden" style="background:#fde68a22;border:1px solid #fde68a55;border-radius:12px;padding:10px;margin-top:8px">
+<div id="txtSena" style="font-size:12px;color:#fde68a;font-weight:700"></div>
+<div id="txtAlias" style="font-size:11px;color:#fff;margin-top:4px"></div>
+<input id="inpComp" placeholder="Link comprobante o últimos 4 dígitos" style="width:100%;margin-top:6px;padding:12px;border-radius:10px;border:1px solid #ffffff33;background:#00000044;color:#fff">
+</div>
+<button id="btnReservar" class="btn full" style="margin-top:10px">Confirmar reserva</button>
+<a id="btnWA" href="#" target="_blank" class="btn ghost full" style="display:block;text-align:center;margin-top:6px;text-decoration:none;font-size:13px">WhatsApp del local</a>
+</div>
+</div>
+<div id="s-reservas" class="wrap hidden">
+<div style="background:var(--panel);border:1px solid var(--stroke);border-radius:16px;padding:14px 12px">
+<h3>Mis reservas</h3>
+<ul id="listaReservas" style="list-style:none;padding:0"></ul>
+</div>
+</div>
+<div id="s-favoritos" class="wrap hidden">
+<div style="background:var(--panel);border:1px solid var(--stroke);border-radius:16px;padding:14px 12px">
+<h3>Favoritos</h3>
+<div id="listaFavs" style="display:flex;flex-direction:column;gap:8px"></div>
+</div>
+</div>
+<div id="s-perfil" class="wrap hidden">
+<div style="background:var(--panel);border:1px solid var(--stroke);border-radius:16px;padding:14px 12px;margin-bottom:10px">
+<h3 id="perfilNombre">Perfil</h3>
+<p id="perfilEmail" style="font-size:12px;opacity:.9;margin-bottom:10px;word-break:break-all"></p>
+<div style="display:flex;gap:12px;align-items:center;margin-bottom:12px">
+<div id="perfilFotoBox" style="width:72px;height:72px;border-radius:999px;background:#ffffff22;display:flex;align-items:center;justify-content:center;overflow:hidden;font-weight:900;font-size:20px">JD</div>
+<label style="background:#ffffff18;border:1px solid #ffffff28;border-radius:10px;padding:8px 12px;font-size:11px;cursor:pointer">Cambiar foto<input id="perfilFotoFile" type="file" accept="image/*" style="display:none"></label>
+</div>
+<label style="font-size:11px">Nombre</label>
+<input id="pNom" style="width:100%;padding:14px;border-radius:12px;border:1px solid #ffffff33;background:#00000033;color:#fff;margin-bottom:10px">
+<label style="font-size:11px">WhatsApp</label>
+<input id="pWsp" style="width:100%;padding:14px;border-radius:12px;border:1px solid #ffffff33;background:#00000033;color:#fff;margin-bottom:10px">
+<label style="font-size:11px">Dirección</label>
+<input id="pDir" style="width:100%;padding:14px;border-radius:12px;border:1px solid #ffffff33;background:#00000033;color:#fff;margin-bottom:10px">
+<label style="font-size:11px">Email (cuenta)</label>
+<input id="pMail" disabled style="width:100%;padding:14px;border-radius:12px;background:#ffffff15;color:#fff;border:1px solid #ffffff33;opacity:1">
+<button id="btnSavePerf" class="btn full" style="margin-top:10px">Guardar cambios</button>
+</div>
+<div style="background:var(--panel);border:1px solid var(--stroke);border-radius:16px;padding:14px 12px">
+<h3 style="font-size:14px;margin:0 0 10px">Soporte</h3>
+<label style="font-size:11px;opacity:.8">Local</label>
+<select id="soporteLocal" style="width:100%;padding:14px;border-radius:12px;border:1px solid #ffffff33;background:#00000044;color:#fff;margin-bottom:8px"><option value="">Elegí local</option></select>
+<label style="font-size:11px;opacity:.8">Reserva relacionada</label>
+<select id="soporteReserva" style="width:100%;padding:14px;border-radius:12px;border:1px solid #ffffff33;background:#00000044;color:#fff;margin-bottom:8px"><option value="">Sin reserva / consulta general</option></select>
+<div style="display:flex;gap:8px">
+<div style="flex:1"><label style="font-size:11px;opacity:.8">Fecha</label><input id="soporteFecha" type="date" style="width:100%;padding:14px;border-radius:12px;border:1px solid #ffffff33;background:#00000044;color:#fff"></div>
+<div style="flex:1"><label style="font-size:11px;opacity:.8">Hora</label><input id="soporteHora" type="time" style="width:100%;padding:14px;border-radius:12px;border:1px solid #ffffff33;background:#00000044;color:#fff"></div>
+</div>
+<textarea id="soporteMsg" placeholder="Contanos que pasó..." style="width:100%;padding:14px;border-radius:12px;background:#00000033;color:#fff;min-height:80px;border:1px solid #ffffff33;margin-top:8px"></textarea>
+<label style="display:block;margin-top:8px;background:#a855f7;border-radius:12px;padding:12px;text-align:center;font-weight:700;font-size:12px;cursor:pointer">Seleccionar archivo<input id="soporteFile" type="file" accept="image/*" style="display:none"></label>
+<div id="soportePreview" style="margin-top:6px"></div>
+<button id="btnSoportePerfil" class="btn full" style="margin-top:8px;background:#fff;color:#3a0f6e">Enviar a Soporte</button>
+</div>
+<div style="background:var(--panel);border:1px solid var(--stroke);border-radius:16px;padding:14px 12px;margin-top:10px"><button id="btnLogout" class="btn ghost full">Salir</button></div>
+</div>
+<div id="bottomNav" class="hidden" style="position:fixed;left:0;right:0;bottom:0;z-index:30;background:rgba(22,7,48,.98);border-top:1px solid #ffffff24;display:flex;justify-content:space-around;padding:8px 0 10px">
+<button data-screen="inicio" class="navBtn" style="background:transparent;border:0;color:#fff"><i>🏠</i><span style="font-size:12px;font-weight:700;margin-top:2px">Inicio</span></button>
+<button data-screen="reservas" class="navBtn" style="background:transparent;border:0;color:#bda8e0"><i>📅</i><span style="font-size:12px;font-weight:700;margin-top:2px">Reservas</span></button>
+<button data-screen="favoritos" class="navBtn" style="background:transparent;border:0;color:#bda8e0"><i>❤️</i><span style="font-size:12px;font-weight:700;margin-top:2px">Favoritos</span></button>
+<button data-screen="perfil" class="navBtn" style="background:transparent;border:0;color:#bda8e0"><i>👤</i><span style="font-size:12px;font-weight:700;margin-top:2px">Perfil</span></button>
+</div>
+<div id="toast" class="hidden" style="position:fixed;bottom:95px;left:50%;transform:translateX(-50%);background:#1f0736;border:1px solid #ffffff33;padding:10px 14px;border-radius:10px;z-index:9999;font-size:13px"></div>
+<script>
+const firebaseConfig={
+apiKey:"AIzaSyC57wshaJ2EuIBoBdXv18opL4u_Vuw2bAQ",
+authDomain:"reservar-cb70d.firebaseapp.com",
+projectId:"reservar-cb70d"
+};
+firebase.initializeApp(firebaseConfig);
+const auth=firebase.auth();
+const db=firebase.firestore();
+const $=id=>document.getElementById(id);
+const toast=m=>{
+let t=$('toast');
+t.textContent=m;
+t.classList.remove('hidden');
+setTimeout(()=>t.classList.add('hidden'),2500);
+};
+const toMin=h=>{
+let a=h.split(':').map(Number);
+return a[0]*60+a[1];
+};
+const errEs=c=>{
+c=(c||'').toLowerCase();
+if(c.includes('invalid-credential')||c.includes('wrong-password')||c.includes('user-not-found'))return 'Correo o contraseña incorrectos';
+if(c.includes('email-already'))return 'Este correo ya existe';
+if(c.includes('weak-password'))return 'Contraseña mínimo 6';
+return c;
+};
+let cfgLocal=null;
+let localElegidoId=null;
+let horaElegida=null;
+let localesCache=[];
+let reservasCache=[];
+let pideSenaActiva=false;
+let montoSenaAct=0;
+let horariosCache={};
+let pausasFechasCache={};
+let capturaSoporteBase64='';
+let perfilFotoBase64='';
+let favsCache=[];
+function goScreen(n){
+document.querySelectorAll('.navBtn').forEach(b=>{
+b.style.color=b.dataset.screen===n?'#fff':'#bda8e0';
+});
+$('app').classList.toggle('hidden',n!=='inicio');
+$('s-reservas').classList.toggle('hidden',n!=='reservas');
+$('s-favoritos').classList.toggle('hidden',n!=='favoritos');
+$('s-perfil').classList.toggle('hidden',n!=='perfil');
+}
+document.querySelectorAll('.navBtn').forEach(b=>{
+b.addEventListener('click',()=>goScreen(b.dataset.screen));
+});
+$('loginBtn').onclick=async()=>{
+let em=$('email').value.trim().toLowerCase();
+let ps=$('pass').value.trim();
+if(!em||!ps){
+$('loginMsg').textContent='Completá datos';
+return;
+}
+$('loginMsg').textContent='Entrando...';
+try{
+await auth.signInWithEmailAndPassword(em,ps);
+}catch(e){
+$('loginMsg').textContent=errEs(e.message);
+}
+};
+$('goReg').onclick=()=>{
+$('loginFields').classList.add('hidden');
+$('regFields').classList.remove('hidden');
+$('authTitle').textContent='Crear cuenta';
+};
+$('backLog').onclick=()=>{
+$('regFields').classList.add('hidden');
+$('loginFields').classList.remove('hidden');
+$('authTitle').textContent='Iniciar sesión';
+};
+$('regBtn').onclick=async()=>{
+let em=$('rEmail').value.trim().toLowerCase();
+let ps=$('rPass').value.trim();
+if(ps.length<6){
+$('regMsg').textContent='Pass min 6';
+return;
+}
+try{
+let cr=await auth.createUserWithEmailAndPassword(em,ps);
+await db.collection('clientes').doc(cr.user.uid).set({
+nombre:$('rNom').value.trim(),
+whatsapp:$('rWsp').value.trim(),
+direccion:$('rDir').value.trim(),
+email:em,
+creado:Date.now()
+});
+}catch(e){
+$('regMsg').textContent=errEs(e.message);
+}
+};
+$('forgotBtn').onclick=async()=>{
+let em=$('email').value.trim().toLowerCase();
+if(!em){
+$('loginMsg').textContent='Escribí tu email';
+return;
+}
+await auth.sendPasswordResetEmail(em);
+$('loginMsg').style.color='#86efac';
+$('loginMsg').textContent='Mail enviado';
+};
+$('btnLogout').onclick=()=>auth.signOut();
+$('searchLocal').addEventListener('input',e=>{
+let q=e.target.value.toLowerCase();
+document.querySelectorAll('#destacados>div').forEach(d=>{
+d.style.display=d.textContent.toLowerCase().includes(q)?'flex':'none';
+});
+});
+$('rFecha').addEventListener('change',()=>{
+checkDni();
+checkSena();
+generarSlotsUI();
+});
+$('rServicio').addEventListener('change',()=>{
+checkDni();
+checkSena();
+generarSlotsUI();
+});
+$('rLocal').addEventListener('change',()=>onLocalChange());
+$('soporteLocal').addEventListener('change',()=>cargarReservasEnSoporte());
+function esVencido(l){
+if(!l.planVence)return false;
+try{
+let v=l.planVence.toDate?l.planVence.toDate():new Date(l.planVence.seconds?l.planVence.seconds*1000:l.planVence);
+return v<Date.now();
+}catch(e){
+return false;
+}
+}
+function esBloqueadoOVencido(l){
+if(l.bloqueado===true)return true;
+if(l.planActivo===false)return true;
+if(esVencido(l))return true;
+return false;
+}
+function checkBloqueoParaReserva(l){
+if(l.bloqueado===true)return 'Local bloqueado';
+if(l.planActivo===false)return 'Local vencido';
+if(esVencido(l))return 'Plan vencido';
+if(l.visible===false)return 'Local pausado por el dueño';
+return null;
+}
+function checkBloqueoTotal(l){
+let b=checkBloqueoParaReserva(l);
+if(b)return b;
+if(l.reservasPausadas===true)return 'Pausó reservas temporalmente';
+let f=$('rFecha').value;
+if(f&&pausasFechasCache[f])return 'Pausado para este día '+f;
+return null;
+}
+auth.onAuthStateChanged(async u=>{
+if(!u){
+$('app').classList.add('hidden');
+$('s-reservas').classList.add('hidden');
+$('s-favoritos').classList.add('hidden');
+$('s-perfil').classList.add('hidden');
+$('authBox').classList.remove('hidden');
+$('topbar').classList.add('hidden');
+$('bottomNav').classList.add('hidden');
+return;
+}
+$('authBox').classList.add('hidden');
+$('app').classList.remove('hidden');
+$('topbar').classList.remove('hidden');
+$('bottomNav').classList.remove('hidden');
+let cli=await db.collection('clientes').doc(u.uid).get();
+let d=cli.data()||{};
+let nombre=d.nombre||u.email.split('@')[0];
+$('saludo').innerHTML=`Hola, ${nombre}<br>un maravilloso día`;
+$('perfilNombre').textContent=nombre;
+$('perfilEmail').textContent=u.email;
+$('pNom').value=d.nombre||'';
+$('pWsp').value=d.whatsapp||'';
+$('pDir').value=d.direccion||'';
+$('pMail').value=d.email||u.email;
+perfilFotoBase64=d.foto||'';
+if(perfilFotoBase64){
+$('avatarTop').innerHTML=`<img src="${perfilFotoBase64}">`;
+$('perfilFotoBox').innerHTML=`<img src="${perfilFotoBase64}" style="width:100%;height:100%;object-fit:cover">`;
+}else{
+$('avatarTop').textContent=nombre.slice(0,2).toUpperCase();
+$('perfilFotoBox').textContent=nombre.slice(0,2).toUpperCase();
+}
+cargarLocales();
+cargarMisReservas();
+cargarFavoritos();
+goScreen('inicio');
+});
+</script>
+<script>
+async function cargarLocales(){
+let sel=$('rLocal');
+sel.innerHTML='<option>Cargando...</option>';
+let snap=await db.collection('config').get();
+localesCache=[];
+snap.forEach(doc=>{
+if(['global','cobros','planes','adm','branding'].includes(doc.id)){
+return;
+}
+localesCache.push({id:doc.id,...doc.data()});
+});
+let visibles=localesCache.filter(l=>!esBloqueadoOVencido(l));
+$('destacados').innerHTML=visibles.map(l=>{
+let foto=l.foto||`https://picsum.photos/seed/${l.id}/200`;
+let paus=l.reservasPausadas===true?'<span style="background:#f59e0b;color:#000;font-size:9px;padding:2px 6px;border-radius:999px;margin-left:6px">PAUSADO</span>':'';
+return `<div data-nombre="${(l.localNombre||'').toLowerCase()}" style="display:flex;gap:10px;background:#ffffff10;border:1px solid #ffffff18;border-radius:14px;padding:8px;margin-bottom:8px;cursor:pointer" onclick="document.getElementById('rLocal').value='${l.id}';document.getElementById('rLocal').dispatchEvent(new Event('change'));window.scrollTo({top:0,behavior:'smooth'})"><img src="${foto}" style="width:68px;height:68px;border-radius:10px;object-fit:cover"><div><b>${l.localNombre||'Local'}${paus}</b><div style="font-size:11px;opacity:.7">${l.direccion||''}</div><div style="font-size:10px;opacity:.6">Ver servicios</div></div></div>`;
+}).join('')||'<div style="font-size:12px;opacity:.7">Sin locales activos</div>';
+sel.innerHTML='';
+let selSop=$('soporteLocal');
+selSop.innerHTML='<option value="">Elegí local</option>';
+visibles.forEach(l=>{
+let o=document.createElement('option');
+o.value=l.id;
+o.textContent=l.localNombre||'Local';
+sel.appendChild(o);
+let o2=o.cloneNode(true);
+selSop.appendChild(o2);
+});
+if(sel.options.length){
+sel.selectedIndex=0;
+onLocalChange();
+}else{
+sel.innerHTML='<option>Sin locales</option>';
+$('slots').innerHTML='';
+}
+}
+async function onLocalChange(){
+let id=$('rLocal').value;
+if(!id){
+return;
+}
+localElegidoId=id;
+let L=localesCache.find(x=>x.id===id);
+if(!L){
+return;
+}
+cfgLocal=L;
+try{
+let hSnap=await db.collection('config').doc(id).collection('horarios').get();
+horariosCache={};
+hSnap.forEach(d=>{
+horariosCache[d.id]=d.data();
+});
+}catch(e){
+horariosCache={};
+}
+try{
+let pSnap=await db.collection('config').doc(id).collection('pausasFechas').get();
+pausasFechasCache={};
+pSnap.forEach(d=>{
+pausasFechasCache[d.id]=true;
+});
+}catch(e){
+pausasFechasCache={};
+}
+let bloqTotal=checkBloqueoTotal(L);
+let bloqDuro=esBloqueadoOVencido(L);
+$('avisoBloqueo').classList.toggle('hidden',!bloqTotal);
+if(bloqTotal){
+$('avisoBloqueo').textContent='⚠️ '+bloqTotal;
+}
+if(bloqDuro){
+$('btnReservar').disabled=true;
+}else{
+$('btnReservar').disabled=false;
+}
+$('btnWA').href=L.tel?`https://wa.me/${L.tel.replace(/\D/g,'')}`:'#';
+actualizarBotonFav();
+let diasAnt=Number(L.diasAnticipacion||30);
+let hoy=new Date();
+hoy.setHours(0,0,0,0);
+let max=new Date();
+max.setDate(hoy.getDate()+diasAnt);
+$('rFecha').min=hoy.toISOString().split('T')[0];
+$('rFecha').max=max.toISOString().split('T')[0];
+if(!$('rFecha').value){
+let t=new Date();
+t.setDate(t.getDate()+1);
+$('rFecha').valueAsDate=t;
+}
+let snap=await db.collection('servicios').where('localId','==',localElegidoId).where('activo','==',true).get();
+let selS=$('rServicio');
+selS.innerHTML='';
+snap.forEach(d=>{
+let s=d.data();
+let o=document.createElement('option');
+o.value=s.nombre;
+o.textContent=`${s.nombre} - $${s.precio}`;
+o.dataset.dur=s.duracion;
+o.dataset.pr=s.precio;
+selS.appendChild(o);
+});
+if(!selS.options.length){
+selS.innerHTML='<option>Sin servicios</option>';
+$('slots').innerHTML='';
+return;
+}
+checkDni();
+checkSena();
+generarSlotsUI();
+$('soporteLocal').value=id;
+cargarReservasEnSoporte();
+}
+function checkDni(){
+if(!cfgLocal){
+$('boxDni').classList.add('hidden');
+return;
+}
+let pide=cfgLocal.pideDni===true;
+if(pide){
+$('boxDni').classList.remove('hidden');
+}else{
+$('boxDni').classList.add('hidden');
+$('inpDni').value='';
+}
+}
+function checkSena(){
+if(!cfgLocal){
+pideSenaActiva=false;
+return;
+}
+let fecha=$('rFecha').value;
+if(!fecha){
+$('boxSena').classList.add('hidden');
+pideSenaActiva=false;
+return;
+}
+let pide=cfgLocal.pideSena===true||cfgLocal.senaActiva===true;
+let desde=Number(cfgLocal.senaDesdeDias||cfgLocal.senaAplicaDesdeDias||0);
+let hoy=new Date();
+hoy.setHours(0,0,0,0);
+let fSel=new Date(fecha+'T12:00:00');
+let diff=Math.ceil((fSel-hoy)/86400000);
+let aplica=pide&&diff>=desde;
+if(aplica){
+let tipo=cfgLocal.senaTipo||'fijo';
+let valor=Number(cfgLocal.senaValor||0);
+let opt=$('rServicio').options[$('rServicio').selectedIndex];
+let precio=Number(opt?.dataset.pr||0);
+let monto=tipo==='porcentaje'?Math.round(precio*valor/100):valor;
+pideSenaActiva=true;
+montoSenaAct=monto;
+$('boxSena').classList.remove('hidden');
+$('txtSena').textContent=`Este turno requiere seña de $${monto}`;
+$('txtAlias').textContent=`Alias: ${cfgLocal.cobAlias||cfgLocal.alias||'Consultar'}`;
+}else{
+pideSenaActiva=false;
+montoSenaAct=0;
+$('boxSena').classList.add('hidden');
+$('inpComp').value='';
+}
+}
+async function generarSlotsUI(){
+let fecha=$('rFecha').value;
+let selS=$('rServicio');
+let opt=selS.options[selS.selectedIndex];
+if(!fecha||!opt||!opt.value){
+$('slots').innerHTML='<span style="font-size:11px;opacity:.7">Elegí fecha y servicio</span>';
+return;
+}
+if(pausasFechasCache[fecha]){
+$('slots').innerHTML=`<span style="font-size:12px;background:#f59e0b22;border:1px solid #f59e0b55;padding:6px 10px;border-radius:10px">Pausado para ${fecha}</span>`;
+$('avisoBloqueo').classList.remove('hidden');
+$('avisoBloqueo').textContent='⚠️ Pausado para este día '+fecha;
+return;
+}
+let dur=Number(opt.dataset.dur||30);
+let snap=await db.collection('reservas').where('localId','==',localElegidoId).where('fecha','==',fecha).get();
+let res=snap.docs.map(d=>d.data()).filter(r=>r.estado!=='cancelada');
+$('slots').innerHTML='';
+let ap=cfgLocal.apertura||'09:00';
+let ci=cfgLocal.cierre||'18:00';
+let ac=toMin(ap);
+let fin=toMin(ci);
+let hay=false;
+while(ac+dur<=fin){
+let h=`${String(Math.floor(ac/60)).padStart(2,'0')}:${String(ac%60).padStart(2,'0')}`;
+let cfgH=horariosCache[h]||{};
+let cupoMax=Number(cfgH.cupoMax||cfgLocal.cupoPorDefecto||1);
+if(cfgH.activo===false){
+cupoMax=0;
+}
+let ocupadas=res.filter(r=>r.hora===h).length;
+let libres=cupoMax-ocupadas;
+let pausadoHora=cfgH.activo===false||cupoMax===0;
+let oc=libres<=0||pausadoHora;
+let b=document.createElement('button');
+b.style.cssText=`padding:10px 14px;border-radius:999px;border:1px solid #ffffff1e;background:${oc?'#00000022':'#ffffff12'};color:#fff;font-size:12px;cursor:${oc?'not-allowed':'pointer'};${oc?'opacity:.4':''}`;
+b.textContent=pausadoHora?`${h} pausado`:`${h} (${ocupadas}/${cupoMax})`;
+if(!oc){
+hay=true;
+b.onclick=()=>{
+horaElegida=h;
+document.querySelectorAll('#slots button').forEach(x=>{
+x.style.background='#ffffff12';
+x.style.color='#fff';
+});
+b.style.background='#fff';
+b.style.color='#3a0f6e';
+$('slotInfo').textContent='Elegiste '+h;
+};
+}
+$('slots').appendChild(b);
+ac+=dur;
+}
+if(!hay){
+$('slots').innerHTML='<span style="font-size:11px">Sin cupos libres o pausado este día</span>';
+}
+let bloq=checkBloqueoTotal(cfgLocal);
+$('avisoBloqueo').classList.toggle('hidden',!bloq);
+if(bloq){
+$('avisoBloqueo').textContent='⚠️ '+bloq;
+}
+}
+</script>
+<script>
+$('btnReservar').onclick=async()=>{
+if(!localElegidoId||!horaElegida||!$('rFecha').value){
+toast('Elegí fecha y hora');
+return;
+}
+let opt=$('rServicio').options[$('rServicio').selectedIndex];
+let dur=Number(opt.dataset.dur||30);
+if(cfgLocal.pideDni===true&&!$('inpDni').value.trim()){
+toast('DNI obligatorio');
+return;
+}
+if(pideSenaActiva&&!$('inpComp').value.trim()){
+toast('Cargá comprobante');
+return;
+}
+if(checkBloqueoTotal(cfgLocal)){
+toast(checkBloqueoTotal(cfgLocal));
+return;
+}
+let snapChk=await db.collection('reservas').where('localId','==',localElegidoId).where('fecha','==',$('rFecha').value).where('hora','==',horaElegida).get();
+let activas=snapChk.docs.map(d=>d.data()).filter(r=>r.estado!=='cancelada');
+let cupoCfg=horariosCache[horaElegida]||{};
+let cupoMax=Number(cupoCfg.cupoMax||cfgLocal.cupoPorDefecto||1);
+if(cupoCfg.activo===false){
+toast('Horario pausado');
+return;
+}
+if(activas.length>=cupoMax){
+toast('Sin cupo '+activas.length+'/'+cupoMax);
+return;
+}
+let estado=pideSenaActiva?'pendiente_sena':'confirmada';
+await db.collection('reservas').add({
+localId:localElegidoId,
+uidLocal:localElegidoId,
+nombreLocal:cfgLocal.localNombre,
+clienteUid:auth.currentUser.uid,
+cliente:auth.currentUser.email,
+clienteNombre:$('pNom').value||auth.currentUser.email,
+servicio:opt.value,
+fecha:$('rFecha').value,
+hora:horaElegida,
+fechaHora:$('rFecha').value+' '+horaElegida,
+duracion:dur,
+precio:Number(opt.dataset.pr||0),
+estado,
+senaMonto:pideSenaActiva?montoSenaAct:0,
+dni:$('inpDni').value.trim(),
+comprobante:$('inpComp').value.trim(),
+ts:Date.now(),
+creado:firebase.firestore.FieldValue.serverTimestamp()
+});
+toast('Reserva OK');
+cargarMisReservas();
+generarSlotsUI();
+goScreen('reservas');
+};
+function tsToNum(t){
+if(!t)return 0;
+if(t.toDate)return t.toDate().getTime();
+if(t.seconds)return t.seconds*1000;
+let d=new Date(t);
+return isNaN(d.getTime())?0:d.getTime();
+}
+async function cargarMisReservas(){
+let snap=await db.collection('reservas').where('clienteUid','==',auth.currentUser.uid).get();
+let docs=snap.docs.map(d=>({id:d.id,...d.data()})).filter(r=>r.estado!=='cancelada');
+docs.sort((a,b)=>tsToNum(b.ts||b.creado)-tsToNum(a.ts||a.creado));
+docs=docs.slice(0,30);
+reservasCache=docs;
+$('listaReservas').innerHTML=docs.map(r=>{
+let col=r.estado==='pendiente_sena'?'#fde68a':'#fff';
+return `<li style="display:flex;justify-content:space-between;padding:10px;border:1px solid #ffffff1e;border-radius:12px;background:#ffffff0f;margin-bottom:6px"><div><b style="font-size:13px">${r.servicio}</b><div style="font-size:11px;opacity:.7">${r.fecha} ${r.hora} - ${r.nombreLocal} - <b style="color:${col}">${r.estado}</b></div></div><div style="font-size:11px">$${r.precio||0}</div></li>`;
+}).join('')||'<li>Sin reservas</li>';
+cargarReservasEnSoporte();
+}
+function cargarReservasEnSoporte(){
+let sel=$('soporteReserva');
+if(!sel){
+return;
+}
+let localId=$('soporteLocal').value||localElegidoId;
+sel.innerHTML='<option value="">Sin reserva / consulta general</option>';
+reservasCache.filter(r=>{
+return!localId||r.localId===localId;
+}).forEach(r=>{
+let o=document.createElement('option');
+o.value=r.id;
+o.textContent=`${r.fecha} ${r.hora} - ${r.servicio} - ${r.estado}`;
+sel.appendChild(o);
+});
+}
+async function cargarFavoritos(){
+if(!auth.currentUser)return;
+let snap=await db.collection('favoritos').where('clienteUid','==',auth.currentUser.uid).get();
+favsCache=snap.docs.map(d=>d.data().localId);
+let lista=$('listaFavs');
+if(!favsCache.length){
+lista.innerHTML='<div style="font-size:12px;opacity:.7">Aún no tenés favoritos, tocá Fav en un local</div>';
+return;
+}
+lista.innerHTML=favsCache.map(id=>{
+let L=localesCache.find(x=>x.id===id);
+if(!L)return '';
+let foto=L.foto||`https://picsum.photos/seed/${L.id}/200`;
+return `<div style="display:flex;gap:10px;background:#ffffff10;border:1px solid #ffffff18;border-radius:14px;padding:8px;cursor:pointer" onclick="document.getElementById('rLocal').value='${L.id}';document.getElementById('rLocal').dispatchEvent(new Event('change'));goScreen('inicio')"><img src="${foto}" style="width:56px;height:56px;border-radius:10px;object-fit:cover"><div><b style="font-size:13px">${L.localNombre}</b><div style="font-size:11px;opacity:.7">${L.direccion||''}</div></div></div>`;
+}).join('');
+}
+function actualizarBotonFav(){
+let id=localElegidoId;
+let esFav=favsCache.includes(id);
+$('btnFav').textContent=esFav?'❤️ Fav':'🤍 Fav';
+}
+$('btnFav').onclick=async()=>{
+if(!localElegidoId)return;
+let uid=auth.currentUser.uid;
+let q=await db.collection('favoritos').where('clienteUid','==',uid).where('localId','==',localElegidoId).get();
+if(!q.empty){
+await q.docs[0].ref.delete();
+toast('Quitado de favs');
+}else{
+await db.collection('favoritos').add({clienteUid:uid,localId:localElegidoId,ts:Date.now()});
+toast('Agregado a favs');
+}
+cargarFavoritos();
+actualizarBotonFav();
+};
+$('perfilFotoFile').onchange=e=>{
+let f=e.target.files[0];
+if(!f)return;
+if(f.size>900000){
+toast('Foto max 900KB');
+return;
+}
+let r=new FileReader();
+r.onload=ev=>{
+perfilFotoBase64=ev.target.result;
+$('perfilFotoBox').innerHTML=`<img src="${perfilFotoBase64}" style="width:100%;height:100%;object-fit:cover">`;
+$('avatarTop').innerHTML=`<img src="${perfilFotoBase64}">`;
+};
+r.readAsDataURL(f);
+};
+$('btnSavePerf').onclick=async()=>{
+try{
+await db.collection('clientes').doc(auth.currentUser.uid).set({
+nombre:$('pNom').value.trim(),
+whatsapp:$('pWsp').value.trim(),
+direccion:$('pDir').value.trim(),
+foto:perfilFotoBase64||'',
+email:auth.currentUser.email
+},{merge:true});
+toast('Guardado');
+$('saludo').innerHTML=`Hola, ${$('pNom').value.trim()}`;
+$('perfilNombre').textContent=$('pNom').value.trim();
+if(perfilFotoBase64){
+$('avatarTop').innerHTML=`<img src="${perfilFotoBase64}">`;
+}else{
+$('avatarTop').textContent=$('pNom').value.trim().slice(0,2).toUpperCase();
+}
+}catch(e){
+toast('Error al guardar');
+}
+};
+</script>
+<script>
+$('soporteFile').onchange=e=>{
+let f=e.target.files[0];
+if(!f){
+return;
+}
+if(f.size>900000){
+toast('Imagen muy grande, max 900KB');
+e.target.value='';
+return;
+}
+let r=new FileReader();
+r.onload=ev=>{
+capturaSoporteBase64=ev.target.result;
+$('soportePreview').innerHTML=`<img src="${capturaSoporteBase64}" style="max-width:180px;border-radius:10px;border:1px solid #fff3"><div style="font-size:10px;color:#86efac">Archivo listo</div>`;
+};
+r.readAsDataURL(f);
+};
+$('btnSoportePerfil').onclick=async()=>{
+let localId=$('soporteLocal').value;
+let reservaId=$('soporteReserva').value;
+let fechaProb=$('soporteFecha').value;
+let horaProb=$('soporteHora').value;
+let msg=$('soporteMsg').value.trim();
+if(!localId){
+toast('Elegí local');
+return;
+}
+if(!fechaProb){
+toast('Elegí fecha del problema');
+return;
+}
+if(!horaProb){
+toast('Elegí hora del problema');
+return;
+}
+if(!msg){
+toast('Escribí que pasó');
+return;
+}
+let L=localesCache.find(x=>x.id===localId)||cfgLocal||{};
+let cliDoc=await db.collection('clientes').doc(auth.currentUser.uid).get();
+let cli=cliDoc.data()||{};
+let ahora=new Date();
+let fechaEnv=ahora.toLocaleDateString('es-AR');
+let horaEnv=ahora.toLocaleTimeString('es-AR');
+let datosRes=reservasCache.find(r=>r.id===reservaId)||null;
+await db.collection('soporte').add({
+origen:'cliente',
+uidCliente:auth.currentUser.uid,
+idCliente:auth.currentUser.uid,
+nombreCliente:cli.nombre||$('pNom').value||auth.currentUser.email,
+emailCliente:auth.currentUser.email,
+whatsappCliente:cli.whatsapp||$('pWsp').value||'',
+direccionCliente:cli.direccion||$('pDir').value||'',
+perfilCompleto:cli,
+uidLocal:localId,
+idLocal:localId,
+nombreLocal:L.localNombre||'Local',
+direccionLocal:L.direccion||'',
+telLocal:L.tel||'',
+datosLocalCompleto:L,
+idReserva:reservaId||'',
+reservaId:reservaId||'',
+datosReservaCompleto:datosRes||null,
+fechaReserva:datosRes?datosRes.fecha:'',
+horaReserva:datosRes?datosRes.hora:'',
+fechaHoraReserva:datosRes?datosRes.fechaHora:'',
+estadoReserva:datosRes?datosRes.estado:'',
+fechaProblema:fechaProb,
+horaProblema:horaProb,
+fechaHoraProblema:fechaProb+' '+horaProb,
+fechaEnvio:fechaEnv,
+horaEnvio:horaEnv,
+fechaHoraEnvio:fechaEnv+' '+horaEnv,
+mensaje:msg,
+imagen:capturaSoporteBase64||'',
+ts:Date.now(),
+creado:firebase.firestore.FieldValue.serverTimestamp()
+});
+$('soporteMsg').value='';
+$('soporteFile').value='';
+$('soporteReserva').value='';
+$('soportePreview').innerHTML='';
+capturaSoporteBase64='';
+toast('Soporte enviado');
+};
+(()=>{
+let t=new Date();
+t.setDate(t.getDate()+1);
+let f=$('rFecha');
+if(f){
+f.valueAsDate=t;
+}
+let fs=$('soporteFecha');
+if(fs){
+fs.valueAsDate=new Date();
+}
+let hs=$('soporteHora');
+if(hs){
+hs.value=new Date().toTimeString().slice(0,5);
+}
+})();
+</script>
+</body>
+</html>
