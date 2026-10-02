@@ -6,341 +6,103 @@
 <title>Mas Ventas - Cliente</title>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800&display=swap" rel="stylesheet">
 <style>
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-}
-body{
-font-family:'Manrope',sans-serif;
-background:#f8f7ff;
-color:#1e293b;
-padding-bottom:90px;
-}
-.header{
-position:sticky;
-top:0;
-z-index:10;
-background:rgba(255,255,255,.96);
-backdrop-filter:blur(10px);
-border-bottom:1px solid #ede9fe;
-padding:14px;
-}
-.logo{
-font-weight:800;
-font-size:22px;
-letter-spacing:-.5px;
-color:#3a0f6e;
-}
-.logo span{
-color:#6a11cb;
-}
-.search-box{
-display:flex;
-gap:8px;
-margin-top:12px;
-}
-.search-box input{
-flex:1;
-padding:12px 16px;
-border-radius:999px;
-border:1px solid #ddd6fe;
-background:#fff;
-outline:none;
-}
-.search-box button{
-padding:12px 18px;
-border-radius:999px;
-border:none;
-background:linear-gradient(135deg,#6a11cb,#7b1fa2);
-color:#fff;
-font-weight:700;
-}
-<style>
-.fav-btn{
-position:fixed;
-top:14px;
-right:14px;
-z-index:20;
-background:#fff;
-border:1px solid #ede9fe;
-border-radius:999px;
-padding:8px 14px;
-font-weight:800;
-box-shadow:0 4px 12px rgba(106,17,203,.15);
-}
-.cats{
-display:flex;
-gap:8px;
-overflow-x:auto;
-padding:14px 14px 0;
-scrollbar-width:none;
-}
-.cats::-webkit-scrollbar{
-display:none;
-}
-.cat{
-white-space:nowrap;
-padding:8px 16px;
-border-radius:999px;
-border:1px solid #ede9fe;
-background:#fff;
-font-weight:700;
-font-size:13px;
-color:#3a0f6e;
-}
-.cat.active{
-background:linear-gradient(135deg,#6a11cb,#7b1fa2);
-color:#fff;
-border-color:#6a11cb;
-}
-.grid{
-padding:14px;
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:12px;
-}
-.card{
-background:#fff;
-border-radius:18px;
-overflow:hidden;
-border:1px solid #ede9fe;
-position:relative;
-}
-.card img{
-width:100%;
-aspect-ratio:4/3;
-object-fit:cover;
-background:#f5f3ff;
-}
-.card-body{
-padding:10px;
-}
-.card-title{
-font-weight:700;
-font-size:13px;
-line-height:1.2;
-display:-webkit-box;
--webkit-line-clamp:2;
--webkit-box-orient:vertical;
-overflow:hidden;
-min-height:32px;
-}
-.card-price{
-font-weight:800;
-margin-top:6px;
-color:#6a11cb;
-}
-.heart{
-position:absolute;
-top:8px;
-right:8px;
-background:rgba(255,255,255,.9);
-border:none;
-width:32px;
-height:32px;
-border-radius:50%;
-font-size:16px;
-}
-.modal{
-position:fixed;
-inset:0;
-z-index:50;
-background:rgba(58,15,110,.4);
-display:none;
-padding:18px;
-}
-.modal.open{
-display:flex;
-align-items:flex-end;
-}
-.sheet{
-background:#fff;
-width:100%;
-border-radius:24px 24px 0 0;
-max-height:85vh;
-overflow:auto;
-padding:18px;
-}
-.empty{
-padding:40px 20px;
-text-align:center;
-color:#7c3aed;
-}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Manrope',sans-serif;background:#f8f7ff;color:#1e293b;padding-bottom:90px}
+.header{position:sticky;top:0;z-index:10;background:rgba(255,255,255,.96);backdrop-filter:blur(10px);border-bottom:1px solid #ede9fe;padding:14px}
+.logo{font-weight:800;font-size:22px;letter-spacing:-.5px;color:#3a0f6e}
+.logo span{color:#6a11cb}
+.search-box{display:flex;gap:8px;margin-top:12px}
+.search-box input{flex:1;padding:12px 16px;border-radius:999px;border:1px solid #ddd6fe;background:#fff;outline:none}
+.search-box button{padding:12px 18px;border-radius:999px;border:none;background:linear-gradient(135deg,#6a11cb,#7b1fa2);color:#fff;font-weight:700}
+.fav-btn{position:fixed;top:14px;right:14px;z-index:20;background:#fff;border:1px solid #ede9fe;border-radius:999px;padding:8px 14px;font-weight:800;box-shadow:0 4px 12px rgba(106,17,203,.15)}
+.cats{display:flex;gap:8px;overflow-x:auto;padding:14px 14px 0;scrollbar-width:none}
+.cats::-webkit-scrollbar{display:none}
+.cat{white-space:nowrap;padding:8px 16px;border-radius:999px;border:1px solid #ede9fe;background:#fff;font-weight:700;font-size:13px;color:#3a0f6e}
+.cat.active{background:linear-gradient(135deg,#6a11cb,#7b1fa2);color:#fff;border-color:#6a11cb}
+.grid{padding:14px;display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.card{background:#fff;border-radius:18px;overflow:hidden;border:1px solid #ede9fe;position:relative}
+.card img{width:100%;aspect-ratio:4/3;object-fit:cover;background:#f5f3ff}
+.card-body{padding:10px}
+.card-title{font-weight:700;font-size:13px;line-height:1.2;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:32px}
+.card-price{font-weight:800;margin-top:6px;color:#6a11cb}
+.heart{position:absolute;top:8px;right:8px;background:rgba(255,255,255,.9);border:none;width:32px;height:32px;border-radius:50%;font-size:16px}
+.modal{position:fixed;inset:0;z-index:50;background:rgba(58,15,110,.4);display:none;padding:18px}
+.modal.open{display:flex;align-items:flex-end}
+.sheet{background:#fff;width:100%;border-radius:24px 24px 0 0;max-height:85vh;overflow:auto;padding:18px}
+.empty{padding:40px 20px;text-align:center;color:#7c3aed}
 </style>
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
 </head>
 <body>
-<button class="fav-btn" onclick="openFav()">
-❤ <span id="favCount">0</span>
-</button>
-<div class="header">
-<div class="logo">
-MAS <span>VENTAS</span>
-</div>
-<div class="search-box">
-<input id="q" placeholder="Buscar en catálogo o Álbum..." oninput="render()">
-<button onclick="render()">
-Buscar
-</button>
-</div>
-</div>
+<button class="fav-btn" onclick="openFav()">❤ <span id="favCount">0</span></button>
+<div class="header"><div class="logo">MAS <span>VENTAS</span></div><div class="search-box"><input id="q" placeholder="Buscar en catálogo..." oninput="render()"><button onclick="render()">Buscar</button></div></div>
 <div class="cats" id="cats"></div>
 <div class="grid" id="grid"></div>
-<div class="modal" id="favModal" onclick="if(event.target==this)closeFav()">
-<div class="sheet">
-<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
-<h3 style="font-weight:800;color:#3a0f6e">
-Favoritos
-</h3>
-<button onclick="closeFav()" style="border:none;background:#f5f3ff;width:32px;height:32px;border-radius:50%">
-✕
-</button>
-</div>
-<div id="favList"></div>
-</div>
-</div>
+<div class="modal" id="favModal" onclick="if(event.target==this)closeFav()"><div class="sheet"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px"><h3 style="font-weight:800;color:#3a0f6e">Favoritos</h3><button onclick="closeFav()" style="border:none;background:#f5f3ff;width:32px;height:32px;border-radius:50%">✕</button></div><div id="favList"></div></div></div>
 <script>
+const fb={apiKey:"AIzaSyD8o4eR9k0g8o6d5o4eR9k0g8o6d5o",authDomain:"reservar-cb70d.firebaseapp.com",projectId:"reservar-cb70d",storageBucket:"reservar-cb70d.firebasestorage.app",messagingSenderId:"123456789012",appId:"1:123456789012:web:abcd1234efgh5678ijkl"};
+firebase.initializeApp(fb);
+const db=firebase.firestore();
 const ADMIN_KEY='admin_catalog_v2';
 const FAV_KEY='cliente_favs_v6';
 const uidLocal=localStorage.getItem('uidLocal')||'local_'+Date.now();
 localStorage.setItem('uidLocal',uidLocal);
-
-function getCatalog(){
-try{
-let raw=localStorage.getItem(ADMIN_KEY);
-if(!raw) return [];
-return JSON.parse(raw);
-}catch(e){
-return [];
-}
-}
-function getFavs(){
-try{
-return JSON.parse(localStorage.getItem(FAV_KEY)||'[]');
-}catch(e){
-return [];
-}
-}
-function saveFavs(f){
-localStorage.setItem(FAV_KEY,JSON.stringify(f));
-}
-function getCats(){
-let cats=new Set(['Todos','Álbum']);
-getCatalog().forEach(p=>{
-if(p.categoria) cats.add(p.categoria);
-});
-return Array.from(cats);
-}
+let catalogoCache=[];
+function getFavs(){try{return JSON.parse(localStorage.getItem(FAV_KEY)||'[]')}catch(e){return[]}}
+function saveFavs(f){localStorage.setItem(FAV_KEY,JSON.stringify(f));}
+function getCats(){let cats=new Set(['Todos']);catalogoCache.forEach(p=>{if(p.categoria)cats.add(p.categoria);});return Array.from(cats);}
 let activeCat='Todos';
-function renderCats(){
-let box=document.getElementById('cats');
-let html='';
-getCats().forEach(c=>{
-html+=`<button class="cat ${c===activeCat?'active':''}" onclick="setCat('${c}')">${c}</button>`;
-});
-box.innerHTML=html;
-}
-function setCat(c){
-activeCat=c;
-renderCats();
-render();
-}
-function openFav(){
+function renderCats(){let box=document.getElementById('cats');let html='';getCats().forEach(c=>{html+=`<button class="cat ${c===activeCat?'active':''}" onclick="setCat('${c}')">${c}</button>`;});box.innerHTML=html;}
+function setCat(c){activeCat=c;renderCats();render();}
+function openFav(){let favs=getFavs();let list=document.getElementById('favList');if(favs.length===0){list.innerHTML=`<div class="empty">Aún no tenés favoritos</div>`;}else{let html='';favs.forEach(id=>{let p=catalogoCache.find(x=>x.id===id);if(!p)return;html+=`<div style="display:flex;gap:12px;align-items:center;padding:10px 0;border-bottom:1px solid #ede9fe"><img src="${p.imagen}" style="width:56px;height:56px;border-radius:12px;object-fit:cover"><div style="flex:1"><div style="font-weight:700;font-size:13px">${p.nombre}</div><div style="font-weight:800;color:#6a11cb">$${p.precio}</div></div><button onclick="toggleFav('${p.id}')" style="border:none;background:#f5f3ff;width:32px;height:32px;border-radius:50%">✕</button></div>`;});list.innerHTML=html;}document.getElementById('favModal').classList.add('open');}
+function closeFav(){document.getElementById('favModal').classList.remove('open');}
+async function toggleFav(id){
 let favs=getFavs();
-let catalog=getCatalog();
-let list=document.getElementById('favList');
-if(favs.length===0){
-list.innerHTML=`<div class="empty">Aún no tenés favoritos</div>`;
-}else{
-let html='';
-favs.forEach(id=>{
-let p=catalog.find(x=>x.id===id);
-if(!p) return;
-html+=`
-<div style="display:flex;gap:12px;align-items:center;padding:10px 0;border-bottom:1px solid #ede9fe">
-<img src="${p.imagen}" style="width:56px;height:56px;border-radius:12px;object-fit:cover">
-<div style="flex:1">
-<div style="font-weight:700;font-size:13px">${p.nombre}</div>
-<div style="font-weight:800;color:#6a11cb">$${p.precio}</div>
-</div>
-<button onclick="toggleFav('${p.id}')" style="border:none;background:#f5f3ff;width:32px;height:32px;border-radius:50%">✕</button>
-</div>
-`;
-});
-list.innerHTML=html;
-}
-document.getElementById('favModal').classList.add('open');
-}
-function closeFav(){
-document.getElementById('favModal').classList.remove('open');
-}
-<script>
-function toggleFav(id){
-let favs=getFavs();
+let p=catalogoCache.find(x=>x.id===id);
 if(favs.includes(id)){
 favs=favs.filter(x=>x!==id);
 }else{
 favs.push(id);
-let p=getCatalog().find(x=>x.id===id);
-let datosReservaCompleto={
-idReserva:'res_'+Date.now(),
-uidLocal:uidLocal,
-fecha:new Date().toISOString(),
-producto:p,
-clienteData:{
-uid:uidLocal,
-origen:'cliente_fav'
-}
-};
-let reservas=JSON.parse(localStorage.getItem('reservas_para_admi')||'[]');
-reservas.push(datosReservaCompleto);
-localStorage.setItem('reservas_para_admi',JSON.stringify(reservas));
-}
-saveFavs(favs);
-render();
-renderFavCount();
-if(document.getElementById('favModal').classList.contains('open')){
-openFav();
+if(p){
+const idReserva='res_'+Date.now()+'_'+Math.random().toString(36).slice(2,6);
+const fechaHoraIso=new Date().toISOString();
+const datosReservaCompleto={idReserva:idReserva,uidLocal:uidLocal,fecha:fechaHoraIso,producto:{nombre:p.nombre,precio:p.precio,imagen:p.imagen,id:p.id,uidLocal:p.uidLocal},clienteData:{uid:uidLocal,origen:'cliente_fav'}};
+await db.collection('reservas').add({idReserva:idReserva,uidLocal:p.uidLocal||'sin-uid',clienteUid:uidLocal,producto:p,fecha:fechaHoraIso,fechaHora:fechaHoraIso,origen:'cliente',estado:'pendiente',datosReservaCompleto:datosReservaCompleto,ts:Date.now()});
+await db.collection('soporte').add({origen:'cliente',uidLocal:uidLocal,idReserva:idReserva,fecha:fechaHoraIso,fechaHoraProblema:fechaHoraIso,mensaje:p.nombre,producto:p,imagen:p.imagen,datosReservaCompleto:datosReservaCompleto,ts:Date.now()});
 }
 }
-function renderFavCount(){
-document.getElementById('favCount').textContent=getFavs().length;
+saveFavs(favs);render();renderFavCount();if(document.getElementById('favModal').classList.contains('open')){openFav();}
 }
+function renderFavCount(){document.getElementById('favCount').textContent=getFavs().length;}
 function render(){
 let q=document.getElementById('q').value.toLowerCase();
-let catalog=getCatalog();
 let favs=getFavs();
-let filtered=catalog.filter(p=>{
-let matchQ=!q||p.nombre.toLowerCase().includes(q);
-let matchCat=activeCat==='Todos'||p.categoria===activeCat;
-return matchQ&&matchCat;
-});
+let filtered=catalogoCache.filter(p=>{let matchQ=!q||p.nombre.toLowerCase().includes(q);let matchCat=activeCat==='Todos'||p.categoria===activeCat;return matchQ&&matchCat;});
 let grid=document.getElementById('grid');
-if(filtered.length===0){
-grid.innerHTML=`<div class="empty" style="grid-column:1/-1">No hay productos en ${activeCat}</div>`;
-return;
-}
+if(filtered.length===0){grid.innerHTML=`<div class="empty" style="grid-column:1/-1">No hay productos en ${activeCat}</div>`;return;}
 let html='';
 filtered.forEach(p=>{
 let isFav=favs.includes(p.id);
-html+=`
-<div class="card">
-<button class="heart" onclick="toggleFav('${p.id}')">
-${isFav?'❤':'♡'}
-</button>
-<img src="${p.imagen}" loading="lazy">
-<div class="card-body">
-<div class="card-title">${p.nombre}</div>
-<div class="card-price">$${p.precio}</div>
-</div>
-</div>
-`;
+html+=`<div class="card"><button class="heart" onclick="toggleFav('${p.id}')">${isFav?'❤':'♡'}</button><img src="${p.imagen}" loading="lazy"><div class="card-body"><div class="card-title">${p.nombre}</div><div class="card-price">$${p.precio}</div></div></div>`;
 });
 grid.innerHTML=html;
 }
-renderCats();
-render();
-renderFavCount();
+async function cargarCatalogo(){
+try{
+const snap=await db.collection('catalogo').orderBy('ts','desc').limit(100).get();
+catalogoCache=[];
+snap.forEach(d=>{catalogoCache.push(d.data())});
+if(catalogoCache.length===0){
+try{let raw=localStorage.getItem(ADMIN_KEY);if(raw)catalogoCache=JSON.parse(raw);}catch(e){}
+}
+}catch(e){
+try{let raw=localStorage.getItem(ADMIN_KEY);if(raw)catalogoCache=JSON.parse(raw);}catch(ee){}
+}
+renderCats();render();renderFavCount();
+}
+db.collection('catalogo').orderBy('ts','desc').limit(100).onSnapshot(()=>{cargarCatalogo();});
+cargarCatalogo();
 </script>
 </body>
 </html>
