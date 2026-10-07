@@ -110,8 +110,7 @@ body{background:linear-gradient(180deg,#6a11cb 0%,#5a14c0 45%,#1e084a 100%) no-r
 <div id="s-perfil" class="wrap hidden">
 <div style="background:var(--panel);border:1px solid var(--stroke);border-radius:16px;padding:14px 12px;margin-bottom:10px">
 <h3 id="perfilNombre">Perfil</h3>
-<p id="perfilEmail" style="font-size:12px;opacity:.9;margin-bottom:10px;word
--break:break-all"></p>
+<p id="perfilEmail" style="font-size:12px;opacity:.9;margin-bottom:10px;word-break:break-all"></p>
 <div style="display:flex;gap:12px;align-items:center;margin-bottom:12px">
 <div id="perfilFotoBox" style="width:72px;height:72px;border-radius:999px;background:#ffffff22;display:flex;align-items:center;justify-content:center;overflow:hidden;font-weight:900;font-size:20px">JD</div>
 <label style="background:#ffffff18;border:1px solid #ffffff28;border-radius:10px;padding:8px 12px;font-size:11px;cursor:pointer">Cambiar foto<input id="perfilFotoFile" type="file" accept="image/*" style="display:none"></label>
@@ -145,8 +144,7 @@ body{background:linear-gradient(180deg,#6a11cb 0%,#5a14c0 45%,#1e084a 100%) no-r
 </div>
 <div id="bottomNav" class="hidden" style="position:fixed;left:0;right:0;bottom:0;z-index:30;background:rgba(22,7,48,.98);border-top:1px solid #ffffff24;display:flex;justify-content:space-around;padding:8px 0 10px">
 <button data-screen="inicio" class="navBtn" style="background:transparent;border:0;color:#fff"><i>🏠</i><span style="font-size:12px;font-weight:700;margin-top:2px">Inicio</span></button>
-<button data-scree
-n="reservas" class="navBtn" style="background:transparent;border:0;color:#bda8e0"><i>📅</i><span style="font-size:12px;font-weight:700;margin-top:2px">Reservas</span></button>
+<button data-screen="reservas" class="navBtn" style="background:transparent;border:0;color:#bda8e0"><i>📅</i><span style="font-size:12px;font-weight:700;margin-top:2px">Reservas</span></button>
 <button data-screen="favoritos" class="navBtn" style="background:transparent;border:0;color:#bda8e0"><i>❤️</i><span style="font-size:12px;font-weight:700;margin-top:2px">Favoritos</span></button>
 <button data-screen="perfil" class="navBtn" style="background:transparent;border:0;color:#bda8e0"><i>👤</i><span style="font-size:12px;font-weight:700;margin-top:2px">Perfil</span></button>
 </div>
@@ -172,7 +170,7 @@ function estaActivoReal(l){
  if(!v) return true;
  return (new Date()-v)/36e5 <= (cfgAdm.horasPlan||48);
 }
-function estaBloqueadoPorPago(l){
+ function estaBloqueadoPorPago(l){
  if(!l) return true;
  if(l.bloqueado===true) return true;
  if(l.planActivo===false) return true;
@@ -236,7 +234,7 @@ perfilFotoBase64=d.foto||'';
 if(perfilFotoBase64){$('avatarTop').innerHTML=`<img src="${perfilFotoBase64}">`;$('perfilFotoBox').innerHTML=`<img src="${perfilFotoBase64}" style="width:100%;height:100%;object-fit:cover">`;}else{$('avatarTop').textContent=nombre.slice(0,2).toUpperCase();$('perfilFotoBox').textContent=nombre.slice(0,2).toUpperCase();}
 cargarLocales();cargarMisReservas();cargarFavoritos();goScreen('inicio');
 });
-async function cargarLocales(){
+ async function cargarLocales(){
 let sel=$('rLocal'); sel.innerHTML='<option>Cargando...</option>';
 let snap=await db.collection('config').get();
 localesCache=[];
@@ -249,7 +247,7 @@ for(let L of visibles){
    if(!L.foto){
      let g=await db.collection('config').doc(L.id).collection('galeriaLocal').limit(1).get();
      if(!g.empty){ galeriasCache[L.id]=g.docs[0].data().url||g.docs[0].data().foto||''; }
-      }
+   }
  }catch(e){}
 }
 $('destacados').innerHTML=visibles.map(l=>{
@@ -287,8 +285,7 @@ $('soporteLocal').value=id; cargarReservasEnSoporte();
 }
 function checkDni(){if(!cfgLocal){$('boxDni').classList.add('hidden');return;} let pide=cfgLocal.pideDni===true; if(pide){$('boxDni').classList.remove('hidden');}else{$('boxDni').classList.add('hidden');$('inpDni').value='';}}
 function checkSena(){
- if(!cfgLo
-  cal){pideSenaActiva=false;return;}
+ if(!cfgLocal){pideSenaActiva=false;return;}
  let fecha=$('rFecha').value; if(!fecha){$('boxSena').classList.add('hidden');pideSenaActiva=false;return;}
  let pide=cfgLocal.pideSena===true||cfgLocal.senaActiva===true;
  let desde=Number(cfgLocal.senaDesdeDias||cfgLocal.senaAplicaDesdeDias||0);
@@ -331,17 +328,18 @@ async function generarSlotsUI(){
  $('avisoBloqueo').classList.toggle('hidden',!bloq &&!estaBloqueadoPorPago(cfgLocal));
  if(bloq){$('avisoBloqueo').textContent=bloq;}
 }
+</script>
+<script>
 $('btnReservar').onclick=async()=>{
  if(!localElegidoId||!horaElegida||!$('rFecha').value){toast('Elegi fecha y hora');return;}
- l
-  et opt=$('rServicio').options[$('rServicio').selectedIndex]; if(!opt){toast('Elegi servicio');return;}
+ let opt=$('rServicio').options[$('rServicio').selectedIndex]; if(!opt){toast('Elegi servicio');return;}
  let dur=Number(opt.dataset.dur||30);
  if(cfgLocal.pideDni===true &&!$('inpDni').value.trim()){toast('DNI obligatorio');return;}
  if(pideSenaActiva &&!$('inpComp').value.trim()){toast('Carga comprobante');return;}
  if(estaBloqueadoPorPago(cfgLocal)){toast('Local bloqueado por pago');return;}
  let pausa = estaPausadoTotal(cfgLocal, $('rFecha').value); if(pausa){toast(pausa);return;}
  $('btnReservar').disabled=true; $('btnReservar').textContent='Reservando...';
- try{
+  try{
    await db.runTransaction(async tx=>{
      let localRef=db.collection('config').doc(localElegidoId);
      let localSnap=await tx.get(localRef);
@@ -388,8 +386,7 @@ function tsToNum(t){if(!t)return 0;if(t.toDate)return t.toDate().getTime();if(t.
 async function cargarMisReservas(){
  let snap=await db.collection('reservas').where('clienteUid','==',auth.currentUser.uid).get();
  let docs=snap.docs.map(d=>({id:d.id,...d.data()})).filter(r=>r.estado!=='cancelada');
- docs.sort((a,b)=
-  >tsToNum(b.ts||b.creado)-tsToNum(a.ts||a.creado)); docs=docs.slice(0,30); reservasCache=docs;
+ docs.sort((a,b)=>tsToNum(b.ts||b.creado)-tsToNum(a.ts||a.creado)); docs=docs.slice(0,30); reservasCache=docs;
  $('listaReservas').innerHTML=docs.map(r=>{let col=r.estado==='pendiente_sena'?'#fde68a':'#fff'; return `<li style="display:flex;justify-content:space-between;padding:10px;border:1px solid #ffffff1e;border-radius:12px;background:#ffffff0f;margin-bottom:6px"><div><b style="font-size:13px">${r.servicio}</b><div style="font-size:11px;opacity:.7">${r.fecha} ${r.hora} - ${r.nombreLocal} - <b style="color:${col}">${r.estado}</b></div></div><div style="font-size:11px">$${r.precio||0}</div></li>`;}).join('')||'<li>Sin reservas</li>';
  cargarReservasEnSoporte();
 }
@@ -398,7 +395,7 @@ function cargarReservasEnSoporte(){
  sel.innerHTML='<option value="">Sin reserva / consulta general</option>';
  reservasCache.filter(r=>{return!localId||r.localId===localId;}).forEach(r=>{let o=document.createElement('option');o.value=r.id;o.textContent=`${r.fecha} ${r.hora} - ${r.servicio} - ${r.estado}`;sel.appendChild(o);});
 }
-async function cargarFavoritos(){
+ async function cargarFavoritos(){
  if(!auth.currentUser)return; let snap=await db.collection('favoritos').where('clienteUid','==',auth.currentUser.uid).get(); favsCache=snap.docs.map(d=>d.data().localId);
  let lista=$('listaFavs');
  if(!favsCache.length){lista.innerHTML='<div style="font-size:12px;opacity:.7">Aun no tenes favoritos, toca Fav en un local</div>';return;}
@@ -434,8 +431,7 @@ $('perfilFotoFile').onchange=async e=>{
 };
 $('btnSavePerf').onclick=async()=>{
  try{
-   await db.collection('clientes').doc(auth.currentUser.uid).set({nombre:$('pNom').value.trim(),whatsapp:$('pWsp').value.trim().replace(/\D/g,''),direccion:$('pDir').value.trim(),foto:perf
-    ilFotoBase64||'',email:auth.currentUser.email},{merge:true});
+   await db.collection('clientes').doc(auth.currentUser.uid).set({nombre:$('pNom').value.trim(),whatsapp:$('pWsp').value.trim().replace(/\D/g,''),direccion:$('pDir').value.trim(),foto:perfilFotoBase64||'',email:auth.currentUser.email},{merge:true});
    toast('Guardado'); $('saludo').innerHTML=`Hola, ${$('pNom').value.trim()}`; $('perfilNombre').textContent=$('pNom').value.trim();
    if(perfilFotoBase64){$('avatarTop').innerHTML=`<img src="${perfilFotoBase64}">`;}else{$('avatarTop').textContent=$('pNom').value.trim().slice(0,2).toUpperCase();}
  }catch(e){toast('Error al guardar');}
@@ -446,7 +442,7 @@ $('soporteFile').onchange=async e=>{
  capturaSoporteBase64=await compressImage(f,600,0.6);
  $('soportePreview').innerHTML=`<img src="${capturaSoporteBase64}" style="max-width:180px;border-radius:10px;border:1px solid #fff3"><div style="font-size:10px;color:#86efac">Archivo listo ~${Math.round(capturaSoporteBase64.length/1024)}KB</div>`;
 };
-$('btnSoportePerfil').onclick=async()=>{
+ $('btnSoportePerfil').onclick=async()=>{
  let localId=$('soporteLocal').value; let reservaId=$('soporteReserva').value; let fechaProb=$('soporteFecha').value; let horaProb=$('soporteHora').value; let msg=$('soporteMsg').value.trim();
  if(!localId){toast('Elegi local');return;} if(!fechaProb){toast('Elegi fecha');return;} if(!horaProb){toast('Elegi hora');return;} if(!msg){toast('Escribi que paso');return;}
  let L=localesCache.find(x=>x.id===localId)||cfgLocal||{};
