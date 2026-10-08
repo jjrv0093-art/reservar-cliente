@@ -150,7 +150,7 @@ body{background:linear-gradient(180deg,#6a11cb 0%,#5a14c0 45%,#1e084a 100%) no-r
 </div>
 <div id="toast" class="hidden" style="position:fixed;bottom:95px;left:50%;transform:translateX(-50%);background:#1f0736;border:1px solid #ffffff33;padding:10px 14px;border-radius:10px;z-index:9999;font-size:13px"></div>
 <script>
-const firebaseConfig={apiKey:"AIzaSyC57wshaJ2EuIBoBdXv18opL4u_Vuw2bAQ",authDomain:"reservar-cb70d.firebaseapp.com",projectId:"reservar-cb70d"};
+const firebaseConfig={apiKey:"AIzaSyC57wshaJ2EuIBoBdXv18opL4u_Vuw2bAQ",authDomain:"reservar-cb70d.firebaseapp.com",projectId:"reservar-cb70d",storageBucket:"reservar-cb70d.firebasestorage.app",messagingSenderId:"630908928696",appId:"1:630908928696:web:5e89f5f2b1cc2b240e6a4d",measurementId:"G-2HMNZ69E4G"};
 firebase.initializeApp(firebaseConfig);
 const auth=firebase.auth();
 const db=firebase.firestore();
@@ -208,9 +208,6 @@ $('searchLocal').addEventListener('input',e=>{
  Array.from($('rLocal').options).forEach(o=>{
    o.hidden = q &&!o.textContent.toLowerCase().includes(q);
  });
- Array.from($('soporteLocal').options).forEach(o=>{
-   if(o.value) o.hidden = q &&!o.textContent.toLowerCase().includes(q);
- });
 });
 $('rFecha').addEventListener('change',()=>{checkDni();checkSena();generarSlotsUI();});
 $('rServicio').addEventListener('change',()=>{checkDni();checkSena();generarSlotsUI();});
@@ -238,7 +235,7 @@ cargarLocales();cargarMisReservas();cargarFavoritos();goScreen('inicio');
 let sel=$('rLocal'); sel.innerHTML='<option>Cargando...</option>';
 let snap=await db.collection('config').get();
 localesCache=[];
-snap.forEach(doc=>{if(['global','cobros','planes','adm','branding','promos','gastos','landing','logs'].includes(doc.id)) return; localesCache.push({id:doc.id,...doc.data()});});
+snap.forEach(doc=>{if(['global','cobros','planes','adm','branding','promos','gastos','landing','logs'].includes(doc.id)) return; let dd=doc.data(); if(dd.visible===false) return; localesCache.push({id:doc.id,...dd});});
 let visiblesActivos = localesCache.filter(l=>estaActivoReal(l));
 let visiblesPausados = localesCache.filter(l=>!estaBloqueadoPorPago(l) &&!estaActivoReal(l));
 let visibles = [...visiblesActivos,...visiblesPausados];
@@ -254,10 +251,10 @@ $('destacados').innerHTML=visibles.map(l=>{
  let foto = l.foto || galeriasCache[l.id] || `https://picsum.photos/seed/${l.id}/200`;
  let esPaus =!estaActivoReal(l) &&!estaBloqueadoPorPago(l);
  let badge = esPaus? '<span style="background:#f59e0b;color:#000;font-size:9px;padding:2px 6px;border-radius:999px;margin-left:6px">PAUSADO</span>' : '';
- return `<div data-nombre="${(l.localNombre||'local').toLowerCase()}" style="display:flex;gap:10px;background:#ffffff10;border:1px solid #ffffff18;border-radius:14px;padding:8px;margin-bottom:8px;cursor:pointer" onclick="document.getElementById('rLocal').value='${l.id}';document.getElementById('rLocal').dispatchEvent(new Event('change'));window.scrollTo({top:0,behavior:'smooth'})"><img src="${foto}" style="width:68px;height:68px;border-radius:10px;object-fit:cover"><div><b>${l.localNombre||'Local'}${badge}</b><div style="font-size:11px;opacity:.7">${l.direccion||''}</div><div style="font-size:10px;opacity:.6">Ver servicios</div></div></div>`;
+ return `<div data-nombre="${(l.localNombre||l.nombre||'local').toLowerCase()}" style="display:flex;gap:10px;background:#ffffff10;border:1px solid #ffffff18;border-radius:14px;padding:8px;margin-bottom:8px;cursor:pointer" onclick="document.getElementById('rLocal').value='${l.id}';document.getElementById('rLocal').dispatchEvent(new Event('change'));window.scrollTo({top:0,behavior:'smooth'})"><img src="${foto}" style="width:68px;height:68px;border-radius:10px;object-fit:cover"><div><b>${l.localNombre||l.nombre||'Local'}${badge}</b><div style="font-size:11px;opacity:.7">${l.direccion||''}</div><div style="font-size:10px;opacity:.6">Ver servicios</div></div></div>`;
 }).join('')||'<div style="font-size:12px;opacity:.7">Sin locales activos</div>';
 sel.innerHTML=''; let selSop=$('soporteLocal'); selSop.innerHTML='<option value="">Elegi local</option>';
-visibles.forEach(l=>{let o=document.createElement('option');o.value=l.id;o.textContent=l.localNombre||'Local';sel.appendChild(o);let o2=o.cloneNode(true);selSop.appendChild(o2);});
+visibles.forEach(l=>{let o=document.createElement('option');o.value=l.id;o.textContent=l.localNombre||l.nombre||'Local';sel.appendChild(o);let o2=o.cloneNode(true);selSop.appendChild(o2);});
 if(sel.options.length){sel.selectedIndex=0;onLocalChange();}else{sel.innerHTML='<option>Sin locales disponibles</option>';$('slots').innerHTML='';$('avisoBloqueo').classList.remove('hidden');$('avisoBloqueo').textContent='No hay locales activos, todos bloqueados por pago';}
 }
 async function onLocalChange(){
@@ -271,14 +268,23 @@ $('avisoBloqueo').classList.toggle('hidden',!bloqPago &&!pausaMsg);
 if(bloqPago){$('avisoBloqueo').textContent='Local bloqueado por falta de pago'; $('btnReservar').disabled=true; $('slots').innerHTML='<span style="font-size:11px">Bloqueado</span>'; return;}
 if(pausaMsg){$('avisoBloqueo').textContent=pausaMsg;}
 $('btnReservar').disabled =!!bloqPago;
-$('btnWA').href=L.tel?`https://wa.me/${L.tel.replace(/\D/g,'')}`:'#';
+$('btnWA').href=L.tel||L.telefono?`https://wa.me/${(L.tel||L.telefono).replace(/\D/g,'')}`:'#';
 actualizarBotonFav();
 let diasAnt=Number(L.diasAnticipacion||30); let hoy=new Date(); hoy.setHours(0,0,0,0); let max=new Date(); max.setDate(hoy.getDate()+diasAnt);
 $('rFecha').min=hoy.toISOString().split('T')[0]; $('rFecha').max=max.toISOString().split('T')[0];
 if(!$('rFecha').value){let t=new Date(); t.setDate(t.getDate()+1); $('rFecha').valueAsDate=t;}
-let snap=await db.collection('servicios').where('localId','==',localElegidoId).where('activo','==',true).get();
 let selS=$('rServicio'); selS.innerHTML='';
-snap.forEach(d=>{let s=d.data(); let o=document.createElement('option'); o.value=s.nombre; o.textContent=`${s.nombre} - $${s.precio}`; o.dataset.dur=s.duracion; o.dataset.pr=s.precio; selS.appendChild(o);});
+try{
+ let snapGlobal = await db.collection('servicios').where('localId','==',localElegidoId).get();
+ let snapSub = await db.collection('config').doc(localElegidoId).collection('servicios').get();
+ let mapa=new Map();
+ snapGlobal.forEach(d=>{let s=d.data(); if(s.activo!==false && s.visible!==false) mapa.set(s.nombre,s);});
+ snapSub.forEach(d=>{let s=d.data(); if(s.visible!==false) mapa.set(s.nombre,{nombre:s.nombre,precio:s.precio,duracion:s.duracion||60,activo:true});});
+ mapa.forEach(s=>{let o=document.createElement('option'); o.value=s.nombre; o.textContent=`${s.nombre} - $${s.precio}`; o.dataset.dur=s.duracion||60; o.dataset.pr=s.precio; selS.appendChild(o);});
+}catch(e){
+ let snap=await db.collection('servicios').where('localId','==',localElegidoId).where('activo','==',true).get();
+ snap.forEach(d=>{let s=d.data(); let o=document.createElement('option'); o.value=s.nombre; o.textContent=`${s.nombre} - $${s.precio}`; o.dataset.dur=s.duracion; o.dataset.pr=s.precio; selS.appendChild(o);});
+}
 if(!selS.options.length){selS.innerHTML='<option>Sin servicios</option>';$('slots').innerHTML=''; return;}
 checkDni(); checkSena(); generarSlotsUI();
 $('soporteLocal').value=id; cargarReservasEnSoporte();
@@ -296,7 +302,7 @@ function checkSena(){
    let opt=$('rServicio').options[$('rServicio').selectedIndex]; let precio=Number(opt?.dataset.pr||0);
    let monto=tipo==='porcentaje'?Math.round(precio*valor/100):valor;
    pideSenaActiva=true; montoSenaAct=monto;
-   $('boxSena').classList.remove('hidden'); $('txtSena').textContent=`Este turno requiere sena de $${monto}`; $('txtAlias').textContent=`Alias: ${cfgLocal.cobAlias||cfgLocal.alias||'Consultar'}`;
+   $('boxSena').classList.remove('hidden'); $('txtSena').textContent=`Este turno requiere sena de $${monto}`; $('txtAlias').textContent=`Alias: ${cfgLocal.cobAlias||cfgLocal.alias||cfgLocal.cbu||'Consultar con local'}`;
  }else{pideSenaActiva=false; montoSenaAct=0; $('boxSena').classList.add('hidden'); $('inpComp').value='';}
 }
 async function generarSlotsUI(){
@@ -361,16 +367,9 @@ $('btnReservar').onclick=async()=>{
      let q = await db.collection('reservas').where('localId','==',localElegidoId).where('fecha','==',$('rFecha').value).where('hora','==',horaElegida).get();
      let activas = q.docs.map(d=>d.data()).filter(r=>r.estado!=='cancelada');
      if(activas.length >= cupoMax) throw new Error('Sin cupo '+activas.length+'/'+cupoMax);
-     let userDoc = await db.collection('users').doc(auth.currentUser.uid).get();
-     if(userDoc.exists && userDoc.data().bloqueado===true) throw new Error('Usuario bloqueado');
-     let wsp = ($('pWsp').value||'').replace(/\D/g,'');
-     if(wsp){
-       let userCeluDoc = await db.collection('users').doc(wsp).get();
-       if(userCeluDoc.exists && userCeluDoc.data().bloqueado===true) throw new Error('Usuario bloqueado');
-     }
      let reservaRef=db.collection('reservas').doc();
      tx.set(reservaRef,{
-       localId:localElegidoId, uidLocal:localElegidoId, nombreLocal:lData.localNombre||cfgLocal.localNombre,
+       localId:localElegidoId, uidLocal:localElegidoId, nombreLocal:lData.localNombre||lData.nombre||cfgLocal.localNombre,
        clienteUid:auth.currentUser.uid, cliente:auth.currentUser.email, clienteNombre:$('pNom').value||auth.currentUser.email,
        servicio:opt.value, fecha:$('rFecha').value, hora:horaElegida, fechaHora:$('rFecha').value+' '+horaElegida,
        duracion:dur, precio:Number(opt.dataset.pr||0),
@@ -399,7 +398,7 @@ function cargarReservasEnSoporte(){
  if(!auth.currentUser)return; let snap=await db.collection('favoritos').where('clienteUid','==',auth.currentUser.uid).get(); favsCache=snap.docs.map(d=>d.data().localId);
  let lista=$('listaFavs');
  if(!favsCache.length){lista.innerHTML='<div style="font-size:12px;opacity:.7">Aun no tenes favoritos, toca Fav en un local</div>';return;}
- lista.innerHTML=favsCache.map(id=>{let L=localesCache.find(x=>x.id===id); if(!L)return ''; let foto=L.foto||galeriasCache[L.id]||`https://picsum.photos/seed/${L.id}/200`; return `<div style="display:flex;gap:10px;background:#ffffff10;border:1px solid #ffffff18;border-radius:14px;padding:8px;cursor:pointer" onclick="document.getElementById('rLocal').value='${L.id}';document.getElementById('rLocal').dispatchEvent(new Event('change'));goScreen('inicio')"><img src="${foto}" style="width:56px;height:56px;border-radius:10px;object-fit:cover"><div><b style="font-size:13px">${L.localNombre}</b><div style="font-size:11px;opacity:.7">${L.direccion||''}</div></div></div>`;}).join('');
+ lista.innerHTML=favsCache.map(id=>{let L=localesCache.find(x=>x.id===id); if(!L)return ''; let foto=L.foto||galeriasCache[L.id]||`https://picsum.photos/seed/${L.id}/200`; return `<div style="display:flex;gap:10px;background:#ffffff10;border:1px solid #ffffff18;border-radius:14px;padding:8px;cursor:pointer" onclick="document.getElementById('rLocal').value='${L.id}';document.getElementById('rLocal').dispatchEvent(new Event('change'));goScreen('inicio')"><img src="${foto}" style="width:56px;height:56px;border-radius:10px;object-fit:cover"><div><b style="font-size:13px">${L.localNombre||L.nombre}</b><div style="font-size:11px;opacity:.7">${L.direccion||''}</div></div></div>`;}).join('');
 }
 function actualizarBotonFav(){let id=localElegidoId; let esFav=favsCache.includes(id); $('btnFav').textContent=esFav?'❤️ Fav':'🤍 Fav';}
 $('btnFav').onclick=async()=>{
@@ -453,13 +452,13 @@ $('soporteFile').onchange=async e=>{
    origen:'cliente', uidCliente:auth.currentUser.uid, idCliente:auth.currentUser.uid,
    nombreCliente:cli.nombre||$('pNom').value||auth.currentUser.email, emailCliente:auth.currentUser.email,
    whatsappCliente:cli.whatsapp||$('pWsp').value||'', direccionCliente:cli.direccion||$('pDir').value||'',
-   perfilCompleto:cli, uidLocal:localId, idLocal:localId, localId:localId, nombreLocal:L.localNombre||'Local', direccionLocal:L.direccion||'', telLocal:L.tel||'', datosLocalCompleto:L,
+   uidLocal:localId, idLocal:localId, localId:localId, nombreLocal:L.localNombre||L.nombre||'Local', direccionLocal:L.direccion||'', telLocal:L.tel||L.telefono||'',
    idReserva:reservaId||'', reservaId:reservaId||'', datosReservaCompleto:datosRes||null,
-   fechaReserva:datosRes?datosRes.fecha:'', horaReserva:datosRes?datosRes.hora:'', fechaHoraReserva:datosRes?datosRes.fechaHora:'', estadoReserva:datosRes?datosRes.estado:'',
+   fechaReserva:datosRes?datosRes.fecha:'', horaReserva:datosRes?datosRes.hora:'', estadoReserva:datosRes?datosRes.estado:'',
    fechaProblema:fechaProb, horaProblema:horaProb, fechaHoraProblema:fechaProb+' '+horaProb,
-   fechaEnvio:fechaEnv, horaEnvio:horaEnv, fechaHoraEnvio:fechaEnv+' '+horaEnv,
+   fechaEnvio:fechaEnv, horaEnvio:horaEnv,
    mensaje:msg, imagen:capturaSoporteBase64||'', texto:msg, leido:false,
-   ts:Date.now(), creado:firebase.firestore.FieldValue.serverTimestamp(), hora:fechaEnv+' '+horaEnv
+   ts:Date.now(), creado:firebase.firestore.FieldValue.serverTimestamp()
  });
  $('soporteMsg').value=''; $('soporteFile').value=''; $('soporteReserva').value=''; $('soportePreview').innerHTML=''; capturaSoporteBase64=''; toast('Soporte enviado');
 };
